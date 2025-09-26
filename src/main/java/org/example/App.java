@@ -8,10 +8,23 @@ public class App
 {
     public static void main( String[] args )
     {
+        App app = new App();
+        app.init();
+        app.start();
+        app.end();
+
+    }
+
+    private void end() {
+    }
+
+    private void start() {
         System.out.println("Welcome to the ticket module App.\n" +
                 "Ticket module. Type 'help' to see commands.");
     }
 
+    private void init() {
+    }
 
     private void help (){
         System.out.println("Commands:");
