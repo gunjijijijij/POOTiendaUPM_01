@@ -1,30 +1,58 @@
 package org.example;
 
-/**
- * Hello world!
- *
- */
+import java.util.Scanner;
+
 public class App 
 {
-    String[] ticket = new String[];
+    String[] ticket = new String[100];
     public static void main( String[] args )
     {
         App app = new App();
         app.init();
         app.start();
         app.end();
-
     }
 
     private void end() {
+        System.out.println("Bye");
     }
 
     private void start() {
         System.out.println("Welcome to the ticket module App.\n" +
                 "Ticket module. Type 'help' to see commands.");
+
+        Scanner sc = new Scanner(System.in);
+        boolean finish = false;
+
+        while(!finish){
+            String command = sc.nextLine();
+            String[] commandUni = command.split(" ");
+
+            switch (commandUni[0]){
+                case "help":
+                    help();
+                    break;
+                case "echo":
+                    if (commandUni.length < 2)
+                        System.err.println("echo comand need two parameters \"\"echo \"<text>\" \"\"");
+
+                    for (int i = 1; i < commandUni.length; i++) {
+                        commandUni[i-1] = commandUni[i];
+                        commandUni[i] = "";
+                    }
+
+                    String message = String.join(" ", commandUni);
+                    echo(message);
+                    break;
+                case "exit":
+                    finish = true;
+                    break;
+            }
+        }
     }
 
     private void init() {
+        System.out.println("Welcome to my extraordinary app");
     }
 
     private void help (){
@@ -49,7 +77,10 @@ public class App
     }
     private void prodlist(String[] listaproductos){
 
-}
+    }
 
+    private void echo(String mensaje){
+        System.out.println(mensaje);
+    }
 
 }
