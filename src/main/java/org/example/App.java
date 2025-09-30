@@ -46,10 +46,10 @@ public class App
                     echo(message);
                     break;
                 case "prod":
-
+                    handleprodcommand(commandUni);
                     break;
                 case "ticket":
-
+                    handleticketcommand(commandUni);
                     break;
                 case "exit":
                     finish = true;
