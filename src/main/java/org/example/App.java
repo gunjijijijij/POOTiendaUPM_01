@@ -50,6 +50,7 @@ public class App
                     break;
             }
         }
+        help();
     }
 
     private void init() {
