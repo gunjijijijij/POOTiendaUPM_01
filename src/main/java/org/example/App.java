@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.Scanner;
 
+/**/
 public class App 
 {
     String[] ticket = new String[100];
