@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.Scanner;
 
-/**/
+
 public class App 
 {
     String[] ticket = new String[100];
@@ -45,6 +45,12 @@ public class App
                     String message = String.join(" ", commandUni);
                     echo(message);
                     break;
+                case "prod":
+
+                    break;
+                case "ticket":
+
+                    break;
                 case "exit":
                     finish = true;
                     break;
@@ -85,4 +91,39 @@ public class App
         System.out.println(mensaje);
     }
 
+    private void handleprodcommand(String[] args){
+        if (args.length < 2) {
+            System.err.println("prod comand need two parameters \"\"prod \"<add|list|update|remove> ...\" \"\"");
+            return;
+        }
+
+        switch (args[1]){
+            case "add":
+                break;
+            case "list":
+                break;
+            case "update":
+                break;
+            case "remove":
+                break;
+        }
+    }
+
+    private void handleticketcommand(String[] args){
+        if (args.length < 2) {
+            System.err.println("prod comand need two parameters \"\"prod \"<add|list|update|remove> ...\" \"\"");
+            return;
+        }
+
+        switch (args[1]){
+            case "new":
+                break;
+            case "add":
+                break;
+            case "remove":
+                break;
+            case "print":
+                break;
+        }
+    }
 }
