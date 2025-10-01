@@ -9,7 +9,7 @@ public class App
     public static void main( String[] args )
     {
         App app = new App();
-        CLI cli = new CLI(app);
+        CLI cli = new CLI();
         cli.start();
     }
 }

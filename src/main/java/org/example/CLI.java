@@ -3,9 +3,8 @@ package org.example;
 import java.util.Scanner;
 
 public class CLI {
-    private final App app;
-    public CLI(App app){
-        this.app = app;
+    public CLI(){
+
     }
 
     public void start() {
@@ -13,7 +12,8 @@ public class CLI {
 
         Scanner sc = new Scanner(System.in);
         boolean finish = false;
-        Product[] arrayProduct = new Product[100];
+       /* Product[] arrayProduct = new Product[100];*/
+
         while(!finish){
             String command = sc.nextLine();
             String[] commandUni = command.split(" ");
@@ -114,10 +114,12 @@ public class CLI {
         }
     }
 
+    /*
     private void addproduct (String nombre, String id, Categoria categoria, float precio){
 
     }
     private void prodlist(String[] listaproductos){
 
     }
+     */
 }
