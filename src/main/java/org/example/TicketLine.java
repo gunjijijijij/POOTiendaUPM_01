@@ -43,8 +43,11 @@ public void addQuantity(int cantidad) {
         return getSubtotal() - getDiscount();
     }
 
-    //@Override
-    //public String toString() {
-
-    //}
+    @Override
+    public String toString() {
+        return product.getName() + " x" + quantity +
+                " | Subtotal: " + getSubtotal() +
+                " | Discount: " + getDiscount() +
+                " | Total: " + getTotalWithDiscount();
+    }
 }

@@ -59,6 +59,26 @@ public class Ticket {
     }
 
     public void print() {
+        TicketLine[] sorted = new TicketLine[size];
+        for (int i = 0; i < size; i++) sorted[i] = lines[i];
 
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = i + 1; j < size; j++) {
+                if (sorted[i].getProduct().getName()
+                        .compareToIgnoreCase(sorted[j].getProduct().getName()) > 0) {
+                    TicketLine tmp = sorted[i];
+                    sorted[i] = sorted[j];
+                    sorted[j] = tmp;
+                }
+            }
+        }
+
+        // imprimir
+        for (int i = 0; i < size; i++) {
+            System.out.println(sorted[i]);
+        }
+        System.out.println("Total price: " + getTotalPrice());
+        System.out.println("Total discount: " + getTotalDiscount());
+        System.out.println("Final Price: " + getFinalPrice());
     }
 }
