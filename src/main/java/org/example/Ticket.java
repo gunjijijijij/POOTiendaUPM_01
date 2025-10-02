@@ -10,6 +10,11 @@ public class Ticket {
         this.size = 0;
     }
 
+    public void resetTicket(){
+        this.lines = new TicketLine[MAX_SIZE];
+        this.size = 0;
+    }
+
     public void addProduct(Product p, int quantity) {
         for (int i = 0; i < size; i++) {
             if (lines[i].getProduct().getId() == p.getId()) {

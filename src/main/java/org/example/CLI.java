@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class CLI {
 
+
     public CLI(){
 
 
@@ -14,7 +15,6 @@ public class CLI {
 
         Scanner sc = new Scanner(System.in);
         boolean finish = false;
-       /* Product[] arrayProduct = new Product[100];*/
 
         while(!finish){
             String command = sc.nextLine();
@@ -37,10 +37,10 @@ public class CLI {
                     echo(message);
                     break;
                 case "prod":
-                    handleprodcommand(commandUni);
+                    handleProdCommand(commandUni);
                     break;
                 case "ticket":
-                    handleticketcommand(commandUni);
+                    handleTicketCommand(commandUni);
                     break;
                 case "exit":
                     finish = true;
@@ -55,7 +55,8 @@ public class CLI {
     }
 
     private void init() {
-        System.out.println("Welcome to my extraordinary app");
+        System.out.println("Welcome to the ticket module App");
+        System.out.println("Ticket Module. Type \"help\" to see commands");
     }
 
     private void help (){
@@ -71,7 +72,7 @@ public class CLI {
         System.out.println(" echo \"<texto>\"");
         System.out.println(" help");
         System.out.println(" exit");
-        System.out.println("Categories: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
+        System.out.println(" \n Categories: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
         System.out.println("Discounts if there are ≥2 units in the category: MERCH 0%, STATIONERY 5%, CLOTHES 7%, BOOK 10%,\n" +
                 "ELECTRONICS 3%.");
     }
@@ -80,7 +81,7 @@ public class CLI {
         System.out.println(mensaje);
     }
 
-    private void handleprodcommand(String[] args){
+    private void handleProdCommand(String[] args){
         if (args.length < 2) {
             System.err.println("prod command needs two parameters \"\"prod \"<add|list|update|remove> ...\" \"\"");
             return;
@@ -88,17 +89,21 @@ public class CLI {
 
         switch (args[1]){
             case "add":
+
                 break;
             case "list":
+
                 break;
             case "update":
+
                 break;
             case "remove":
+
                 break;
         }
     }
 
-    private void handleticketcommand(String[] args){
+    private void handleTicketCommand(String[] args){
         if (args.length < 2) {
             System.err.println("prod command needs two parameters \"\"prod \"<add|list|update|remove> ...\" \"\"");
             return;
@@ -106,6 +111,8 @@ public class CLI {
 
         switch (args[1]){
             case "new":
+                Ticket ticket = new Ticket();
+                ticket.resetTicket();
                 break;
             case "add":
                 break;
