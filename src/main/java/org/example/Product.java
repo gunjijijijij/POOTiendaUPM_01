@@ -1,7 +1,7 @@
 package org.example;
 
 public class Product {
-    Integer id;
+    int id;
     String name;
     Categoria category;
     float price;
@@ -56,4 +56,6 @@ public class Product {
         }
         this.price = price;
     }
+
+
 }

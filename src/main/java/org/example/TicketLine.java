@@ -1,15 +1,15 @@
 package org.example;
 
 public class TicketLine {
-    private Product product;
-    private int quantity;
+    private static Product product;
+    private static int quantity;
 
     public TicketLine(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
     }
 
-    public Product getProduct() {
+    public static Product getProduct() {
         return product;
     }
 
@@ -21,11 +21,11 @@ public void addQuantity(int cantidad) {
         this.quantity += quantity;
     }
 
-    public double getSubtotal() {
+    public static double getSubtotal() {
         return product.getPrice() * quantity;
     }
 
-    public double getDiscount() {
+    public static double getDiscount() {
         if (quantity <= 1) return 0.0;
 
         double discountRate = 0.0;
@@ -39,7 +39,7 @@ public void addQuantity(int cantidad) {
         return getSubtotal() * discountRate;
     }
 
-    public double getTotalWithDiscount() {
+    public static double getTotalWithDiscount() {
         return getSubtotal() - getDiscount();
     }
 

@@ -1,9 +1,10 @@
 package org.example;
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class CLI {
-
+    private Ticket currentTicket = new Ticket();
 
     public CLI(){
 
@@ -111,14 +112,28 @@ public class CLI {
 
         switch (args[1]){
             case "new":
-                Ticket ticket = new Ticket();
-                ticket.resetTicket();
+                currentTicket.resetTicket();
                 break;
             case "add":
+                if (args.length < 4) {
+                    System.out.println("Please input all the necessary arguments");
+                    return;
+                }
+                int addId = Integer.parseInt(args[3]);
+                int quantity = Integer.parseInt(args[4]);
+                currentTicket.addProduct(addId,quantity);
+                System.out.println("Product added successfully");
                 break;
             case "remove":
+                if(args.length < 3){
+                    System.out.println("Please input all the necessary arguments");
+                    return;
+                }
+                int removeIid = Integer.parseInt(args[3]);
+                currentTicket.removeProduct(removeIid);
                 break;
             case "print":
+                currentTicket.print();
                 break;
         }
     }

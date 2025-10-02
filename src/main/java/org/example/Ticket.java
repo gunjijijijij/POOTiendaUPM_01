@@ -2,8 +2,8 @@ package org.example;
 
 public class Ticket {
     private static final int MAX_SIZE = 100;
-    private TicketLine[] lines;
-    private int size;
+    private static TicketLine[] lines;
+    private static int size;
 
     public Ticket() {
         this.lines = new TicketLine[MAX_SIZE];
@@ -15,7 +15,14 @@ public class Ticket {
         this.size = 0;
     }
 
-    public void addProduct(Product p, int quantity) {
+    public void addProduct(int id , int quantity) {
+        Product p = ProductController.findProductById(id);
+
+        if (p == null) {
+            System.out.println("ticket add: error (producto no existe)");
+            return;
+        }
+
         for (int i = 0; i < size; i++) {
             if (lines[i].getProduct().getId() == p.getId()) {
                 lines[i].addQuantity(quantity);
@@ -30,7 +37,7 @@ public class Ticket {
         }
     }
 
-    public void removeProduct(int productId) {
+    public static void removeProduct(int productId) {
         for (int i = 0; i < size; i++) {
             if (lines[i].getProduct().getId() == productId) {
                 for (int j = i; j < size - 1; j++) {
@@ -43,7 +50,7 @@ public class Ticket {
         }
     }
 
-    public double getTotalPrice() {
+    public static double getTotalPrice() {
         double total = 0;
         for (int i = 0; i < size; i++) {
             total += lines[i].getSubtotal();
@@ -51,7 +58,7 @@ public class Ticket {
         return total;
     }
 
-    public double getTotalDiscount() {
+    public static double getTotalDiscount() {
         double discount = 0;
         for (int i = 0; i < size; i++) {
             discount += lines[i].getDiscount();
@@ -59,11 +66,11 @@ public class Ticket {
         return discount;
     }
 
-    public double getFinalPrice() {
+    public static double getFinalPrice() {
         return getTotalPrice() - getTotalDiscount();
     }
 
-    public void print() {
+    public static void print() {
         TicketLine[] sorted = new TicketLine[size];
         for (int i = 0; i < size; i++) sorted[i] = lines[i];
 
@@ -78,7 +85,6 @@ public class Ticket {
             }
         }
 
-        // imprimir
         for (int i = 0; i < size; i++) {
             System.out.println(sorted[i]);
         }
