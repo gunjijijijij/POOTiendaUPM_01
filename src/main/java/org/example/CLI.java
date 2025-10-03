@@ -118,20 +118,24 @@ public class CLI {
                 if (args.length < 4) {
                     System.out.println("Please input all the necessary arguments");
                     return;
-                }
+                }else{
                 int addId = Integer.parseInt(args[3]);
                 int quantity = Integer.parseInt(args[4]);
                 currentTicket.addProduct(addId,quantity);
                 System.out.println("Product added successfully");
                 break;
+                }
             case "remove":
                 if(args.length < 3){
                     System.out.println("Please input all the necessary arguments");
                     return;
+                }else{
+                    int removeIid = Integer.parseInt(args[3]);
+                    currentTicket.removeProduct(removeIid);
+                    System.out.println("Product removed correctly from ticket");
+                    break;
                 }
-                int removeIid = Integer.parseInt(args[3]);
-                currentTicket.removeProduct(removeIid);
-                break;
+
             case "print":
                 currentTicket.print();
                 break;
