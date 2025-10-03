@@ -35,8 +35,21 @@ public class ProductController {
             }
         }
         System.out.println("prod list: ok");
+    }
 
-
+    public void prodRemove (int id){
+        for (int i = 0; i < productCount; i++){
+            if(products[i].getId().equals(id)){
+                Ticket.removeProduct(i);
+                for (int j = i; j<productCount-1; j++){ //Reordena los productos
+                    products[j] = products[j+1];
+                }
+                products[productCount] =null;
+                productCount--;
+                return;
+            }
+        }
+        throw new IllegalArgumentException("No se encontro el producto con id: " +id);
     }
 
     public static Product findProductById(int id) {
