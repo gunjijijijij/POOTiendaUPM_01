@@ -46,6 +46,10 @@ public class CLI {
                 case "exit":
                     finish = true;
                     break;
+
+                default:
+                    System.out.println("Invalid command");
+
             }
         }
         end();
@@ -113,6 +117,7 @@ public class CLI {
         switch (args[1]){
             case "new":
                 currentTicket.resetTicket();
+                System.out.println("The ticket reseted succesfully");
                 break;
             case "add":
                 if (args.length < 4) {
