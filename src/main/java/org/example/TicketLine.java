@@ -29,10 +29,10 @@ public void addQuantity(int quantity) {this.quantity += quantity;}
         double discountRate = 0.0;
         switch (product.getCategory()) {
             case MERCH : discountRate = 0.00; break;
-            case PAPELERIA : discountRate = 0.05; break;
-            case ROPA: discountRate = 0.07; break;
-            case LIBRO: discountRate = 0.10; break;
-            case ELECTRONICA: discountRate = 0.03; break;
+            case STATIONERY : discountRate = 0.05; break;
+            case CLOTHING: discountRate = 0.07; break;
+            case BOOK: discountRate = 0.10; break;
+            case ELECTRONICS: discountRate = 0.03; break;
         }
         return getSubtotal() * discountRate;
     }
