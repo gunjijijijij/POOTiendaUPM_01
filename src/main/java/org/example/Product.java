@@ -30,7 +30,7 @@ public class Product {
 
     public void setName(String name) {
         if(name== null || name.isBlank() || name.length() >=100){
-            throw new IllegalArgumentException("El nombre no puede estar vacío y debe contener menos de 100 caracteres");
+            throw new IllegalArgumentException("The name cannot be empty and must contain less than 100 characters.");
         }
         this.name = name;
     }
@@ -41,7 +41,7 @@ public class Product {
 
     public void setCategory(Category category) {
         if(category==null){
-            throw new IllegalArgumentException("La categoría no puede ser nula");
+            throw new IllegalArgumentException("Category can't be null.");
         }
         this.category = category;
     }
@@ -52,7 +52,7 @@ public class Product {
 
     public void setPrice(float price) {
         if(price<=0){
-            throw new IllegalArgumentException("El precio debe ser un número mayor a 0 sin límite superior");
+            throw new IllegalArgumentException("The price must be a number greater than 0 with no upper limit.");
         }
         this.price = price;
     }

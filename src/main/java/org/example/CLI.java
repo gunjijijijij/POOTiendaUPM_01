@@ -79,8 +79,8 @@ public class CLI {
                 "ELECTRONICS 3%.");
     }
 
-    private void echo(String mensaje){
-        System.out.println(mensaje);
+    private void echo(String message){
+        System.out.println(message);
     }
 
     private void handleProdCommand(String[] args){

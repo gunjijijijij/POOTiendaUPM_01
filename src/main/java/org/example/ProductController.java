@@ -9,16 +9,16 @@ public class ProductController {
         this.products = new Product[MAX_PRODUCTS];
         this.productCount = 0;
     }
-    private void addproduct (String nombre, int id, Category category, float precio){
+    private void addproduct (String name, int id, Category category, float prize){
         for(int i = 0; i< productCount; i++){
             if(products[i].getId().equals(id)){ //comprobamos que no existan dos productos con el mismo id
-                throw new IllegalArgumentException("Existen dos productos con el mismo id");
+                throw new IllegalArgumentException("There are two products with the same id\n");
             }
         }
         if(productCount >= MAX_PRODUCTS){ //verificamos el límite de productos
-            throw new IllegalStateException("No se pueden agregar más productos, el máximo es " + MAX_PRODUCTS);
+            throw new IllegalStateException("No more products can be added, the maximum is " + MAX_PRODUCTS);
         }
-        Product product = new Product(id, nombre, category,precio); //creamos y agregamos el producto
+        Product product = new Product(id, name, category, prize); //creamos y agregamos el producto
         products[productCount] = product;
         productCount++; //aumentamos el contador
 
@@ -49,7 +49,7 @@ public class ProductController {
                 return;
             }
         }
-        throw new IllegalArgumentException("No se encontro el producto con id: " +id);
+        throw new IllegalArgumentException(String.format("The product with id %s was not found", id));
     }
 
     public static Product findProductById(int id) {

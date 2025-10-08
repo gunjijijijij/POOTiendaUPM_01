@@ -19,7 +19,7 @@ public class Ticket {
         Product p = ProductController.findProductById(id);
 
         if (p == null) {
-            System.out.println("ticket add: error (producto no existe)");
+            System.out.println("ticket add: error (product doesn't exist)");
             return;
         }
 
@@ -33,7 +33,7 @@ public class Ticket {
         if (size < MAX_SIZE) {
             lines[size++] = new TicketLine(p, quantity);
         } else {
-            System.out.println("ticket add: error (no caben más líneas)");
+            System.out.println("ticket add: error (there is no room for more lines)");
         }
     }
 

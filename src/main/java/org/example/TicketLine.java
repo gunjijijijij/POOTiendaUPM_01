@@ -17,9 +17,7 @@ public class TicketLine {
         return quantity;
     }
 
-public void addQuantity(int cantidad) {
-        this.quantity += quantity;
-    }
+public void addQuantity(int quantity) {this.quantity += quantity;}
 
     public static double getSubtotal() {
         return product.getPrice() * quantity;
