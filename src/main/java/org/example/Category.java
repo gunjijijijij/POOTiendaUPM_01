@@ -1,5 +1,5 @@
 package org.example;
 
-public enum Categoria {
+public enum Category {
     MERCH, PAPELERIA, ROPA, LIBRO, ELECTRONICA
 }

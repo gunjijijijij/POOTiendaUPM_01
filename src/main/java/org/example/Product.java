@@ -3,10 +3,10 @@ package org.example;
 public class Product {
     int id;
     String name;
-    Categoria category;
+    Category category;
     float price;
 
-    public Product(Integer id, String name, Categoria category, float price) {
+    public Product(Integer id, String name, Category category, float price) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -35,11 +35,11 @@ public class Product {
         this.name = name;
     }
 
-    public Categoria getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(Categoria category) {
+    public void setCategory(Category category) {
         if(category==null){
             throw new IllegalArgumentException("La categoría no puede ser nula");
         }

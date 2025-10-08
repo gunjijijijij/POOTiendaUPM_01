@@ -6,10 +6,7 @@ import java.util.Scanner;
 public class CLI {
     private Ticket currentTicket = new Ticket();
 
-    public CLI(){
-
-
-    }
+    public CLI(){}
 
     public void start() {
         init();
