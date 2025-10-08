@@ -52,6 +52,22 @@ public class ProductController {
         throw new IllegalArgumentException(String.format("The product with id %s was not found", id));
     }
 
+    public void prodUpdate (int id, String action){
+        for (int i = 0; i < productCount; i++){
+            if(products[i].getId().equals(id)){
+                Product product = products[i];
+                switch (action.toUpperCase()){
+                    case "NAME":
+                        break;
+                    case "PRICE":
+                        break;
+                    case "CATEGORY":
+                        break;
+                }
+            }
+        }
+    }
+
     public static Product findProductById(int id) {
         for (int i = 0; i < productCount; i++) {
             if (products[i].getId() == id) {
