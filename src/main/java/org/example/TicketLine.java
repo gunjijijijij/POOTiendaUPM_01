@@ -1,15 +1,15 @@
 package org.example;
 
 public class TicketLine {
-    private static Product product;
-    private static int quantity;
+    private Product product;
+    private int quantity;
 
     public TicketLine(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
     }
 
-    public static Product getProduct() {
+    public Product getProduct() {
         return product;
     }
 
@@ -17,27 +17,27 @@ public class TicketLine {
         return quantity;
     }
 
-public void addQuantity(int quantity) {this.quantity += quantity;}
+    public void addQuantity(int quantity) {this.quantity += quantity;}
 
-    public static double getSubtotal() {
+    public double getSubtotal() {
         return product.getPrice() * quantity;
     }
 
-    public static double getDiscount() {
+    public double getDiscount() {
         if (quantity <= 1) return 0.0;
 
         double discountRate = 0.0;
         switch (product.getCategory()) {
             case MERCH : discountRate = 0.00; break;
-            case STATIONERY : discountRate = 0.05; break;
-            case CLOTHING: discountRate = 0.07; break;
+            case STATIONARY: discountRate = 0.05; break;
+            case CLOTHES: discountRate = 0.07; break;
             case BOOK: discountRate = 0.10; break;
             case ELECTRONICS: discountRate = 0.03; break;
         }
         return getSubtotal() * discountRate;
     }
 
-    public static double getTotalWithDiscount() {
+    public double getTotalWithDiscount() {
         return getSubtotal() - getDiscount();
     }
 

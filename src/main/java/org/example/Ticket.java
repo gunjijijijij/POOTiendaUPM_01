@@ -1,43 +1,39 @@
 package org.example;
 
-public class Ticket {
-    private static final int MAX_SIZE = 100;
-    private static TicketLine[] lines;
-    private static int size;
+import java.util.Objects;
 
-    public Ticket() {
-        this.lines = new TicketLine[MAX_SIZE];
-        this.size = 0;
-    }
+public class Ticket {
+    private final int MAX_SIZE = 100;
+    private TicketLine[] lines = new TicketLine[MAX_SIZE];
+    private int size = 0;
 
     public void resetTicket(){
         this.lines = new TicketLine[MAX_SIZE];
         this.size = 0;
     }
 
-    public void addProduct(int id , int quantity) {
-        Product p = ProductController.findProductById(id);
+    public void addProductTicket(Product product, int quantity) {
 
-        if (p == null) {
+        if (product == null) {
             System.out.println("ticket add: error (product doesn't exist)");
             return;
         }
 
         for (int i = 0; i < size; i++) {
-            if (lines[i].getProduct().getId() == p.getId()) {
+            if (Objects.equals(lines[i].getProduct().getId(), product.getId())) {
                 lines[i].addQuantity(quantity);
                 return;
             }
         }
 
         if (size < MAX_SIZE) {
-            lines[size++] = new TicketLine(p, quantity);
+            lines[size++] = new TicketLine(product, quantity);
         } else {
             System.out.println("ticket add: error (there is no room for more lines)");
         }
     }
 
-    public static void removeProduct(int productId) {
+    public void prodRemove(int productId) {
         for (int i = 0; i < size; i++) {
             if (lines[i].getProduct().getId() == productId) {
                 for (int j = i; j < size - 1; j++) {
@@ -50,7 +46,7 @@ public class Ticket {
         }
     }
 
-    public static double getTotalPrice() {
+    public double getTotalPrice() {
         double total = 0;
         for (int i = 0; i < size; i++) {
             total += lines[i].getSubtotal();
@@ -58,7 +54,7 @@ public class Ticket {
         return total;
     }
 
-    public static double getTotalDiscount() {
+    public double getTotalDiscount() {
         double discount = 0;
         for (int i = 0; i < size; i++) {
             discount += lines[i].getDiscount();
@@ -66,11 +62,11 @@ public class Ticket {
         return discount;
     }
 
-    public static double getFinalPrice() {
+    public double getFinalPrice() {
         return getTotalPrice() - getTotalDiscount();
     }
 
-    public static void print() {
+    public void print() {
         TicketLine[] sorted = new TicketLine[size];
         for (int i = 0; i < size; i++) sorted[i] = lines[i];
 

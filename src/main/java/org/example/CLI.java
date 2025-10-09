@@ -1,13 +1,11 @@
 package org.example;
 
-import java.sql.SQLOutput;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class CLI {
-    private Ticket currentTicket = new Ticket();
-
-    public CLI(){}
-
+    private final Ticket currentTicket = new Ticket();
+    private final ProductController productController = new ProductController();
     public void start() {
         init();
 
@@ -22,31 +20,35 @@ public class CLI {
                 case "help":
                     help();
                     break;
+
                 case "echo":
                     if (commandUni.length < 2)
                         System.err.println("echo command needs two parameters \"\"echo \"<text>\" \"\"");
 
                     for (int i = 1; i < commandUni.length; i++) {
                         commandUni[i-1] = commandUni[i];
-                        commandUni[i] = "";
                     }
+                    commandUni[commandUni.length - 1] = "";
 
                     String message = String.join(" ", commandUni);
                     echo(message);
                     break;
+
                 case "prod":
                     handleProdCommand(commandUni);
                     break;
+
                 case "ticket":
                     handleTicketCommand(commandUni);
                     break;
+
                 case "exit":
                     finish = true;
                     break;
 
                 default:
                     System.out.println("Invalid command");
-
+                    break;
             }
         }
         end();
@@ -91,16 +93,66 @@ public class CLI {
 
         switch (args[1]){
             case "add":
+                if (args.length < 4) {
+                    System.out.println("Please input all the necessary arguments");
+                    return;
+                }else{
+                    int addId =  Integer.parseInt(args[2]);
+                    Category category = Category.valueOf(args[args.length - 2]);
+                    float price = Float.parseFloat(args[args.length-1]);
 
+                    StringBuilder nameBuilder = new StringBuilder();
+                    for (int i = 3; i < args.length - 2; i++) {
+                        nameBuilder.append(args[i]).append(" ");
+                    }
+
+                    String name = nameBuilder.toString().trim();
+
+                    if (name.startsWith("\"") && name.endsWith("\"")) {
+                        name = name.substring(1, name.length()-1);
+                    }
+
+                    productController.addProduct(addId, name, category, price);
+                    System.out.println("{class:Product, id:" + addId + ", name: '" + name + "', category:" + category + ", price: " + price + "}");
+                }
                 break;
+
             case "list":
-
+                productController.prodList();
                 break;
+
             case "update":
+                int updateId = Integer.parseInt(args[2]);
 
+                if (args[3].equals("NAME")){
+                    StringBuilder nameBuilder = new StringBuilder();
+                    for (int i = 4; i < args.length; i++) {
+                        nameBuilder.append(args[i]).append(" ");
+                    }
+
+                    String name = nameBuilder.toString().trim();
+                    System.out.println(name + "hola");
+
+                    if (name.startsWith("\"") && name.endsWith("\"")) {
+                        name = name.substring(1, name.length()-1);
+                    }
+                    productController.prodUpdate(updateId, args[3], name);
+                    break;
+                }
+
+                productController.prodUpdate(updateId, args[3], args[4]);
                 break;
-            case "remove":
 
+            case "remove":
+                if (args.length < 3) {
+                    System.out.println("Please input all the necessary arguments");
+                }else{
+                    int removeId =  Integer.parseInt(args[2]);
+                    productController.prodRemove(removeId);
+                    currentTicket.prodRemove(removeId);
+                    //print del producto
+                    System.out.println("prod remove: ok");
+                }
                 break;
         }
     }
@@ -116,24 +168,28 @@ public class CLI {
                 currentTicket.resetTicket();
                 System.out.println("The ticket reseted succesfully");
                 break;
+
             case "add":
                 if (args.length < 4) {
                     System.out.println("Please input all the necessary arguments");
                     return;
                 }else{
-                int addId = Integer.parseInt(args[3]);
-                int quantity = Integer.parseInt(args[4]);
-                currentTicket.addProduct(addId,quantity);
+                int addId = Integer.parseInt(args[2]);
+                int quantity = Integer.parseInt(args[3]);
+
+                Product product = productController.findProductById(addId);
+
+                currentTicket.addProductTicket(product, quantity);
                 System.out.println("Product added successfully");
                 break;
                 }
+
             case "remove":
                 if(args.length < 3){
                     System.out.println("Please input all the necessary arguments");
-                    return;
                 }else{
-                    int removeIid = Integer.parseInt(args[3]);
-                    currentTicket.removeProduct(removeIid);
+                    int removeId = Integer.parseInt(args[3]);
+                    currentTicket.prodRemove(removeId);
                     System.out.println("Product removed correctly from ticket");
                     break;
                 }
@@ -143,6 +199,4 @@ public class CLI {
                 break;
         }
     }
-
-
 }
