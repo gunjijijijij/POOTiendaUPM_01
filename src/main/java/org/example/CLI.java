@@ -96,8 +96,12 @@ public class CLI {
                     System.err.println("Please input all the necessary arguments");
                     return;
                 }else{
+                    if (!isPositiveInteger(args[2])) {
+                        System.err.println("El ID debe ser un número entero positivo.");
+                        return;
+                    }
                     int addId =  Integer.parseInt(args[2]);
-                    Category category = Category.valueOf(args[args.length - 2]);
+                    Category category = Category.valueOf(args[args.length - 2].toUpperCase());
 
                     float price = Float.parseFloat(args[args.length-1]);
                     if (price < 0){
@@ -122,6 +126,10 @@ public class CLI {
                 break;
 
             case "update":
+                if (!isPositiveInteger(args[2])) {
+                    System.err.println("El ID debe ser un número entero positivo.");
+                    return;
+                }
                 int updateId = Integer.parseInt(args[2]);
 
                 if (args[3].equals("NAME")){
@@ -165,14 +173,18 @@ public class CLI {
                     System.out.println("Please input all the necessary arguments");
                     return;
                 }else{
-                int addId = Integer.parseInt(args[2]);
-                int quantity = Integer.parseInt(args[3]);
+                    if (!isPositiveInteger(args[2])) {
+                        System.err.println("El ID debe ser un número entero positivo.");
+                        return;
+                    }
+                    int addId = Integer.parseInt(args[2]);
+                    int quantity = Integer.parseInt(args[3]);
 
-                Product product = productController.findProductById(addId);
+                    Product product = productController.findProductById(addId);
 
-                currentTicket.addProductTicket(product, quantity);
-                System.out.println("Product added successfully");
-                break;
+                    currentTicket.addProductTicket(product, quantity);
+                    System.out.println("Product added successfully");
+                    break;
                 }
 
             case "remove":
@@ -204,5 +216,14 @@ public class CLI {
         }
 
         return name;
+    }
+
+    private boolean isPositiveInteger(String args){
+        try{
+            int num = Integer.parseInt(args);
+            return num > 0;
+        } catch (NumberFormatException e){
+            return false;
+        }
     }
 }
