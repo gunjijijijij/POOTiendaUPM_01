@@ -96,8 +96,8 @@ public class CLI {
                     System.err.println("Please input all the necessary arguments");
                     return;
                 }else{
-                    if (!isPositiveInteger(args[2])) {
-                        System.err.println("El ID debe ser un número entero positivo.");
+                    if (isPositiveInteger(args[2])) {
+                        System.err.println("The ID must be a positive integer.");
                         return;
                     }
                     int addId =  Integer.parseInt(args[2]);
@@ -126,8 +126,8 @@ public class CLI {
                 break;
 
             case "update":
-                if (!isPositiveInteger(args[2])) {
-                    System.err.println("El ID debe ser un número entero positivo.");
+                if (isPositiveInteger(args[2])) {
+                    System.err.println("The ID must be a positive integer.");
                     return;
                 }
                 int updateId = Integer.parseInt(args[2]);
@@ -173,13 +173,16 @@ public class CLI {
                     System.out.println("Please input all the necessary arguments");
                     return;
                 }else{
-                    if (!isPositiveInteger(args[2])) {
-                        System.err.println("El ID debe ser un número entero positivo.");
+                    String idString = args[2];
+                    if (isPositiveInteger(idString)) {
+                        System.err.println("The ID must be a positive integer.");
                         return;
                     }
-                    int addId = Integer.parseInt(args[2]);
+                    int addId = Integer.parseInt(idString);
                     int quantity = Integer.parseInt(args[3]);
-
+                    if (quantity < 0){
+                        System.err.println();
+                    }
                     Product product = productController.findProductById(addId);
 
                     currentTicket.addProductTicket(product, quantity);
@@ -191,7 +194,12 @@ public class CLI {
                 if(args.length < 3){
                     System.out.println("Please input all the necessary arguments");
                 }else{
-                    int removeId = Integer.parseInt(args[3]);
+                    String idString = args[3];
+                    if (isPositiveInteger(idString)) {
+                        System.err.println("The ID must be a positive integer.");
+                        return;
+                    }
+                    int removeId = Integer.parseInt(idString);
                     currentTicket.prodRemove(removeId);
                     System.out.println("Product removed correctly from ticket");
                     break;
@@ -221,9 +229,9 @@ public class CLI {
     private boolean isPositiveInteger(String args){
         try{
             int num = Integer.parseInt(args);
-            return num > 0;
+            return num <= 0;
         } catch (NumberFormatException e){
-            return false;
+            return true;
         }
     }
 }
