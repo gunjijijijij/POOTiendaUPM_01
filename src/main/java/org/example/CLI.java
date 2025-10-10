@@ -115,9 +115,17 @@ public class CLI {
                         return;
                     }
 
-                    float price = Float.parseFloat(args[args.length-1]);
+
+                    float price;
+                    try {
+                        price = Float.parseFloat(args[args.length - 1]);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Price must be a valid number.");
+                        return;
+                    }
                     if (price < 0){
                         System.err.println("The price can't be negative");
+                        return;
                     }
 
                     // Nombre desde args[3] hasta args.length - 2
