@@ -95,7 +95,7 @@ public class CLI {
             return;
         }
 
-        switch (args[1]){
+        switch (args[1].toLowerCase()){
             case "add":
                 if (args.length < 5) {
                     System.err.println("Please input all the necessary arguments");
@@ -106,7 +106,14 @@ public class CLI {
                         return;
                     }
                     int addId =  Integer.parseInt(args[2]);
-                    Category category = Category.valueOf(args[args.length - 2].toUpperCase());
+
+                    Category category;
+                    try {
+                        category = Category.valueOf(args[args.length - 2].toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Invalid category. Use: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
+                        return;
+                    }
 
                     float price = Float.parseFloat(args[args.length-1]);
                     if (price < 0){
