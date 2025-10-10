@@ -81,6 +81,11 @@ public class CLI {
     }
 
     private void echo(String message){
+        if (message.isEmpty()){
+            System.err.println("The echo command is empty");
+            return;
+        }
+
         System.out.println(message);
     }
 
@@ -132,23 +137,34 @@ public class CLI {
                 }
                 int updateId = Integer.parseInt(args[2]);
 
-                if (args[3].equals("NAME")){
+                String category = args[3];
+                if (category.equals("NAME")){
                     String name = getNameInBrackets(args, 4, args.length);
+                    if (name.isEmpty()){
+                        System.err.println("The name is empty");
+                        return;
+                    }
 
-                    productController.prodUpdate(updateId, args[3], name);
+                    productController.prodUpdate(updateId, category, name);
                     break;
                 }
 
-                productController.prodUpdate(updateId, args[3], args[4]);
+                productController.prodUpdate(updateId, category, args[4]);
                 break;
 
             case "remove":
                 if (args.length < 3) {
                     System.out.println("Please input all the necessary arguments");
                 }else{
+                    String idString = args[2];
+                    if (isPositiveInteger(idString)) {
+                        System.err.println("The ID must be a positive integer.");
+                        return;
+                    }
                     int removeId =  Integer.parseInt(args[2]);
                     productController.prodRemove(removeId);
                     currentTicket.prodRemove(removeId);
+
                     //print del producto
                     System.out.println("prod remove: ok");
                 }
@@ -179,10 +195,12 @@ public class CLI {
                         return;
                     }
                     int addId = Integer.parseInt(idString);
+
                     int quantity = Integer.parseInt(args[3]);
                     if (quantity < 0){
-                        System.err.println();
+                        System.err.println("The quantity must be a positive integer");
                     }
+
                     Product product = productController.findProductById(addId);
 
                     currentTicket.addProductTicket(product, quantity);
