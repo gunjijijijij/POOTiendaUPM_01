@@ -15,7 +15,7 @@ public class CLI {
             String command = sc.nextLine();
             String[] commandUni = command.split(" ");
 
-            switch (commandUni[0]){
+            switch (commandUni[0].toLowerCase()){
                 case "help":
                     help();
                     break;
@@ -114,7 +114,6 @@ public class CLI {
                         System.err.println("Invalid category. Use: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
                         return;
                     }
-
 
                     float price;
                     try {
