@@ -100,17 +100,7 @@ public class CLI {
                     int addId =  Integer.parseInt(args[2]);
                     Category category = Category.valueOf(args[args.length - 2]);
                     float price = Float.parseFloat(args[args.length-1]);
-
-                    StringBuilder nameBuilder = new StringBuilder();
-                    for (int i = 3; i < args.length - 2; i++) {
-                        nameBuilder.append(args[i]).append(" ");
-                    }
-
-                    String name = nameBuilder.toString().trim();
-
-                    if (name.startsWith("\"") && name.endsWith("\"")) {
-                        name = name.substring(1, name.length()-1);
-                    }
+                    String name = getNameInBrackets(args);
 
                     productController.addProduct(addId, name, category, price);
                     System.out.println("{class:Product, id:" + addId + ", name: '" + name + "', category:" + category + ", price: " + price + "}");
@@ -198,5 +188,20 @@ public class CLI {
                 currentTicket.print();
                 break;
         }
+    }
+
+    private String getNameInBrackets(String[] args){
+        StringBuilder nameBuilder = new StringBuilder();
+        for (int i = 3; i < args.length - 2; i++) {
+            nameBuilder.append(args[i]).append(" ");
+        }
+
+        String name = nameBuilder.toString().trim();
+
+        if (name.startsWith("\"") && name.endsWith("\"")) {
+            name = name.substring(1, name.length()-1);
+        }
+
+        return name;
     }
 }
