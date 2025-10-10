@@ -1,6 +1,5 @@
 package org.example;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class CLI {
@@ -93,14 +92,25 @@ public class CLI {
 
         switch (args[1]){
             case "add":
-                if (args.length < 4) {
-                    System.out.println("Please input all the necessary arguments");
+                if (args.length < 5) {
+                    System.err.println("Please input all the necessary arguments");
                     return;
                 }else{
                     int addId =  Integer.parseInt(args[2]);
                     Category category = Category.valueOf(args[args.length - 2]);
+
                     float price = Float.parseFloat(args[args.length-1]);
+                    if (price < 0){
+                        System.err.println("The price can't be negative");
+                    }
+
+                    // Nombre desde args[3] hasta args.length - 2
+                    // prod add <id> "NAME" <CATEGORY> <PRICE>
                     String name = getNameInBrackets(args, 3, args.length - 2);
+                    if (name.isEmpty()){
+                        System.err.println("The name is empty");
+                        return;
+                    }
 
                     productController.addProduct(addId, name, category, price);
                     System.out.println("{class:Product, id:" + addId + ", name: '" + name + "', category:" + category + ", price: " + price + "}");
