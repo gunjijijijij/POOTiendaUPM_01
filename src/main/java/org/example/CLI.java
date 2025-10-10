@@ -46,7 +46,7 @@ public class CLI {
                     break;
 
                 default:
-                    System.out.println("Invalid command");
+                    System.out.println("Invalid commandS");
                     break;
             }
         }
@@ -91,100 +91,147 @@ public class CLI {
 
     private void handleProdCommand(String[] args){
         if (args.length < 2) {
-            System.err.println("prod command needs two parameters \"\"prod \"<add|list|update|remove> ...\" \"\"");
+            System.err.println("Uso: prod <add|list|update|remove> ...");
             return;
         }
 
         switch (args[1].toLowerCase()){
-            case "add":
+            case "add": {
+                // prod add <id> "<name>" <category> <price>
                 if (args.length < 5) {
-                    System.err.println("Please input all the necessary arguments");
+                    System.err.println("Uso: prod add <id> \"<name>\" <category> <price>");
                     return;
-                }else{
-                    if (isPositiveInteger(args[2])) {
-                        System.err.println("The ID must be a positive integer.");
-                        return;
-                    }
-                    int addId =  Integer.parseInt(args[2]);
-
-                    Category category;
-                    try {
-                        category = Category.valueOf(args[args.length - 2].toUpperCase());
-                    } catch (IllegalArgumentException e) {
-                        System.err.println("Invalid category. Use: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
-                        return;
-                    }
-
-                    float price;
-                    try {
-                        price = Float.parseFloat(args[args.length - 1]);
-                    } catch (NumberFormatException e) {
-                        System.err.println("Price must be a valid number.");
-                        return;
-                    }
-                    if (price < 0){
-                        System.err.println("The price can't be negative");
-                        return;
-                    }
-
-                    // Nombre desde args[3] hasta args.length - 2
-                    // prod add <id> "NAME" <CATEGORY> <PRICE>
-                    String name = getNameInBrackets(args, 3, args.length - 2);
-                    if (name.isEmpty()){
-                        System.err.println("The name is empty");
-                        return;
-                    }
-
-                    productController.addProduct(addId, name, category, price);
-                    System.out.println("{class:Product, id:" + addId + ", name: '" + name + "', category:" + category + ", price: " + price + "}");
                 }
-                break;
 
-            case "list":
+                if (!isPositiveInteger(args[2])) {
+                    System.err.println("The id must be a positive number.");
+                    return;
+                }
+                int addId = Integer.parseInt(args[2]);
+
+                // nombre entre [3, args.length-2)
+                String name = getNameInBrackets(args, 3, args.length - 2).trim();
+                if (name.isEmpty()){
+                    System.err.println("The name is empty");
+                    return;
+                }
+
+                Category category;
+                try {
+                    category = Category.valueOf(args[args.length - 2].toUpperCase());
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Invalid category. Use: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
+                    return;
+                }
+
+                float price;
+                try {
+                    price = Float.parseFloat(args[args.length - 1]);
+                } catch (NumberFormatException e) {
+                    System.err.println("Price must be a valid number.");
+                    return;
+                }
+                if (price < 0){
+                    System.err.println("The price can't be negative");
+                    return;
+                }
+
+                productController.addProduct(addId, name, category, price);
+                System.out.println("{class:Product, id:" + addId + ", name:'" + name + "', category:" + category + ", price:" + price + "}");
+                break;
+            }
+
+            case "list": {
                 productController.prodList();
                 break;
+            }
 
-            case "update":
-                if (isPositiveInteger(args[2])) {
+            case "update": {
+                // prod update <id> NAME|CATEGORY|PRICE <value>
+                if (args.length < 4) {
+                    System.err.println("Uso: prod update <id> NAME|CATEGORY|PRICE <value>");
+                    return;
+                }
+                if (!isPositiveInteger(args[2])) {
                     System.err.println("The ID must be a positive integer.");
                     return;
                 }
                 int updateId = Integer.parseInt(args[2]);
+                String field = args[3].toUpperCase();
 
-                String category = args[3];
-                if (category.equals("NAME")){
-                    String name = getNameInBrackets(args, 4, args.length);
-                    if (name.isEmpty()){
-                        System.err.println("The name is empty");
-                        return;
+                switch (field) {
+                    case "NAME": {
+                        if (args.length < 5) {
+                            System.err.println("Uso: prod update <id> NAME \"<new name>\"");
+                            return;
+                        }
+                        String newName = getNameInBrackets(args, 4, args.length).trim();
+                        if (newName.isEmpty()) {
+                            System.err.println("The name is empty");
+                            return;
+                        }
+                        productController.prodUpdate(updateId, field, newName);
+                        break;
                     }
-
-                    productController.prodUpdate(updateId, category, name);
-                    break;
+                    case "CATEGORY": {
+                        if (args.length < 5) {
+                            System.err.println("Uso: prod update <id> CATEGORY <newCategory>");
+                            return;
+                        }
+                        try {
+                            Category newCat = Category.valueOf(args[4].toUpperCase());
+                            productController.prodUpdate(updateId, field, newCat.name());
+                        } catch (IllegalArgumentException e) {
+                            System.err.println("Invalid category. Use: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
+                        }
+                        break;
+                    }
+                    case "PRICE": {
+                        if (args.length < 5) {
+                            System.err.println("Uso: prod update <id> PRICE <newPrice>");
+                            return;
+                        }
+                        try {
+                            float newPrice = Float.parseFloat(args[4]);
+                            if (newPrice < 0) {
+                                System.err.println("The price can't be negative");
+                                return;
+                            }
+                            productController.prodUpdate(updateId, field, Float.toString(newPrice));
+                        } catch (NumberFormatException e) {
+                            System.err.println("Price must be a valid number.");
+                        }
+                        break;
+                    }
+                    default:
+                        System.err.println("Field not supported. Use NAME, CATEGORY, or PRICE.");
+                        break;
                 }
-
-                productController.prodUpdate(updateId, category, args[4]);
                 break;
+            }
 
-            case "remove":
+            case "remove": {
                 if (args.length < 3) {
-                    System.out.println("Please input all the necessary arguments");
-                }else{
-                    String idString = args[2];
-                    if (isPositiveInteger(idString)) {
-                        System.err.println("The ID must be a positive integer.");
-                        return;
-                    }
-                    int removeId =  Integer.parseInt(args[2]);
-                    productController.prodRemove(removeId);
-                    currentTicket.prodRemove(removeId);
-
-                    //print del producto
-                    System.out.println("prod remove: ok");
+                    System.err.println("Uso: prod remove <id>");
+                    return;
                 }
+                if (!isPositiveInteger(args[2])) {
+                    System.err.println("The ID must be a positive integer.");
+                    return;
+                }
+                int removeId = Integer.parseInt(args[2]);
+                productController.prodRemove(removeId);
+                currentTicket.prodRemove(removeId);
+                System.out.println("prod remove: ok");
+                break;
+            }
+
+            default:
+                System.err.println("Subcommand not found. Use: add | list | update | remove");
                 break;
         }
     }
+
 
     private void handleTicketCommand(String[] args){
         if (args.length < 2) {
@@ -204,7 +251,7 @@ public class CLI {
                     return;
                 }else{
                     String idString = args[2];
-                    if (isPositiveInteger(idString)) {
+                    if (!isPositiveInteger(idString)) {
                         System.err.println("The ID must be a positive integer.");
                         return;
                     }
@@ -227,7 +274,7 @@ public class CLI {
                     System.out.println("Please input all the necessary arguments");
                 }else{
                     String idString = args[3];
-                    if (isPositiveInteger(idString)) {
+                    if (!isPositiveInteger(idString)) {
                         System.err.println("The ID must be a positive integer.");
                         return;
                     }
@@ -261,7 +308,7 @@ public class CLI {
     private boolean isPositiveInteger(String args){
         try{
             int num = Integer.parseInt(args);
-            return num <= 0;
+            return num > 0;
         } catch (NumberFormatException e){
             return true;
         }
