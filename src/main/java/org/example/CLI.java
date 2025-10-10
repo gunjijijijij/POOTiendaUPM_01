@@ -100,7 +100,7 @@ public class CLI {
                     int addId =  Integer.parseInt(args[2]);
                     Category category = Category.valueOf(args[args.length - 2]);
                     float price = Float.parseFloat(args[args.length-1]);
-                    String name = getNameInBrackets(args);
+                    String name = getNameInBrackets(args, 3, args.length - 2);
 
                     productController.addProduct(addId, name, category, price);
                     System.out.println("{class:Product, id:" + addId + ", name: '" + name + "', category:" + category + ", price: " + price + "}");
@@ -115,17 +115,8 @@ public class CLI {
                 int updateId = Integer.parseInt(args[2]);
 
                 if (args[3].equals("NAME")){
-                    StringBuilder nameBuilder = new StringBuilder();
-                    for (int i = 4; i < args.length; i++) {
-                        nameBuilder.append(args[i]).append(" ");
-                    }
+                    String name = getNameInBrackets(args, 4, args.length);
 
-                    String name = nameBuilder.toString().trim();
-                    System.out.println(name + "hola");
-
-                    if (name.startsWith("\"") && name.endsWith("\"")) {
-                        name = name.substring(1, name.length()-1);
-                    }
                     productController.prodUpdate(updateId, args[3], name);
                     break;
                 }
@@ -190,9 +181,9 @@ public class CLI {
         }
     }
 
-    private String getNameInBrackets(String[] args){
+    private String getNameInBrackets(String[] args, int i0, int iN){
         StringBuilder nameBuilder = new StringBuilder();
-        for (int i = 3; i < args.length - 2; i++) {
+        for (int i = i0; i < iN; i++) {
             nameBuilder.append(args[i]).append(" ");
         }
 
