@@ -42,8 +42,6 @@ public class Ticket {
         }
         size = newSize;
         lines = newLines;
-        print();
-        System.out.println("ticket remove: ok");
     }
 
     private int countCategory(Category category) {

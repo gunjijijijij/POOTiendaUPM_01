@@ -20,8 +20,6 @@ public class ProductController {
         Product product = new Product(id, name, category, prize); //creamos y agregamos el producto
         products[productCount] = product;
         productCount++; //aumentamos el contador
-        System.out.println("prod add: ok");
-
     }
 
     public void prodList() {
@@ -33,7 +31,6 @@ public class ProductController {
                 Product product = products[i];
                 System.out.println("{class:Product, id:" + product.getId() + ", name: '" + product.getName() + "', category:" + product.getCategory() + ", price: " + product.getPrice() + "}");
             }
-            System.out.println("prod list: ok");
         }
     }
 
@@ -45,29 +42,34 @@ public class ProductController {
                 }
                 products[productCount] = null;
                 productCount--;
-                System.out.println("prod remove: ok");
                 return;
             }
         }
+
         throw new IllegalArgumentException(String.format("The product with id %s was not found", id));
     }
 
     public void prodUpdate(int id, String updateType, String newValue) {
         Product product = this.findProductById(id);
-        switch (updateType) {
-            case "NAME":
-                product.setName(newValue);
-                break;
 
-            case "CATEGORY":
-                product.setCategory(Category.valueOf(newValue));
-                break;
+        try {
+            switch (updateType) {
+                case "NAME":
+                    product.setName(newValue);
+                    break;
 
-            case "PRICE":
-                product.setPrice(Float.parseFloat(newValue));
-                break;
+                case "CATEGORY":
+                    product.setCategory(Category.valueOf(newValue));
+                    break;
+
+                case "PRICE":
+                    product.setPrice(Float.parseFloat(newValue));
+                    break;
+            }
+            System.out.println("prod update: ok");
+        } catch (IllegalArgumentException exception) {
+            System.out.println("prod update: error (" + exception.getMessage() + ")");
         }
-        System.out.println("prod update: ok");
     }
 
     public Product findProductById(int id) {

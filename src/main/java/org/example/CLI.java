@@ -61,7 +61,7 @@ public class CLI {
 
     private void init() {
         System.out.println("Welcome to the ticket module App");
-        System.out.println("Ticket Module. Type \"help\" to see commands");
+        System.out.println("Ticket module. Type 'help' to see commands.");
     }
 
     private void help() {
@@ -71,13 +71,13 @@ public class CLI {
         System.out.println(" prod update <id> NAME|CATEGORY|PRICE <value>");
         System.out.println(" prod remove <id>");
         System.out.println(" ticket new");
-        System.out.println(" ticket add <prodId> <quantity>");
+        System.out.println(" ticket add <prodId><quantity>");
         System.out.println(" ticket remove <prodId>");
         System.out.println(" ticket print");
         System.out.println(" echo \"<texto>\"");
         System.out.println(" help");
         System.out.println(" exit");
-        System.out.println(" \n Categories: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
+        System.out.println(" \nCategories: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
         System.out.println("Discounts if there are ≥2 units in the category: MERCH 0%, STATIONERY 5%, CLOTHES 7%, BOOK 10%,\n" +
                 "ELECTRONICS 3%.");
     }
@@ -88,7 +88,7 @@ public class CLI {
             return;
         }
 
-        System.out.println("echo" + message);
+        System.out.println("echo " + message);
     }
 
     private void handleProdCommand(String[] args) {
@@ -137,14 +137,19 @@ public class CLI {
                     System.err.println("The price can't be negative");
                     return;
                 }
-
-                System.out.println("{class:Product, id:" + addId + ", name:'" + name + "', category:" + category + ", price:" + price + "}");
-                productController.addProduct(addId, name, category, price);
+                try {
+                    productController.addProduct(addId, name, category, price);
+                    System.out.println("{class:Product, id:" + addId + ", name:'" + name + "', category:" + category + ", price:" + price + "}");
+                    System.out.println("prod add: ok");
+                } catch (IllegalArgumentException | IllegalStateException exception) {
+                    System.out.println("prod add: error (" + exception.getMessage() + ")");
+                }
                 break;
             }
 
             case "list": {
                 productController.prodList();
+                System.out.println("prod list: ok");
                 break;
             }
 
@@ -164,7 +169,7 @@ public class CLI {
                 switch (field) {
                     case "NAME": {
                         if (args.length < 5) {
-                            System.err.println("Uso: prod update <id> NAME \"<new name>\"");
+                            System.err.println("Use: prod update <id> NAME \"<new name>\"");
                             return;
                         }
                         String newName = getNameInBrackets(args, 4, args.length).trim();
@@ -177,7 +182,7 @@ public class CLI {
                     }
                     case "CATEGORY": {
                         if (args.length < 5) {
-                            System.err.println("Uso: prod update <id> CATEGORY <newCategory>");
+                            System.err.println("Use: prod update <id> CATEGORY <newCategory>");
                             return;
                         }
                         try {
@@ -190,7 +195,7 @@ public class CLI {
                     }
                     case "PRICE": {
                         if (args.length < 5) {
-                            System.err.println("Uso: prod update <id> PRICE <newPrice>");
+                            System.err.println("Use: prod update <id> PRICE <newPrice>");
                             return;
                         }
                         try {
@@ -214,7 +219,7 @@ public class CLI {
 
             case "remove": {
                 if (args.length < 3) {
-                    System.err.println("Uso: prod remove <id>");
+                    System.err.println("Use: prod remove <id>");
                     return;
                 }
                 if (!isPositiveInteger(args[2])) {
@@ -222,8 +227,15 @@ public class CLI {
                     return;
                 }
                 int removeId = Integer.parseInt(args[2]);
-                productController.prodRemove(removeId);
-                currentTicket.ticketRemove(removeId);
+                try {
+                    productController.prodRemove(removeId);
+                    currentTicket.ticketRemove(removeId);
+                    Product product = productController.findProductById(removeId);
+                    System.out.println("{class:Product, id:" + removeId + ", name:'" + product.getName() + "', category:" + product.getCategory() + ", price:" + product.getPrice() + "}");
+                    System.out.println("prod remove: ok");
+                } catch (IllegalArgumentException exception) {
+                    System.out.println("prod remove: error (" + exception.getMessage() + ")");
+                }
                 break;
             }
 
@@ -281,7 +293,8 @@ public class CLI {
                     }
                     int removeId = Integer.parseInt(idString);
                     currentTicket.ticketRemove(removeId);
-
+                    currentTicket.print();
+                    System.out.println("ticket remove: ok");
                     break;
                 }
 
