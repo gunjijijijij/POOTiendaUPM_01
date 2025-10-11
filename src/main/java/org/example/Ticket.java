@@ -10,27 +10,25 @@ public class Ticket {
     public void resetTicket(){
         this.lines = new TicketLine[MAX_SIZE];
         this.size = 0;
+        System.out.println("ticket new: ok");
     }
 
     public void addProductTicket(Product product, int quantity) {
-
         if (product == null) {
-            System.out.println("ticket add: error (product doesn't exist)");
+            System.err.println("ticket add: error (product doesn't exist)");
             return;
         }
 
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(lines[i].getProduct().getId(), product.getId())) {
-                lines[i].addQuantity(quantity);
+        for (int i = 0; i < quantity; i++) {
+            if (size < MAX_SIZE) {
+                lines[size++] = new TicketLine(product, quantity);
+            } else {
+                System.err.println("ticket add: error (there is no room for more lines)");
                 return;
             }
         }
-
-        if (size < MAX_SIZE) {
-            lines[size++] = new TicketLine(product, quantity);
-        } else {
-            System.out.println("ticket add: error (there is no room for more lines)");
-        }
+        print();
+        System.out.println("ticket add: ok");
     }
 
     public void prodRemove(int productId) {

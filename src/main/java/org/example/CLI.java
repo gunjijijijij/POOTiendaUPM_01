@@ -136,8 +136,8 @@ public class CLI {
                     return;
                 }
 
-                productController.addProduct(addId, name, category, price);
                 System.out.println("{class:Product, id:" + addId + ", name:'" + name + "', category:" + category + ", price:" + price + "}");
+                productController.addProduct(addId, name, category, price);
                 break;
             }
 
@@ -222,7 +222,6 @@ public class CLI {
                 int removeId = Integer.parseInt(args[2]);
                 productController.prodRemove(removeId);
                 currentTicket.prodRemove(removeId);
-                System.out.println("prod remove: ok");
                 break;
             }
 
@@ -242,12 +241,11 @@ public class CLI {
         switch (args[1]){
             case "new":
                 currentTicket.resetTicket();
-                System.out.println("The ticket reseted succesfully");
                 break;
 
             case "add":
                 if (args.length < 4) {
-                    System.out.println("Please input all the necessary arguments");
+                    System.err.println("Please input all the necessary arguments");
                     return;
                 }else{
                     String idString = args[2];
@@ -264,8 +262,9 @@ public class CLI {
 
                     Product product = productController.findProductById(addId);
 
+
                     currentTicket.addProductTicket(product, quantity);
-                    System.out.println("Product added successfully");
+
                     break;
                 }
 
