@@ -1,14 +1,13 @@
 package org.example;
 
-import java.util.Objects;
-
 public class Ticket {
     private final int MAX_SIZE = 100;
-    private TicketLine[] lines = new TicketLine[MAX_SIZE];
+    private Product[] lines = new Product[MAX_SIZE];
     private int size = 0;
+    private DiscountController discountController = new DiscountController();
 
     public void resetTicket(){
-        this.lines = new TicketLine[MAX_SIZE];
+        this.lines = new Product[MAX_SIZE];
         this.size = 0;
         System.out.println("ticket new: ok");
     }
@@ -21,43 +20,58 @@ public class Ticket {
 
         for (int i = 0; i < quantity; i++) {
             if (size < MAX_SIZE) {
-                lines[size++] = new TicketLine(product, quantity);
+                lines[size++] = product;
             } else {
-                System.err.println("ticket add: error (there is no room for more lines)");
+                System.err.println("ticket add: error (no room for more lines)");
                 return;
             }
         }
+
         print();
         System.out.println("ticket add: ok");
     }
 
-    public void prodRemove(int productId) {
+    public void ticketRemove(int productId) {
+        int newSize = 0;
+        Product[] newLines = new Product[MAX_SIZE];
         for (int i = 0; i < size; i++) {
-            if (lines[i].getProduct().getId() == productId) {
-                for (int j = i; j < size - 1; j++) {
-                    lines[j] = lines[j + 1];
-                }
-                lines[size - 1] = null;
-                size--;
-                return;
+            if (lines[i].getId() != productId) {
+                newLines[i] = lines[i];
+                newSize++;
             }
         }
+        size = newSize;
+        lines = newLines;
+        print();
+        System.out.println("ticket remove: ok");
+    }
+
+    private int countCategory(Category category) {
+        int count = 0;
+        for (int i = 0; i < size; i++) {
+            if (lines[i].getCategory() == category) {
+                count++;
+            }
+        }
+        return count;
     }
 
     public double getTotalPrice() {
         double total = 0;
         for (int i = 0; i < size; i++) {
-            total += lines[i].getSubtotal();
+            total += lines[i].getPrice();
         }
         return total;
     }
 
     public double getTotalDiscount() {
-        double discount = 0;
+        double totalDiscount = 0;
         for (int i = 0; i < size; i++) {
-            discount += lines[i].getDiscount();
+            Product p = lines[i];
+            int catCount = countCategory(p.getCategory());
+            totalDiscount += discountController.calculateDiscount(p, 1, catCount);
         }
-        return discount;
+        return totalDiscount;
     }
 
     public double getFinalPrice() {
@@ -65,25 +79,32 @@ public class Ticket {
     }
 
     public void print() {
-        TicketLine[] sorted = new TicketLine[size];
-        for (int i = 0; i < size; i++) sorted[i] = lines[i];
-
         for (int i = 0; i < size - 1; i++) {
             for (int j = i + 1; j < size; j++) {
-                if (sorted[i].getProduct().getName()
-                        .compareToIgnoreCase(sorted[j].getProduct().getName()) > 0) {
-                    TicketLine tmp = sorted[i];
-                    sorted[i] = sorted[j];
-                    sorted[j] = tmp;
+                if (lines[i].getName().compareToIgnoreCase(lines[j].getName()) > 0) {
+                    Product tmp = lines[i];
+                    lines[i] = lines[j];
+                    lines[j] = tmp;
                 }
             }
         }
 
         for (int i = 0; i < size; i++) {
-            System.out.println(sorted[i]);
+            Product p = lines[i];
+            int catCount = countCategory(p.getCategory());
+            double discount = discountController.calculateDiscount(p, 1, catCount);
+            System.out.printf(
+                    "{class:Product, id:%d, name:'%s', category:%s, price:%.1f}%s\n",
+                    p.getId(),
+                    p.getName(),
+                    p.getCategory(),
+                    p.getPrice(),
+                    (catCount > 1 ? " **discount -" + String.format("%.1f", discount) : "")
+            );
         }
-        System.out.println("Total price: " + getTotalPrice());
-        System.out.println("Total discount: " + getTotalDiscount());
-        System.out.println("Final Price: " + getFinalPrice());
+
+        System.out.printf("Total price: %.1f\n", getTotalPrice());
+        System.out.printf("Total discount: %.1f\n", getTotalDiscount());
+        System.out.printf("Final Price: %.1f\n", getFinalPrice());
     }
 }

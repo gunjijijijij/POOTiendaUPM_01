@@ -86,7 +86,7 @@ public class CLI {
             return;
         }
 
-        System.out.println(message);
+        System.out.println("echo" + message);
     }
 
     private void handleProdCommand(String[] args){
@@ -221,7 +221,7 @@ public class CLI {
                 }
                 int removeId = Integer.parseInt(args[2]);
                 productController.prodRemove(removeId);
-                currentTicket.prodRemove(removeId);
+                currentTicket.ticketRemove(removeId);
                 break;
             }
 
@@ -234,7 +234,7 @@ public class CLI {
 
     private void handleTicketCommand(String[] args){
         if (args.length < 2) {
-            System.err.println("prod command needs two parameters \"\"prod \"<add|list|update|remove> ...\" \"\"");
+            System.err.println("ticket command needs two parameters \"\"ticket \"<add|list|update|remove> ...\" \"\"");
             return;
         }
 
@@ -272,14 +272,14 @@ public class CLI {
                 if(args.length < 3){
                     System.out.println("Please input all the necessary arguments");
                 }else{
-                    String idString = args[3];
+                    String idString = args[2];
                     if (!isPositiveInteger(idString)) {
                         System.err.println("The ID must be a positive integer.");
                         return;
                     }
                     int removeId = Integer.parseInt(idString);
-                    currentTicket.prodRemove(removeId);
-                    System.out.println("Product removed correctly from ticket");
+                    currentTicket.ticketRemove(removeId);
+
                     break;
                 }
 
