@@ -6,7 +6,7 @@ public class Ticket {
     private int size = 0;
     private DiscountController discountController = new DiscountController();
 
-    public void resetTicket(){
+    public void resetTicket() {
         this.lines = new Product[MAX_SIZE];
         this.size = 0;
         System.out.println("ticket new: ok");

@@ -18,7 +18,7 @@ public class Product {
     }
 
     public void setId(Integer id) {
-        if(id == null || id <=0){
+        if (id == null || id <= 0) {
             throw new IllegalArgumentException("El identificador no puede estar vacío y debe ser un número positivo");
         }
         this.id = id;
@@ -29,7 +29,7 @@ public class Product {
     }
 
     public void setName(String name) {
-        if(name== null || name.isBlank() || name.length() >=100){
+        if (name == null || name.isBlank() || name.length() >= 100) {
             throw new IllegalArgumentException("The name cannot be empty and must contain less than 100 characters.");
         }
         this.name = name;
@@ -40,7 +40,7 @@ public class Product {
     }
 
     public void setCategory(Category category) {
-        if(category==null){
+        if (category == null) {
             throw new IllegalArgumentException("Category can't be null.");
         }
         this.category = category;
@@ -51,7 +51,7 @@ public class Product {
     }
 
     public void setPrice(float price) {
-        if(price<=0){
+        if (price <= 0) {
             throw new IllegalArgumentException("The price must be a number greater than 0 with no upper limit.");
         }
         this.price = price;
