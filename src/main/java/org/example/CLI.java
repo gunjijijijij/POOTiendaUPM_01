@@ -132,44 +132,24 @@ public class CLI {
     private void handleTicketCommand (String[]args){
         if (requireMinArgs(args, 2, "ticket command needs two parameters \"\"ticket \"<add|list|update|remove> ...\" \"\"")) return;
 
-        String idString = args[2];
-
-        switch (args[1]) {
+        switch (args[1].toLowerCase()) {
             case "new":
                 currentTicket.resetTicket();
                 break;
 
             case "add":
-                if (requireMinArgs(args, 4, "Please input all the necessary arguments")) return;
-
-                Integer addId = parsePositiveInt(idString, "The ID must be a positive integer.");
-                if (addId == null) return;
-
-                Integer quantity = parsePositiveInt(args[3], "The quantity must be a positive integer");
-                if (quantity == null) return;
-
-                Product product = productController.findProductById(addId);
-
-
-                currentTicket.addProductTicket(product, quantity);
-
+                ticketAdd(args);
                 break;
 
             case "remove":
-                if (requireMinArgs(args, 3, "Please input all the necessary arguments")) return;
-
-                Integer removeId = parsePositiveInt(idString, "The ID must be a positive integer.");
-                if (removeId == null) return;
-
-                currentTicket.ticketRemove(removeId);
-                currentTicket.print();
-                System.out.println("ticket remove: ok");
+                ticketRemove(args);
                 break;
-
 
             case "print":
                 currentTicket.print();
                 break;
+
+            default: System.err.println("Invalid command"); break;
         }
     }
 
@@ -288,5 +268,33 @@ public class CLI {
             System.err.println("prod remove: error (" + e.getMessage() + ")");
         }
     }
+
+    private void ticketAdd(String[] args) {
+        if (requireMinArgs(args, 4, "Please input all the necessary arguments")) return;
+
+        String idString = args[2];
+        Integer addId = parsePositiveInt(idString, "The ID must be a positive integer.");
+        if (addId == null) return;
+
+        Integer quantity = parsePositiveInt(args[3], "The quantity must be a positive integer");
+        if (quantity == null) return;
+
+        Product product = productController.findProductById(addId);
+
+        currentTicket.addProductTicket(product, quantity);
+    }
+
+    private void ticketRemove(String[] args) {
+        if (requireMinArgs(args, 3, "Please input all the necessary arguments")) return;
+
+        String idString = args[2];
+        Integer removeId = parsePositiveInt(idString, "The ID must be a positive integer.");
+        if (removeId == null) return;
+
+        currentTicket.ticketRemove(removeId);
+        currentTicket.print();
+        System.out.println("ticket remove: ok");
+    }
+
 
 }
