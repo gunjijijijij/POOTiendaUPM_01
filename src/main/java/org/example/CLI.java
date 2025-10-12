@@ -100,7 +100,7 @@ public class CLI {
         switch (args[1].toLowerCase()) {
             case "add": {
                 // prod add <id> "<name>" <category> <price>
-                prodAdd(args);
+                handleProdAdd(args);
                 break;
             }
 
@@ -112,12 +112,12 @@ public class CLI {
 
             case "update": {
                 // prod update <id> NAME|CATEGORY|PRICE <value>
-                prodUpdate(args);
+                handleProdUpdate(args);
                 break;
             }
 
             case "remove": {
-                prodRemove(args);
+                handleProdRemove(args);
                 break;
             }
 
@@ -138,11 +138,11 @@ public class CLI {
                 break;
 
             case "add":
-                ticketAdd(args);
+                handleTicketAdd(args);
                 break;
 
             case "remove":
-                ticketRemove(args);
+                handleTicketRemove(args);
                 break;
 
             case "print":
@@ -199,7 +199,7 @@ public class CLI {
         }
     }
 
-    private void prodAdd(String[] args) {
+    private void handleProdAdd(String[] args) {
         if (requireMinArgs(args, 5, "Usage: prod add <id> \"<name>\" <category> <price>")) return;
 
         Integer id = parsePositiveInt(args[2], "The id must be a positive integer.");
@@ -218,7 +218,7 @@ public class CLI {
         System.out.println("{class:Product, id:" + id + ", name:'" + name + "', category:" + cat + ", price:" + price + "}");
     }
 
-    private void prodUpdate(String[] args) {
+    private void handleProdUpdate(String[] args) {
         if (requireMinArgs(args, 4, "Usage: prod update <id> NAME|CATEGORY|PRICE <value>")) return;
 
         Integer id = parsePositiveInt(args[2], "The ID must be a positive integer.");
@@ -251,7 +251,7 @@ public class CLI {
         }
     }
 
-    private void prodRemove(String[] args) {
+    private void handleProdRemove(String[] args) {
         if (requireMinArgs(args, 3, "Usage: prod remove <id>")) return;
         Integer id = parsePositiveInt(args[2], "The ID must be a positive integer.");
         if (id == null) return;
@@ -269,7 +269,7 @@ public class CLI {
         }
     }
 
-    private void ticketAdd(String[] args) {
+    private void handleTicketAdd(String[] args) {
         if (requireMinArgs(args, 4, "Please input all the necessary arguments")) return;
 
         String idString = args[2];
@@ -284,7 +284,7 @@ public class CLI {
         currentTicket.addProductTicket(product, quantity);
     }
 
-    private void ticketRemove(String[] args) {
+    private void handleTicketRemove(String[] args) {
         if (requireMinArgs(args, 3, "Please input all the necessary arguments")) return;
 
         String idString = args[2];
@@ -295,6 +295,4 @@ public class CLI {
         currentTicket.print();
         System.out.println("ticket remove: ok");
     }
-
-
 }
