@@ -7,31 +7,30 @@ public class ProductController {
 
     public void addProduct(int id, String name, Category category, float prize) {
         for (int i = 0; i < productCount; i++) {
-            if (products[i].getId().equals(id)) { //comprobamos que no existan dos productos con el mismo id
+            if (products[i].getId().equals(id)) {
                 throw new IllegalArgumentException("There can't be two products with the same id\n");
             }
         }
-        if (productCount >= MAX_PRODUCTS) { //verificamos el límite de productos
+        if (productCount >= MAX_PRODUCTS) {
             throw new IllegalStateException("No more products can be added, the maximum is " + MAX_PRODUCTS);
         }
         Product product = new Product(id, name, category, prize); //creamos y agregamos el producto
         products[productCount] = product;
-        productCount++; //aumentamos el contador
+        productCount++;
 
     }
 
     public void prodList() {
         System.out.println("Catalog:");
         if (productCount == 0) {
-            System.out.println("(empty)"); //No sé si hay que poner algo cuando esté vacío (?)
+            System.out.println("There aren't any products in the catalog.");
         } else {
             for (int i = 0; i < productCount; i++) {
                 Product product = products[i];
-                System.out.println("{class:Product, id:" + product.getId() + ", name: '" + product.getName() + "', category:" + product.getCategory() + ", price: " + product.getPrice() + "}");
+                System.out.println(product.toString());
             }
 
         }
-        System.out.println("prod list: ok");
     }
 
     public void prodRemove(int id) {

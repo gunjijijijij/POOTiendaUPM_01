@@ -1,8 +1,6 @@
 package org.example;
-
 import java.util.Scanner;
 
-//
 public class CLI {
     private final Ticket currentTicket = new Ticket();
     private final ProductController productController = new ProductController();
@@ -99,27 +97,23 @@ public class CLI {
 
         switch (args[1].toLowerCase()) {
             case "add": {
-                // prod add <id> "<name>" <category> <price>
                 handleProdAdd(args);
-
                 break;
             }
 
             case "list": {
                 productController.prodList();
-
+                System.out.println("prod list: ok");
                 break;
             }
 
             case "update": {
-                // prod update <id> NAME|CATEGORY|PRICE <value>
                 handleProdUpdate(args);
                 break;
             }
 
             case "remove": {
                 handleProdRemove(args);
-
                 break;
             }
 
@@ -137,17 +131,14 @@ public class CLI {
         switch (args[1].toLowerCase()) {
             case "new":
                 currentTicket.resetTicket();
-
                 break;
 
             case "add":
                 handleTicketAdd(args);
-
                 break;
 
             case "remove":
                 handleTicketRemove(args);
-
                 break;
 
             case "print":
