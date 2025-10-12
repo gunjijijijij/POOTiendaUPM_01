@@ -11,43 +11,20 @@ public class CLI {
         Scanner sc = new Scanner(System.in);
         boolean finish = false;
 
-        while(!finish){
-            String command = sc.nextLine();
-            String[] commandUni = command.split(" ");
+        while(!finish && sc.hasNextLine()){
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) continue;
 
-            switch (commandUni[0].toLowerCase()){
-                case "help":
-                    help();
-                    break;
+            String[] commandUni = line.split(" ");
+            String cmd = commandUni[0].toLowerCase();
 
-                case "echo":
-                    if (commandUni.length < 2)
-                        System.err.println("echo command needs two parameters \"\"echo \"<text>\" \"\"");
-
-                    for (int i = 1; i < commandUni.length; i++) {
-                        commandUni[i-1] = commandUni[i];
-                    }
-                    commandUni[commandUni.length - 1] = "";
-
-                    String message = String.join(" ", commandUni);
-                    echo(message);
-                    break;
-
-                case "prod":
-                    handleProdCommand(commandUni);
-                    break;
-
-                case "ticket":
-                    handleTicketCommand(commandUni);
-                    break;
-
-                case "exit":
-                    finish = true;
-                    break;
-
-                default:
-                    System.out.println("Invalid commandS");
-                    break;
+            switch (cmd){
+                case "help": help(); break;
+                case "echo": echo(line); break;
+                case "prod": handleProdCommand(commandUni); break;
+                case "ticket": handleTicketCommand(commandUni); break;
+                case "exit": finish = true; break;
+                default: System.out.println("Invalid commandS"); break;
             }
         }
         end();
@@ -80,12 +57,20 @@ public class CLI {
                 "ELECTRONICS 3%.");
     }
 
-    private void echo(String message){
-        if (message.isEmpty()){
-            System.err.println("The echo command is empty");
+    private void echo(String fullLine) {
+        int firstSpace = fullLine.indexOf(' ');
+        if (firstSpace < 0 || firstSpace == fullLine.length() - 1) {
+            System.err.println("Usage: echo \"<text>\"");
             return;
         }
-
+        String message = fullLine.substring(firstSpace + 1).trim();
+        if (message.startsWith("\"") && message.endsWith("\"") && message.length() >= 2) {
+            message = message.substring(1, message.length() - 1);
+        }
+        if (message.isEmpty()) {
+            System.err.println("The echo message is empty.");
+            return;
+        }
         System.out.println(message);
     }
 
