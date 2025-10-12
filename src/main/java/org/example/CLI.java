@@ -95,18 +95,12 @@ public class CLI {
     }
 
     private void handleProdCommand (String[]args){
-        if (args.length < 2) {
-            System.err.println("Uso: prod <add|list|update|remove> ...");
-            return;
-        }
+        if (requireMinArgs(args, 2, "Use: prod <add|list|update|remove> ...")) return;
 
         switch (args[1].toLowerCase()) {
             case "add": {
                 // prod add <id> "<name>" <category> <price>
-                if (args.length < 5) {
-                    System.err.println("Uso: prod add <id> \"<name>\" <category> <price>");
-                    return;
-                }
+                if (requireMinArgs(args, 5, "Use: prod add <id> \"<name>\" <category> <price>")) return;
 
                 if (isNegativeInteger(args[2])) {
                     System.err.println("The id must be a positive number.");
@@ -158,23 +152,20 @@ public class CLI {
 
             case "update": {
                 // prod update <id> NAME|CATEGORY|PRICE <value>
-                if (args.length < 4) {
-                    System.err.println("Uso: prod update <id> NAME|CATEGORY|PRICE <value>");
-                    return;
-                }
+                if (requireMinArgs(args, 4, "Use: prod update <id> NAME|CATEGORY|PRICE <value>")) return;
+
                 if (isNegativeInteger(args[2])) {
                     System.err.println("The ID must be a positive integer.");
                     return;
                 }
+
                 int updateId = Integer.parseInt(args[2]);
                 String field = args[3].toUpperCase();
 
                 switch (field) {
                     case "NAME": {
-                        if (args.length < 5) {
-                            System.err.println("Use: prod update <id> NAME \"<new name>\"");
-                            return;
-                        }
+                        if (requireMinArgs(args, 5, "Use: prod update <id> NAME \"<new name>\"")) return;
+
                         String newName = getNameInBrackets(args, 4, args.length).trim();
                         if (newName.isEmpty()) {
                             System.err.println("The name is empty");
@@ -184,10 +175,8 @@ public class CLI {
                         break;
                     }
                     case "CATEGORY": {
-                        if (args.length < 5) {
-                            System.err.println("Use: prod update <id> CATEGORY <newCategory>");
-                            return;
-                        }
+                        if (requireMinArgs(args, 5, "Use: prod update <id> CATEGORY <newCategory>")) return;
+
                         try {
                             Category newCat = Category.valueOf(args[4].toUpperCase());
                             productController.prodUpdate(updateId, field, newCat.name());
@@ -197,10 +186,8 @@ public class CLI {
                         break;
                     }
                     case "PRICE": {
-                        if (args.length < 5) {
-                            System.err.println("Use: prod update <id> PRICE <newPrice>");
-                            return;
-                        }
+                        if (requireMinArgs(args, 5, "Use: prod update <id> PRICE <newPrice>")) return;
+
                         try {
                             float newPrice = Float.parseFloat(args[4]);
                             if (newPrice < 0) {
@@ -221,10 +208,8 @@ public class CLI {
             }
 
             case "remove": {
-                if (args.length < 3) {
-                    System.err.println("Use: prod remove <id>");
-                    return;
-                }
+                if (requireMinArgs(args, 3, "Use: prod remove <id>")) return;
+
                 if (isNegativeInteger(args[2])) {
                     System.err.println("The ID must be a positive integer.");
                     return;
@@ -250,10 +235,9 @@ public class CLI {
 
 
     private void handleTicketCommand (String[]args){
-        if (args.length < 2) {
-            System.err.println("ticket command needs two parameters \"\"ticket \"<add|list|update|remove> ...\" \"\"");
-            return;
-        }
+        if (requireMinArgs(args, 2, "ticket command needs two parameters \"\"ticket \"<add|list|update|remove> ...\" \"\"")) return;
+
+        String idString = args[2];
 
         switch (args[1]) {
             case "new":
@@ -261,45 +245,39 @@ public class CLI {
                 break;
 
             case "add":
-                if (args.length < 4) {
-                    System.err.println("Please input all the necessary arguments");
+                if (requireMinArgs(args, 4, "Please input all the necessary arguments")) return;
+
+                if (isNegativeInteger(idString)) {
+                    System.err.println("The ID must be a positive integer.");
                     return;
-                } else {
-                    String idString = args[2];
-                    if (isNegativeInteger(idString)) {
-                        System.err.println("The ID must be a positive integer.");
-                        return;
-                    }
-                    int addId = Integer.parseInt(idString);
-
-                    int quantity = Integer.parseInt(args[3]);
-                    if (quantity < 0) {
-                        System.err.println("The quantity must be a positive integer");
-                    }
-
-                    Product product = productController.findProductById(addId);
-
-
-                    currentTicket.addProductTicket(product, quantity);
-
-                    break;
                 }
+                int addId = Integer.parseInt(idString);
+
+                int quantity = Integer.parseInt(args[3]);
+                if (quantity < 0) {
+                    System.err.println("The quantity must be a positive integer");
+                }
+
+                Product product = productController.findProductById(addId);
+
+
+                currentTicket.addProductTicket(product, quantity);
+
+                break;
 
             case "remove":
-                if (args.length < 3) {
-                    System.out.println("Please input all the necessary arguments");
-                } else {
-                    String idString = args[2];
-                    if (isNegativeInteger(idString)) {
-                        System.err.println("The ID must be a positive integer.");
-                        return;
-                    }
-                    int removeId = Integer.parseInt(idString);
-                    currentTicket.ticketRemove(removeId);
-                    currentTicket.print();
-                    System.out.println("ticket remove: ok");
-                    break;
+                if (requireMinArgs(args, 3, "Please input all the necessary arguments")) return;
+
+                if (isNegativeInteger(idString)) {
+                    System.err.println("The ID must be a positive integer.");
+                    return;
                 }
+                int removeId = Integer.parseInt(idString);
+                currentTicket.ticketRemove(removeId);
+                currentTicket.print();
+                System.out.println("ticket remove: ok");
+                break;
+
 
             case "print":
                 currentTicket.print();
@@ -329,5 +307,10 @@ public class CLI {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    private boolean requireMinArgs(String[] args, int min, String usage) {
+        if (args.length < min) { System.err.println(usage); return true; }
+        return false;
     }
 }
