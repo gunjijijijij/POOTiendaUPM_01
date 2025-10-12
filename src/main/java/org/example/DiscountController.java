@@ -5,8 +5,6 @@ public class DiscountController {
         if (categoryCount <= 1) return 0.0;
 
         switch (category) {
-            case MERCH:
-                return 0.0;
             case STATIONARY:
                 return 0.05;
             case CLOTHES:
