@@ -17,13 +17,6 @@ public class Product {
         return id;
     }
 
-    public void setId(Integer id) {
-        if (id == null || id <= 0) {
-            throw new IllegalArgumentException("El identificador no puede estar vacío y debe ser un número positivo");
-        }
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
