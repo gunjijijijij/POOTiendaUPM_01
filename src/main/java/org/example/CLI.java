@@ -117,20 +117,7 @@ public class CLI {
             }
 
             case "remove": {
-                if (requireMinArgs(args, 3, "Use: prod remove <id>")) return;
-
-                Integer removeId = parsePositiveInt(args[2], "The ID must be a positive integer.");
-                if (removeId == null) return;
-
-                try {
-                    productController.prodRemove(removeId);
-                    currentTicket.ticketRemove(removeId);
-                    Product product = productController.findProductById(removeId);
-                    System.out.println("{class:Product, id:" + removeId + ", name:'" + product.getName() + "', category:" + product.getCategory() + ", price:" + product.getPrice() + "}");
-                    System.out.println("prod remove: ok");
-                } catch (IllegalArgumentException exception) {
-                    System.out.println("prod remove: error (" + exception.getMessage() + ")");
-                }
+                prodRemove(args);
                 break;
             }
 
@@ -283,4 +270,23 @@ public class CLI {
             default: System.err.println("Field not supported. Use NAME, CATEGORY, or PRICE."); break;
         }
     }
+
+    private void prodRemove(String[] args) {
+        if (requireMinArgs(args, 3, "Usage: prod remove <id>")) return;
+        Integer id = parsePositiveInt(args[2], "The ID must be a positive integer.");
+        if (id == null) return;
+
+        try {
+            Product removed = productController.findProductById(id);
+
+            productController.prodRemove(id); // <- ya tienes el objeto
+            currentTicket.ticketRemove(id); // o prodRemove(id)
+            System.out.println("{class:Product, id:" + id + ", name:'" + removed.getName()
+                    + "', category:" + removed.getCategory() + ", price:" + removed.getPrice() + "}");
+            System.out.println("prod remove: ok");
+        } catch (IllegalArgumentException e) {
+            System.err.println("prod remove: error (" + e.getMessage() + ")");
+        }
+    }
+
 }

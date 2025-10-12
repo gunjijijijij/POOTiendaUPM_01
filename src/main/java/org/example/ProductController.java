@@ -2,7 +2,7 @@ package org.example;
 
 public class ProductController {
     private final int MAX_PRODUCTS = 200;
-    private final Product[] products = new Product[MAX_PRODUCTS];
+    private Product[] products = new Product[MAX_PRODUCTS];
     private int productCount = 0;
 
     public ProductController() {
