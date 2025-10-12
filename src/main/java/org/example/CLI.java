@@ -102,11 +102,8 @@ public class CLI {
                 // prod add <id> "<name>" <category> <price>
                 if (requireMinArgs(args, 5, "Use: prod add <id> \"<name>\" <category> <price>")) return;
 
-                if (isNegativeInteger(args[2])) {
-                    System.err.println("The id must be a positive number.");
-                    return;
-                }
-                int addId = Integer.parseInt(args[2]);
+                Integer addId = parsePositiveInt(args[2], "The id must be a positive integer.");
+                if (addId == null) return;
 
                 // nombre entre [3, args.length-2)
                 String name = getNameInBrackets(args, 3, args.length - 2).trim();
@@ -154,12 +151,9 @@ public class CLI {
                 // prod update <id> NAME|CATEGORY|PRICE <value>
                 if (requireMinArgs(args, 4, "Use: prod update <id> NAME|CATEGORY|PRICE <value>")) return;
 
-                if (isNegativeInteger(args[2])) {
-                    System.err.println("The ID must be a positive integer.");
-                    return;
-                }
+                Integer updateId = parsePositiveInt(args[2], "The ID must be a positive integer.");
+                if (updateId == null) return;
 
-                int updateId = Integer.parseInt(args[2]);
                 String field = args[3].toUpperCase();
 
                 switch (field) {
@@ -210,11 +204,9 @@ public class CLI {
             case "remove": {
                 if (requireMinArgs(args, 3, "Use: prod remove <id>")) return;
 
-                if (isNegativeInteger(args[2])) {
-                    System.err.println("The ID must be a positive integer.");
-                    return;
-                }
-                int removeId = Integer.parseInt(args[2]);
+                Integer removeId = parsePositiveInt(args[2], "The ID must be a positive integer.");
+                if (removeId == null) return;
+
                 try {
                     productController.prodRemove(removeId);
                     currentTicket.ticketRemove(removeId);
@@ -247,11 +239,8 @@ public class CLI {
             case "add":
                 if (requireMinArgs(args, 4, "Please input all the necessary arguments")) return;
 
-                if (isNegativeInteger(idString)) {
-                    System.err.println("The ID must be a positive integer.");
-                    return;
-                }
-                int addId = Integer.parseInt(idString);
+                Integer addId = parsePositiveInt(idString, "The ID must be a positive integer.");
+                if (addId == null) return;
 
                 int quantity = Integer.parseInt(args[3]);
                 if (quantity < 0) {
@@ -268,11 +257,9 @@ public class CLI {
             case "remove":
                 if (requireMinArgs(args, 3, "Please input all the necessary arguments")) return;
 
-                if (isNegativeInteger(idString)) {
-                    System.err.println("The ID must be a positive integer.");
-                    return;
-                }
-                int removeId = Integer.parseInt(idString);
+                Integer removeId = parsePositiveInt(idString, "The ID must be a positive integer.");
+                if (removeId == null) return;
+
                 currentTicket.ticketRemove(removeId);
                 currentTicket.print();
                 System.out.println("ticket remove: ok");
@@ -300,17 +287,19 @@ public class CLI {
         return name;
     }
 
-    private boolean isNegativeInteger(String args){
-        try {
-            int num = Integer.parseInt(args);
-            return num <= 0;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
     private boolean requireMinArgs(String[] args, int min, String usage) {
         if (args.length < min) { System.err.println(usage); return true; }
         return false;
+    }
+
+    private Integer parsePositiveInt(String s, String errMsg) {
+        try {
+            int v = Integer.parseInt(s);
+            if (v <= 0) { System.err.println(errMsg); return null; }
+            return v;
+        } catch (NumberFormatException e) {
+            System.err.println(errMsg);
+            return null;
+        }
     }
 }
