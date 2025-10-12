@@ -108,7 +108,7 @@ public class CLI {
                     return;
                 }
 
-                if (!isPositiveInteger(args[2])) {
+                if (isNegativeInteger(args[2])) {
                     System.err.println("The id must be a positive number.");
                     return;
                 }
@@ -162,7 +162,7 @@ public class CLI {
                     System.err.println("Uso: prod update <id> NAME|CATEGORY|PRICE <value>");
                     return;
                 }
-                if (!isPositiveInteger(args[2])) {
+                if (isNegativeInteger(args[2])) {
                     System.err.println("The ID must be a positive integer.");
                     return;
                 }
@@ -225,7 +225,7 @@ public class CLI {
                     System.err.println("Use: prod remove <id>");
                     return;
                 }
-                if (!isPositiveInteger(args[2])) {
+                if (isNegativeInteger(args[2])) {
                     System.err.println("The ID must be a positive integer.");
                     return;
                 }
@@ -266,7 +266,7 @@ public class CLI {
                     return;
                 } else {
                     String idString = args[2];
-                    if (!isPositiveInteger(idString)) {
+                    if (isNegativeInteger(idString)) {
                         System.err.println("The ID must be a positive integer.");
                         return;
                     }
@@ -290,7 +290,7 @@ public class CLI {
                     System.out.println("Please input all the necessary arguments");
                 } else {
                     String idString = args[2];
-                    if (!isPositiveInteger(idString)) {
+                    if (isNegativeInteger(idString)) {
                         System.err.println("The ID must be a positive integer.");
                         return;
                     }
@@ -322,12 +322,12 @@ public class CLI {
         return name;
     }
 
-    private boolean isPositiveInteger (String args){
+    private boolean isNegativeInteger(String args){
         try {
             int num = Integer.parseInt(args);
-            return num > 0;
+            return num <= 0;
         } catch (NumberFormatException e) {
-            return true;
+            return false;
         }
     }
 }
