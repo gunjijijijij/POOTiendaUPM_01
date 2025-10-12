@@ -279,8 +279,8 @@ public class CLI {
         try {
             Product removed = productController.findProductById(id);
 
-            productController.prodRemove(id); // <- ya tienes el objeto
-            currentTicket.ticketRemove(id); // o prodRemove(id)
+            productController.prodRemove(id);
+            currentTicket.ticketRemove(id); /
             System.out.println("{class:Product, id:" + id + ", name:'" + removed.getName()
                     + "', category:" + removed.getCategory() + ", price:" + removed.getPrice() + "}");
             System.out.println("prod remove: ok");
