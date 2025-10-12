@@ -1,6 +1,8 @@
 package org.example;
 
 public class DiscountController {
+    // Devuelve el porcentaje de descuento correspondiente a una categoría
+    // dependiendo de cuántas categorías distintas haya en el ticket.
     public double getDiscountRate(Category category, int categoryCount) {
         if (categoryCount <= 1) return 0.0;
 
@@ -19,6 +21,8 @@ public class DiscountController {
 
     }
 
+    // Calcula el valor total del descuento para un producto concreto
+    // teniendo en cuenta su precio, cantidad y el número de categorías en el ticket.
     public double calculateDiscount(Product product, int quantity, int categoryCount) {
         double rate = getDiscountRate(product.getCategory(), categoryCount);
         return (categoryCount > 1) ? product.getPrice() * quantity * rate : 0.0;

@@ -2,21 +2,23 @@ package org.example;
 import java.util.Scanner;
 
 public class CLI {
+    // Controladores principales
     private final Ticket currentTicket = new Ticket();
     private final ProductController productController = new ProductController();
 
     public void start() {
-        init();
+        init(); // Mensaje inicial
 
         Scanner sc = new Scanner(System.in);
         boolean finish = false;
 
+        // Bucle principal: se ejecuta hasta que el usuario escriba "exit"
         while (!finish && sc.hasNextLine()) {
             String line = sc.nextLine().trim();
             if (line.isEmpty()) continue;
 
             String[] commandUni = line.split(" ");
-            String cmd = commandUni[0].toLowerCase();
+            String cmd = commandUni[0].toLowerCase(); // Primera palabra = comando tipo help, echo, prod, ticket o exit
 
             switch (cmd) {
                 case "help":
@@ -44,8 +46,7 @@ public class CLI {
                     break;
             }
         }
-
-        end();
+        end(); // Mensaje final
     }
 
     private void end () {
@@ -57,6 +58,7 @@ public class CLI {
         System.out.println("Ticket module. Type 'help' to see commands.");
     }
 
+    // Imprime el guía de comandos
     private void help () {
         System.out.println("Commands:");
         System.out.println(" prod add <id> \"<name>\" <category> <price>");
@@ -75,6 +77,7 @@ public class CLI {
                 "ELECTRONICS 3%.");
     }
 
+    // Repite el texto entre comillas
     private void echo (String fullLine) {
         int firstSpace = fullLine.indexOf(' ');
         if (firstSpace < 0 || firstSpace == fullLine.length() - 1) {
@@ -92,6 +95,7 @@ public class CLI {
         System.out.println(message);
     }
 
+    // Maneja los subcomandos relacionados con productos
     private void handleProdCommand (String[]args){
         if (requireMinArgs(args, 2, "Use: prod <add|list|update|remove> ...")) return;
 
@@ -124,7 +128,7 @@ public class CLI {
         }
     }
 
-
+    // Maneja los subcomandos relacionados con tickets
     private void handleTicketCommand (String[]args){
         if (requireMinArgs(args, 2, "ticket command needs two parameters \"\"ticket \"<add|list|update|remove> ...\" \"\"")) return;
 
@@ -150,6 +154,7 @@ public class CLI {
         }
     }
 
+    // Une argumentos entre comillas (para los nombres de productos con espacios)
     private String joinQuoted(String[] args, int i0, int iN) {
         StringBuilder sb = new StringBuilder();
         for (int i = i0; i < iN; i++) sb.append(args[i]).append(" ");
@@ -160,11 +165,13 @@ public class CLI {
         return name;
     }
 
+    // Verifica si hay suficientes argumentos
     private boolean requireMinArgs(String[] args, int min, String usage) {
         if (args.length < min) { System.err.println(usage); return true; }
         return false;
     }
 
+    // Parseo seguro de enteros positivos
     private Integer parsePositiveInt(String s, String errMsg) {
         try {
             int v = Integer.parseInt(s);
@@ -176,6 +183,7 @@ public class CLI {
         }
     }
 
+    // Parseo seguro de precios (float no negativos)
     private Float parseNonNegativeFloat(String s) {
         try {
             float v = Float.parseFloat(s);
@@ -187,6 +195,7 @@ public class CLI {
         }
     }
 
+    // Convierte un texto a una categoría válida
     private Category parseCategory(String s) {
         try {
             return Category.valueOf(s.toUpperCase());
@@ -196,6 +205,9 @@ public class CLI {
         }
     }
 
+    // Procesa el comando "prod add": verifica los argumentos,
+    // maneja los errores correspondientes y utiliza ProductController
+    // para añadir el nuevo producto al catálogo.
     private void handleProdAdd(String[] args) {
         if (requireMinArgs(args, 5, "Usage: prod add <id> \"<name>\" <category> <price>")) return;
 
@@ -223,6 +235,9 @@ public class CLI {
         }
     }
 
+    // Procesa el comando "prod update": verifica los argumentos, validando el tipo de actualización,
+    // maneja los errores correspondientes y utiliza ProductController
+    // para actualizar el dato del producto.
     private void handleProdUpdate(String[] args) {
         if (requireMinArgs(args, 4, "Usage: prod update <id> NAME|CATEGORY|PRICE <value>")) return;
 
@@ -256,6 +271,9 @@ public class CLI {
         }
     }
 
+    // Procesa el comando "prod remove": verifica los argumentos,
+    // maneja los errores correspondientes y utiliza ProductController
+    // para eliminar el nuevo producto al catálogo.
     private void handleProdRemove(String[] args) {
         if (requireMinArgs(args, 3, "Usage: prod remove <id>")) return;
         Integer id = parsePositiveInt(args[2], "The ID must be a positive integer.");
@@ -276,6 +294,9 @@ public class CLI {
         }
     }
 
+    // Procesa el comando "ticket add": verifica los argumentos,
+    // maneja los errores correspondientes y utiliza Ticket
+    // para añadir el producto al Ticket.
     private void handleTicketAdd(String[] args) {
         if (requireMinArgs(args, 4, "Please input all the necessary arguments")) return;
 
@@ -302,6 +323,9 @@ public class CLI {
         }
     }
 
+    // Procesa el comando "ticket remove": verifica los argumentos,
+    // maneja los errores correspondientes y utiliza Ticket
+    // para eliminar todas las apariciones del producto del ticket.
     private void handleTicketRemove(String[] args) {
         if (requireMinArgs(args, 3, "Usage: ticket remove <prodId>")) return;
 

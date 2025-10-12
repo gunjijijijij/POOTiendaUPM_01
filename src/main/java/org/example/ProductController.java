@@ -5,6 +5,7 @@ public class ProductController {
     private Product[] products = new Product[MAX_PRODUCTS];
     private int productCount = 0;
 
+    // Añade un nuevo producto al catálogo si no existe otro con el mismo id
     public void addProduct(int id, String name, Category category, float prize) {
         for (int i = 0; i < productCount; i++) {
             if (products[i].getId().equals(id)) {
@@ -20,6 +21,7 @@ public class ProductController {
 
     }
 
+    // Imprime los productos existentes en el catálogo
     public void prodList() {
         System.out.println("Catalog:");
         if (productCount == 0) {
@@ -29,10 +31,10 @@ public class ProductController {
                 Product product = products[i];
                 System.out.println(product.toString());
             }
-
         }
     }
 
+    // Elimina un producto existente del catálogo
     public void prodRemove(int id) {
         for (int i = 0; i < productCount; i++) {
             if (products[i].getId().equals(id)) {
@@ -47,6 +49,7 @@ public class ProductController {
         throw new IllegalArgumentException(String.format("The product with id %s was not found", id));
     }
 
+    // Cambia el nombre, la categoría o el precio de un producto
     public void prodUpdate(int id, String updateType, String newValue) {
         Product product = this.findProductById(id);
 
@@ -73,6 +76,7 @@ public class ProductController {
         }
     }
 
+    // Encuentra un producto por su id
     public Product findProductById(int id) {
         for (int i = 0; i < productCount; i++) {
             if (products[i].getId() == id) {
