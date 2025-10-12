@@ -5,9 +5,6 @@ public class ProductController {
     private Product[] products = new Product[MAX_PRODUCTS];
     private int productCount = 0;
 
-    public ProductController() {
-    }
-
     public void addProduct(int id, String name, Category category, float prize) {
         for (int i = 0; i < productCount; i++) {
             if (products[i].getId().equals(id)) { //comprobamos que no existan dos productos con el mismo id
