@@ -13,41 +13,20 @@ public class CLI {
         Scanner sc = new Scanner(System.in);
         boolean finish = false;
 
-        while(!finish && sc.hasNextLine()){
+        while (!finish && sc.hasNextLine()) {
             String line = sc.nextLine().trim();
             if (line.isEmpty()) continue;
 
             String[] commandUni = line.split(" ");
             String cmd = commandUni[0].toLowerCase();
 
-            switch (cmd){
-                case "help": help(); break;
-                case "echo": echo(line); break;
-                case "prod": handleProdCommand(commandUni); break;
-                case "ticket": handleTicketCommand(commandUni); break;
-                case "exit": finish = true; break;
-                default: System.out.println("Invalid commandS"); break;
-
-        while (!finish) {
-            String command = sc.nextLine();
-            String[] commandUni = command.split(" ");
-
-            switch (commandUni[0].toLowerCase()) {
+            switch (cmd) {
                 case "help":
                     help();
                     break;
 
                 case "echo":
-                    if (commandUni.length < 2)
-                        System.err.println("echo command needs two parameters \"\"echo \"<text>\" \"\"");
-
-                    for (int i = 1; i < commandUni.length; i++) {
-                        commandUni[i - 1] = commandUni[i];
-                    }
-                    commandUni[commandUni.length - 1] = "";
-
-                    String message = String.join(" ", commandUni);
-                    echo(message);
+                    echo(line);
                     break;
 
                 case "prod":
@@ -63,24 +42,24 @@ public class CLI {
                     break;
 
                 default:
-                    System.out.println("Invalid commandS");
+                    System.out.println("Invalid command");
                     break;
->>>>>>> 1112fe3c0ea729c0de27b79e1fa6e04a3b593eb9
             }
         }
+
         end();
     }
 
-    private void end() {
+    private void end () {
         System.out.println("Bye");
     }
 
-    private void init() {
+    private void init () {
         System.out.println("Welcome to the ticket module App");
         System.out.println("Ticket module. Type 'help' to see commands.");
     }
 
-    private void help() {
+    private void help () {
         System.out.println("Commands:");
         System.out.println(" prod add <id> \"<name>\" <category> <price>");
         System.out.println(" prod list");
@@ -98,8 +77,7 @@ public class CLI {
                 "ELECTRONICS 3%.");
     }
 
-<<<<<<< HEAD
-    private void echo(String fullLine) {
+    private void echo (String fullLine) {
         int firstSpace = fullLine.indexOf(' ');
         if (firstSpace < 0 || firstSpace == fullLine.length() - 1) {
             System.err.println("Usage: echo \"<text>\"");
@@ -114,18 +92,9 @@ public class CLI {
             return;
         }
         System.out.println(message);
-=======
-    private void echo(String message) {
-        if (message.isEmpty()) {
-            System.err.println("The echo command is empty");
-            return;
-        }
-
-        System.out.println("echo " + message);
->>>>>>> 1112fe3c0ea729c0de27b79e1fa6e04a3b593eb9
     }
 
-    private void handleProdCommand(String[] args) {
+    private void handleProdCommand (String[]args){
         if (args.length < 2) {
             System.err.println("Uso: prod <add|list|update|remove> ...");
             return;
@@ -280,7 +249,7 @@ public class CLI {
     }
 
 
-    private void handleTicketCommand(String[] args) {
+    private void handleTicketCommand (String[]args){
         if (args.length < 2) {
             System.err.println("ticket command needs two parameters \"\"ticket \"<add|list|update|remove> ...\" \"\"");
             return;
@@ -338,7 +307,7 @@ public class CLI {
         }
     }
 
-    private String getNameInBrackets(String[] args, int i0, int iN) {
+    private String getNameInBrackets (String[]args,int i0, int iN){
         StringBuilder nameBuilder = new StringBuilder();
         for (int i = i0; i < iN; i++) {
             nameBuilder.append(args[i]).append(" ");
@@ -353,7 +322,7 @@ public class CLI {
         return name;
     }
 
-    private boolean isPositiveInteger(String args) {
+    private boolean isPositiveInteger (String args){
         try {
             int num = Integer.parseInt(args);
             return num > 0;
