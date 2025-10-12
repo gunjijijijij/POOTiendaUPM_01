@@ -120,17 +120,10 @@ public class CLI {
                     return;
                 }
 
-                float price;
-                try {
-                    price = Float.parseFloat(args[args.length - 1]);
-                } catch (NumberFormatException e) {
-                    System.err.println("Price must be a valid number.");
-                    return;
-                }
-                if (price < 0) {
-                    System.err.println("The price can't be negative");
-                    return;
-                }
+
+                Float price = parseNonNegativeFloat(args[args.length - 1], "Price must be a valid number.");
+                if (price == null) return;
+
                 try {
                     productController.addProduct(addId, name, category, price);
                     System.out.println("{class:Product, id:" + addId + ", name:'" + name + "', category:" + category + ", price:" + price + "}");
@@ -183,11 +176,9 @@ public class CLI {
                         if (requireMinArgs(args, 5, "Use: prod update <id> PRICE <newPrice>")) return;
 
                         try {
-                            float newPrice = Float.parseFloat(args[4]);
-                            if (newPrice < 0) {
-                                System.err.println("The price can't be negative");
-                                return;
-                            }
+                            Float newPrice = parseNonNegativeFloat(args[4], "The price can't be negative");
+                            if (newPrice == null) return;
+
                             productController.prodUpdate(updateId, field, Float.toString(newPrice));
                         } catch (NumberFormatException e) {
                             System.err.println("Price must be a valid number.");
@@ -242,10 +233,8 @@ public class CLI {
                 Integer addId = parsePositiveInt(idString, "The ID must be a positive integer.");
                 if (addId == null) return;
 
-                int quantity = Integer.parseInt(args[3]);
-                if (quantity < 0) {
-                    System.err.println("The quantity must be a positive integer");
-                }
+                Integer quantity = parsePositiveInt(args[3], "The quantity must be a positive integer");
+                if (quantity == null) return;
 
                 Product product = productController.findProductById(addId);
 
@@ -296,6 +285,17 @@ public class CLI {
         try {
             int v = Integer.parseInt(s);
             if (v <= 0) { System.err.println(errMsg); return null; }
+            return v;
+        } catch (NumberFormatException e) {
+            System.err.println(errMsg);
+            return null;
+        }
+    }
+
+    private Float parseNonNegativeFloat(String s, String errMsg) {
+        try {
+            float v = Float.parseFloat(s);
+            if (v < 0f) { System.err.println(errMsg); return null; }
             return v;
         } catch (NumberFormatException e) {
             System.err.println(errMsg);
