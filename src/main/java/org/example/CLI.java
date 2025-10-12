@@ -66,7 +66,7 @@ public class CLI {
         System.out.println(" prod update <id> NAME|CATEGORY|PRICE <value>");
         System.out.println(" prod remove <id>");
         System.out.println(" ticket new");
-        System.out.println(" ticket add <prodId><quantity>");
+        System.out.println(" ticket add <prodId> <quantity>");
         System.out.println(" ticket remove <prodId>");
         System.out.println(" ticket print");
         System.out.println(" echo \"<texto>\"");
@@ -101,12 +101,13 @@ public class CLI {
             case "add": {
                 // prod add <id> "<name>" <category> <price>
                 handleProdAdd(args);
+
                 break;
             }
 
             case "list": {
                 productController.prodList();
-                System.out.println("prod list: ok");
+
                 break;
             }
 
@@ -118,6 +119,7 @@ public class CLI {
 
             case "remove": {
                 handleProdRemove(args);
+
                 break;
             }
 
@@ -135,18 +137,22 @@ public class CLI {
         switch (args[1].toLowerCase()) {
             case "new":
                 currentTicket.resetTicket();
+
                 break;
 
             case "add":
                 handleTicketAdd(args);
+
                 break;
 
             case "remove":
                 handleTicketRemove(args);
+
                 break;
 
             case "print":
                 currentTicket.print();
+                System.out.println("ticket print: ok");
                 break;
 
             default: System.err.println("Invalid command"); break;
@@ -214,8 +220,15 @@ public class CLI {
         Float price = parseNonNegativeFloat(args[args.length - 1]);
         if (price == null) return;
 
-        productController.addProduct(id, name, cat, price);
-        System.out.println("{class:Product, id:" + id + ", name:'" + name + "', category:" + cat + ", price:" + price + "}");
+        try {
+            productController.addProduct(id, name, cat, price);
+            System.out.println("{class:Product, id:" + id + ", name:'" + name + "', category:" + cat + ", price:" + price + "}");
+            System.out.println("prod add: ok");
+        } catch (IllegalArgumentException e) {
+            System.err.println( e.getMessage().trim());
+        } catch (Exception e) {
+            System.err.println( e.getMessage());
+        }
     }
 
     private void handleProdUpdate(String[] args) {
@@ -256,9 +269,12 @@ public class CLI {
         Integer id = parsePositiveInt(args[2], "The ID must be a positive integer.");
         if (id == null) return;
 
+        Product removed = productController.findProductById(id);
+        if (removed == null) {
+            System.err.println("prod remove: error (no product with that ID)");
+            return;
+        }
         try {
-            Product removed = productController.findProductById(id);
-
             productController.prodRemove(id);
             currentTicket.ticketRemove(id);
             System.out.println("{class:Product, id:" + id + ", name:'" + removed.getName()
@@ -281,18 +297,33 @@ public class CLI {
 
         Product product = productController.findProductById(addId);
 
-        currentTicket.addProductTicket(product, quantity);
+        if (product == null) {
+            System.err.println("ticket add: error (product with ID " + addId + " not found)");
+            return;
+        }
+
+        try {
+            currentTicket.addProductTicket(product, quantity);
+            currentTicket.print();
+            System.out.println("ticket add: ok");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     private void handleTicketRemove(String[] args) {
-        if (requireMinArgs(args, 3, "Please input all the necessary arguments")) return;
+        if (requireMinArgs(args, 3, "Usage: ticket remove <prodId>")) return;
 
         String idString = args[2];
         Integer removeId = parsePositiveInt(idString, "The ID must be a positive integer.");
         if (removeId == null) return;
 
-        currentTicket.ticketRemove(removeId);
-        currentTicket.print();
-        System.out.println("ticket remove: ok");
+        boolean success = currentTicket.ticketRemove(removeId);
+        if (success) {
+            currentTicket.print();
+            System.out.println("ticket remove: ok");
+        } else {
+            System.err.println("ticket remove: error (no product found with that ID)");
+        }
     }
 }

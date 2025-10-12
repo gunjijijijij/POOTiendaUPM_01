@@ -17,6 +17,7 @@ public class ProductController {
         Product product = new Product(id, name, category, prize); //creamos y agregamos el producto
         products[productCount] = product;
         productCount++; //aumentamos el contador
+
     }
 
     public void prodList() {
@@ -28,7 +29,9 @@ public class ProductController {
                 Product product = products[i];
                 System.out.println("{class:Product, id:" + product.getId() + ", name: '" + product.getName() + "', category:" + product.getCategory() + ", price: " + product.getPrice() + "}");
             }
+
         }
+        System.out.println("prod list: ok");
     }
 
     public void prodRemove(int id) {
@@ -42,7 +45,6 @@ public class ProductController {
                 return;
             }
         }
-
         throw new IllegalArgumentException(String.format("The product with id %s was not found", id));
     }
 

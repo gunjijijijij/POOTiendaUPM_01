@@ -9,7 +9,7 @@ public class Ticket {
     public void resetTicket() {
         this.lines = new Product[MAX_SIZE];
         this.size = 0;
-        System.out.println("ticket new: ok");
+
     }
 
     public void addProductTicket(Product product, int quantity) {
@@ -26,22 +26,27 @@ public class Ticket {
                 return;
             }
         }
-
-        print();
-        System.out.println("ticket add: ok");
     }
 
-    public void ticketRemove(int productId) {
+    public boolean ticketRemove(int productId) {
+        boolean found = false;
         int newSize = 0;
         Product[] newLines = new Product[MAX_SIZE];
+
         for (int i = 0; i < size; i++) {
             if (lines[i].getId() != productId) {
-                newLines[i] = lines[i];
-                newSize++;
+                newLines[newSize++] = lines[i];
+            } else {
+                found = true;
             }
         }
-        size = newSize;
-        lines = newLines;
+
+        if (found) {
+            lines = newLines;
+            size = newSize;
+        }
+
+        return found;
     }
 
     private int countCategory(Category category) {
