@@ -8,7 +8,7 @@ public class ProductController {
     public void addProduct(int id, String name, Category category, float prize) {
         for (int i = 0; i < productCount; i++) {
             if (products[i].getId().equals(id)) { //comprobamos que no existan dos productos con el mismo id
-                throw new IllegalArgumentException("There are two products with the same id\n");
+                throw new IllegalArgumentException("There can't be two products with the same id\n");
             }
         }
         if (productCount >= MAX_PRODUCTS) { //verificamos el límite de productos

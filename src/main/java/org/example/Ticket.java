@@ -97,12 +97,12 @@ public class Ticket {
             int catCount = countCategory(p.getCategory());
             double discount = discountController.calculateDiscount(p, 1, catCount);
             System.out.printf(
-                    "{class:Product, id:%d, name:'%s', category:%s, price:%.1f}%s\n",
+                    "{class:Product, id:%d, name:'%s', category:%s, price:%.2f}%s\n",
                     p.getId(),
                     p.getName(),
                     p.getCategory(),
                     p.getPrice(),
-                    (catCount > 1 ? " **discount -" + String.format("%.1f", discount) : "")
+                    (catCount > 1 ? " **discount -" + String.format("%.2f", discount) : "")
             );
         }
 
