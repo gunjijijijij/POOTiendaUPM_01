@@ -4,7 +4,7 @@ public class Ticket {
     private final int MAX_SIZE = 100;
     private Product[] lines = new Product[MAX_SIZE];
     private int size = 0;
-    private DiscountController discountController = new DiscountController();
+    private final DiscountController discountController = new DiscountController();
 
     public void resetTicket() {
         this.lines = new Product[MAX_SIZE];
