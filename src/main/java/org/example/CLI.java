@@ -280,7 +280,7 @@ public class CLI {
             Product removed = productController.findProductById(id);
 
             productController.prodRemove(id);
-            currentTicket.ticketRemove(id); /
+            currentTicket.ticketRemove(id);
             System.out.println("{class:Product, id:" + id + ", name:'" + removed.getName()
                     + "', category:" + removed.getCategory() + ", price:" + removed.getPrice() + "}");
             System.out.println("prod remove: ok");
