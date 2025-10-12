@@ -100,37 +100,7 @@ public class CLI {
         switch (args[1].toLowerCase()) {
             case "add": {
                 // prod add <id> "<name>" <category> <price>
-                if (requireMinArgs(args, 5, "Use: prod add <id> \"<name>\" <category> <price>")) return;
-
-                Integer addId = parsePositiveInt(args[2], "The id must be a positive integer.");
-                if (addId == null) return;
-
-                // nombre entre [3, args.length-2)
-                String name = getNameInBrackets(args, 3, args.length - 2).trim();
-                if (name.isEmpty()) {
-                    System.err.println("The name is empty");
-                    return;
-                }
-
-                Category category;
-                try {
-                    category = Category.valueOf(args[args.length - 2].toUpperCase());
-                } catch (IllegalArgumentException e) {
-                    System.err.println("Invalid category. Use: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
-                    return;
-                }
-
-
-                Float price = parseNonNegativeFloat(args[args.length - 1], "Price must be a valid number.");
-                if (price == null) return;
-
-                try {
-                    productController.addProduct(addId, name, category, price);
-                    System.out.println("{class:Product, id:" + addId + ", name:'" + name + "', category:" + category + ", price:" + price + "}");
-                    System.out.println("prod add: ok");
-                } catch (IllegalArgumentException | IllegalStateException exception) {
-                    System.out.println("prod add: error (" + exception.getMessage() + ")");
-                }
+                prodAdd(args);
                 break;
             }
 
@@ -142,53 +112,7 @@ public class CLI {
 
             case "update": {
                 // prod update <id> NAME|CATEGORY|PRICE <value>
-                if (requireMinArgs(args, 4, "Use: prod update <id> NAME|CATEGORY|PRICE <value>")) return;
-
-                Integer updateId = parsePositiveInt(args[2], "The ID must be a positive integer.");
-                if (updateId == null) return;
-
-                String field = args[3].toUpperCase();
-
-                switch (field) {
-                    case "NAME": {
-                        if (requireMinArgs(args, 5, "Use: prod update <id> NAME \"<new name>\"")) return;
-
-                        String newName = getNameInBrackets(args, 4, args.length).trim();
-                        if (newName.isEmpty()) {
-                            System.err.println("The name is empty");
-                            return;
-                        }
-                        productController.prodUpdate(updateId, field, newName);
-                        break;
-                    }
-                    case "CATEGORY": {
-                        if (requireMinArgs(args, 5, "Use: prod update <id> CATEGORY <newCategory>")) return;
-
-                        try {
-                            Category newCat = Category.valueOf(args[4].toUpperCase());
-                            productController.prodUpdate(updateId, field, newCat.name());
-                        } catch (IllegalArgumentException e) {
-                            System.err.println("Invalid category. Use: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
-                        }
-                        break;
-                    }
-                    case "PRICE": {
-                        if (requireMinArgs(args, 5, "Use: prod update <id> PRICE <newPrice>")) return;
-
-                        try {
-                            Float newPrice = parseNonNegativeFloat(args[4], "The price can't be negative");
-                            if (newPrice == null) return;
-
-                            productController.prodUpdate(updateId, field, Float.toString(newPrice));
-                        } catch (NumberFormatException e) {
-                            System.err.println("Price must be a valid number.");
-                        }
-                        break;
-                    }
-                    default:
-                        System.err.println("Field not supported. Use NAME, CATEGORY, or PRICE.");
-                        break;
-                }
+                prodUpdate(args);
                 break;
             }
 
@@ -210,9 +134,10 @@ public class CLI {
                 break;
             }
 
-            default:
+            default: {
                 System.err.println("Subcommand not found. Use: add | list | update | remove");
                 break;
+            }
         }
     }
 
@@ -261,18 +186,13 @@ public class CLI {
         }
     }
 
-    private String getNameInBrackets (String[]args,int i0, int iN){
-        StringBuilder nameBuilder = new StringBuilder();
-        for (int i = i0; i < iN; i++) {
-            nameBuilder.append(args[i]).append(" ");
-        }
-
-        String name = nameBuilder.toString().trim();
-
-        if (name.startsWith("\"") && name.endsWith("\"")) {
+    private String joinQuoted(String[] args, int i0, int iN) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = i0; i < iN; i++) sb.append(args[i]).append(" ");
+        String name = sb.toString().trim();
+        if (name.startsWith("\"") && name.endsWith("\"") && name.length() >= 2) {
             name = name.substring(1, name.length() - 1);
         }
-
         return name;
     }
 
@@ -292,14 +212,75 @@ public class CLI {
         }
     }
 
-    private Float parseNonNegativeFloat(String s, String errMsg) {
+    private Float parseNonNegativeFloat(String s) {
         try {
             float v = Float.parseFloat(s);
-            if (v < 0f) { System.err.println(errMsg); return null; }
+            if (v < 0f) { System.err.println("Price must be a non-negative number."); return null; }
             return v;
         } catch (NumberFormatException e) {
-            System.err.println(errMsg);
+            System.err.println("Price must be a non-negative number.");
             return null;
+        }
+    }
+
+    private Category parseCategory(String s) {
+        try {
+            return Category.valueOf(s.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.err.println("Invalid category. Use: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
+            return null;
+        }
+    }
+
+    private void prodAdd(String[] args) {
+        if (requireMinArgs(args, 5, "Usage: prod add <id> \"<name>\" <category> <price>")) return;
+
+        Integer id = parsePositiveInt(args[2], "The id must be a positive integer.");
+        if (id == null) return;
+
+        String name = joinQuoted(args, 3, args.length - 2).trim();
+        if (name.isEmpty()) {System.err.println("The name is empty."); return; }
+
+        Category cat = parseCategory(args[args.length - 2]);
+        if (cat == null) return;
+
+        Float price = parseNonNegativeFloat(args[args.length - 1]);
+        if (price == null) return;
+
+        productController.addProduct(id, name, cat, price);
+        System.out.println("{class:Product, id:" + id + ", name:'" + name + "', category:" + cat + ", price:" + price + "}");
+    }
+
+    private void prodUpdate(String[] args) {
+        if (requireMinArgs(args, 4, "Usage: prod update <id> NAME|CATEGORY|PRICE <value>")) return;
+
+        Integer id = parsePositiveInt(args[2], "The ID must be a positive integer.");
+        if (id == null) return;
+
+        String field = args[3].toUpperCase();
+        switch (field) {
+            case "NAME":
+                if (requireMinArgs(args, 5, "Usage: prod update <id> NAME \"<new name>\"")) return;
+                String newName = joinQuoted(args, 4, args.length).trim();
+                if (newName.isEmpty()) {System.err.println("The name is empty"); return; }
+                productController.prodUpdate(id, field, newName);
+                break;
+
+            case "CATEGORY":
+                if (requireMinArgs(args, 5, "Usage: prod update <id> CATEGORY <newCategory>")) return;
+                Category newCat = parseCategory(args[4]);
+                if (newCat == null) return;
+                productController.prodUpdate(id, field, newCat.name());
+                break;
+
+            case "PRICE":
+                if (requireMinArgs(args, 5, "Usage: prod update <id> PRICE <newPrice>")) return;
+                Float newPrice = parseNonNegativeFloat(args[4]);
+                if (newPrice == null) return;
+                productController.prodUpdate(id, field, Float.toString(newPrice));
+                break;
+
+            default: System.err.println("Field not supported. Use NAME, CATEGORY, or PRICE."); break;
         }
     }
 }
