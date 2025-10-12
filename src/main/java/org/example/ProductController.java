@@ -65,7 +65,10 @@ public class ProductController {
                     product.setPrice(Float.parseFloat(newValue));
                     break;
             }
+
+            System.out.println(product.toString());
             System.out.println("prod update: ok");
+
         } catch (IllegalArgumentException exception) {
             System.out.println("prod update: error (" + exception.getMessage() + ")");
         }

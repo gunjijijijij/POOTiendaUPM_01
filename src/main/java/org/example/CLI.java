@@ -222,7 +222,8 @@ public class CLI {
 
         try {
             productController.addProduct(id, name, cat, price);
-            System.out.println("{class:Product, id:" + id + ", name:'" + name + "', category:" + cat + ", price:" + price + "}");
+            Product added = productController.findProductById(id);
+            System.out.println(added.toString());
             System.out.println("prod add: ok");
         } catch (IllegalArgumentException e) {
             System.err.println( e.getMessage().trim());
@@ -277,8 +278,7 @@ public class CLI {
         try {
             productController.prodRemove(id);
             currentTicket.ticketRemove(id);
-            System.out.println("{class:Product, id:" + id + ", name:'" + removed.getName()
-                    + "', category:" + removed.getCategory() + ", price:" + removed.getPrice() + "}");
+            System.out.println(removed.toString());
             System.out.println("prod remove: ok");
         } catch (IllegalArgumentException e) {
             System.err.println("prod remove: error (" + e.getMessage() + ")");
