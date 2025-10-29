@@ -1,34 +1,33 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductController {
     private final int MAX_PRODUCTS = 200;
-    private Product[] products = new Product[MAX_PRODUCTS];
-    private int productCount = 0;
+    private List<Product> products = new ArrayList<>();
 
     // Añade un nuevo producto al catálogo si no existe otro con el mismo id
     public void addProduct(int id, String name, Category category, float prize) {
-        for (int i = 0; i < productCount; i++) {
-            if (products[i].getId().equals(id)) {
+        for (Product product : products) {
+            if (product.getId() == id) {
                 throw new IllegalArgumentException("There can't be two products with the same id\n");
             }
         }
-        if (productCount >= MAX_PRODUCTS) {
+        if (products.size() >= MAX_PRODUCTS) {
             throw new IllegalStateException("No more products can be added, the maximum is " + MAX_PRODUCTS);
         }
         Product product = new Product(id, name, category, prize); //creamos y agregamos el producto
-        products[productCount] = product;
-        productCount++;
-
+        products.add(product);
     }
 
     // Imprime los productos existentes en el catálogo
     public void prodList() {
         System.out.println("Catalog:");
-        if (productCount == 0) {
+        if (products.isEmpty()) {
             System.out.println("There aren't any products in the catalog.");
         } else {
-            for (int i = 0; i < productCount; i++) {
-                Product product = products[i];
+            for (Product product : products) {
                 System.out.println(product.toString());
             }
         }
@@ -36,13 +35,9 @@ public class ProductController {
 
     // Elimina un producto existente del catálogo
     public void prodRemove(int id) {
-        for (int i = 0; i < productCount; i++) {
-            if (products[i].getId().equals(id)) {
-                for (int j = i; j < productCount - 1; j++) { //Reordena los productos
-                    products[j] = products[j + 1];
-                }
-                products[productCount] = null;
-                productCount--;
+        for (Product product : products) {
+            if (product.getId() == id) {
+                products.remove(product);
                 return;
             }
         }
@@ -67,7 +62,6 @@ public class ProductController {
                     product.setPrice(Float.parseFloat(newValue));
                     break;
             }
-
             System.out.println(product.toString());
             System.out.println("prod update: ok");
 
@@ -78,9 +72,9 @@ public class ProductController {
 
     // Encuentra un producto por su id
     public Product findProductById(int id) {
-        for (int i = 0; i < productCount; i++) {
-            if (products[i].getId() == id) {
-                return products[i];
+        for (Product product : products) {
+            if (product.getId() == id) {
+                return product;
             }
         }
         return null;
