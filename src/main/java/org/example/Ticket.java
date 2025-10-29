@@ -4,7 +4,6 @@ public class Ticket {
     private final int MAX_SIZE = 100;
     private Product[] lines = new Product[MAX_SIZE];
     private int size = 0;
-    private final DiscountController discountController = new DiscountController();
 
     // Vacía el ticket
     public void resetTicket() {
@@ -78,7 +77,9 @@ public class Ticket {
         for (int i = 0; i < size; i++) {
             Product p = lines[i];
             int catCount = countCategory(p.getCategory());
-            totalDiscount += discountController.calculateDiscount(p, 1, catCount);
+            if (catCount > 1){
+                totalDiscount += p.getCategory().calculateDiscount(p.getPrice());
+            }
         }
         return totalDiscount;
     }
@@ -103,7 +104,7 @@ public class Ticket {
         for (int i = 0; i < size; i++) {
             Product p = lines[i];
             int catCount = countCategory(p.getCategory());
-            double discount = discountController.calculateDiscount(p, 1, catCount);
+            double discount = p.getCategory().calculateDiscount(p.getPrice());
             System.out.printf(
                     "{class:Product, id:%d, name:'%s', category:%s, price:%.2f}%s\n",
                     p.getId(),
