@@ -69,7 +69,7 @@ public class CLI {
         System.out.println(" ticket add <prodId> <quantity>");
         System.out.println(" ticket remove <prodId>");
         System.out.println(" ticket print");
-        System.out.println(" echo \"<texto>\"");
+        System.out.println(" echo \"<text>\"");
         System.out.println(" help");
         System.out.println(" exit");
         System.out.println(" \nCategories: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
