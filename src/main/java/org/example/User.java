@@ -6,28 +6,40 @@ public abstract class User {
     protected String email;
 
 
-    public  User(String id, String name, String email) {
+    public User(String id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;
     }
 
-    public String getId() {return id;}
+    public String getId() {
+        return id;
+    }
 
-    public String getName() {return name;}
+    public String getName() {
+        return name;
+    }
 
-    public String getEmail() {return email;}
+    public String getEmail() {
+        return email;
+    }
 
-    public void setDni(String dni) {this.id = dni;}
+    public void setDni(String dni) {
+        this.id = dni;
+    }
 
-    public void setEmail(String email) {this.email = email;}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public void setName(String name) {this.name = name;}
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public abstract String getType();
 
     @Override
     public String toString() {
-        return "{class: "+getType()+", id: '"+id+"', name: '"+name+"', email: '"+email+"'}";
+        return "{class: " + getType() + ", id: '" + id + "', name: '" + name + "', email: '" + email + "'}";
     }
 }
