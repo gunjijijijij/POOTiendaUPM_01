@@ -1,10 +1,13 @@
 package org.example;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class CLI {
     // Controladores principales
     private final Ticket currentTicket = new Ticket();
     private final ProductController productController = new ProductController();
+    private final List<Cashier> cashiers = new ArrayList<>();
 
     public void start() {
         init(); // Mensaje inicial
@@ -36,6 +39,9 @@ public class CLI {
                 case "ticket":
                     handleTicketCommand(commandUni);
                     break;
+
+                case "cash":
+
 
                 case "exit":
                     finish = true;
@@ -152,6 +158,46 @@ public class CLI {
 
             default: System.err.println("Invalid command"); break;
         }
+    }
+
+    private void handleCash(String[] args){
+        if (requireMinArgs(args, 2, "cash command needs two parameters \"\"cash \"<add|remove|list|tickets> ...\" \"\"")) return;
+
+        switch (args[1].toLowerCase()) {
+            case "add":
+
+                break;
+
+            case "remove":
+
+                break;
+
+            case "list":
+
+                break;
+
+            case "tickets":
+
+                break;
+
+            default: System.err.println("Invalid command"); break;
+        }
+    }
+
+    private void handleCashAdd(String[] args){
+        if (requireMinArgs(args, 4, "Usage: cash add [<id>] \"<name>\" <email>")) return;
+
+        Cashier cashier;
+        if (args[2].startsWith("\"")) {
+            String name = joinQuoted(args, 2, args.length - 1).trim();
+            if (name.isEmpty()) {System.err.println("The name is empty."); return; }
+            cashier = new Cashier(name, args[args.length - 1]);
+        } else  {
+            String name = joinQuoted(args, 3, args.length - 1).trim();
+            if (name.isEmpty()) {System.err.println("The name is empty."); return; }
+            cashier = new Cashier(args[2], name, args[args.length - 1]);
+        }
+        cashiers.add(cashier);
     }
 
     // Une argumentos entre comillas (para los nombres de productos con espacios)
