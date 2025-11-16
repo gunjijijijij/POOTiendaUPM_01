@@ -9,6 +9,22 @@ public class ProductController {
 
     // Añade un nuevo producto al catálogo si no existe otro con el mismo id
     public void addProduct(int id, String name, Category category, float prize) {
+        if (id <= 0){
+            throw new IllegalArgumentException("The ID must be a positive Integer");
+        }
+
+        if (name == null || name.isBlank()){
+            throw new IllegalArgumentException("The name cannot be empty");
+        }
+
+        if (category == null){
+            throw new IllegalArgumentException("The category cannot be null");
+        }
+
+        if (prize < 0){
+            throw new IllegalArgumentException("The prize must be a positive integer");
+        }
+
         for (Product product : products) {
             if (product.getId() == id) {
                 throw new IllegalArgumentException("There can't be two products with the same id\n");
@@ -17,8 +33,12 @@ public class ProductController {
         if (products.size() >= MAX_PRODUCTS) {
             throw new IllegalStateException("No more products can be added, the maximum is " + MAX_PRODUCTS);
         }
-        Product product = new Product(id, name, category, prize); //creamos y agregamos el producto
-        products.add(product);
+
+        products.add(new Product(id, name, category, prize));
+
+        Product added = findProductById(id);
+        System.out.println(added.toString());
+        System.out.println("prod add: ok");
     }
 
     // Imprime los productos existentes en el catálogo
