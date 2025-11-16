@@ -1,4 +1,7 @@
-package org.example;
+package org.example.app;
+import org.example.*;
+import org.example.util.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;

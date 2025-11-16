@@ -1,4 +1,6 @@
-package org.example;
+package org.example.util;
+
+import org.example.Category;
 
 public class Utils {
     // Verifica si hay suficientes argumentos

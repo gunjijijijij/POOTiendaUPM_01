@@ -10,7 +10,6 @@ public class Ticket {
     // Vacía el ticket
     public void resetTicket() {
         this.lines = new ArrayList<>();
-
     }
 
     // Añade una cantidad x de un producto al ticket mientras no estuviera lleno
