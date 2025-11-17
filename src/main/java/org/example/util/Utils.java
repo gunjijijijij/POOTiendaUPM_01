@@ -53,4 +53,9 @@ public class Utils {
         }
         return name;
     }
+
+    public static String parseIntToString(int number) {
+        return Integer.toString(number);
+    }
+
 }
