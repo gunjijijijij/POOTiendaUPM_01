@@ -1,16 +1,18 @@
 package org.example;
 
 public class Product {
-    int id;
-    String name;
-    Category category;
-    float price;
+    protected int id;
+    protected String name;
+    protected Category category;
+    protected float price;
+    protected Integer maxPers;
 
-    public Product(Integer id, String name, Category category, float price) {
+    public Product(Integer id, String name, Category category, float price, Integer maxPers) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.price = price;
+        this.maxPers = maxPers;
     }
 
     // Getters y setters con validación
@@ -50,6 +52,10 @@ public class Product {
             throw new IllegalArgumentException("The price must be a number greater than 0 with no upper limit.");
         }
         this.price = price;
+    }
+
+    public boolean esPersonalizable() {
+        return maxPers != null;
     }
 
     @Override

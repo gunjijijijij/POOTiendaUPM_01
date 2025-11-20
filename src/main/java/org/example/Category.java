@@ -7,7 +7,6 @@ public enum Category {
     CLOTHES(0.07),
     BOOK(0.1),
     ELECTRONICS(0.03);
-
     private final double discountRate;
 
     Category(double discountRate) {

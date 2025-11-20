@@ -8,7 +8,7 @@ public class ProductController {
     private List<Product> products = new ArrayList<>();
 
     // Añade un nuevo producto al catálogo si no existe otro con el mismo id
-    public void addProduct(int id, String name, Category category, float prize) {
+    public void addProduct(int id, String name, Category category, float prize, Integer maxPers) {
         if (id <= 0){
             throw new IllegalArgumentException("The ID must be a positive Integer");
         }
@@ -34,7 +34,11 @@ public class ProductController {
             throw new IllegalStateException("No more products can be added, the maximum is " + MAX_PRODUCTS);
         }
 
-        products.add(new Product(id, name, category, prize));
+        if (maxPers != null) {
+            products.add(new CustomProduct(id, name, category, prize, maxPers));
+        } else {
+            products.add(new Product(id, name, category, prize, null));
+        }
 
         Product added = findProductById(id);
         System.out.println(added.toString());
