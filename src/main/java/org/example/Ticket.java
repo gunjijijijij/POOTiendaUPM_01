@@ -118,5 +118,7 @@ public class Ticket {
         System.out.printf("Final Price: %.1f\n", getFinalPrice());
     }
 
-    public void closeTicket()
+    public void closeTicket(){
+
+    }
 }

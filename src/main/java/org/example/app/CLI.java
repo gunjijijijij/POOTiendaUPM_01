@@ -145,7 +145,7 @@ public class CLI {
 
         switch (args[1].toLowerCase()) {
             case "new":
-                Ticket currentTicket = new Ticket()
+                Ticket currentTicket = new Ticket();
                 break;
 
             case "add":
@@ -339,5 +339,6 @@ public class CLI {
        // } else {
             System.err.println("ticket remove: error (no product found with that ID)");
         }
-    }
 }
+
+
