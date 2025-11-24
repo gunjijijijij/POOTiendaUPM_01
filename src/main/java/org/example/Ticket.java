@@ -21,7 +21,6 @@ public class Ticket {
     public Ticket() {
         this.id = Utils.getCurrentDateTime() + ThreadLocalRandom.current().nextInt(10000, 100000);
         this.status = Status.VACIO;
-
     }
 
     // Vacía el ticket
@@ -30,20 +29,43 @@ public class Ticket {
     }
 
     // Añade una cantidad x de un producto al ticket mientras no estuviera lleno
-    public void addProductTicket(Product product, int quantity) {
+    public void addProductTicket(Product product, int quantity, List<String> customTexts) {
         if (product == null) {
             System.err.println("ticket add: error (product doesn't exist)");
             return;
         }
+        if (product instanceof MeetingProduct || product instanceof FoodProduct) {
+            for (Product p : lines) {
+                if (p instanceof MeetingProduct || p instanceof FoodProduct) {
+                    System.err.println("ticket add: error (meeting/food product already in ticket)");
+                    return;
+                }
+            }
+        }
+        if (product instanceof CustomProduct ) {
+            CustomProduct cp = (CustomProduct) product;
+            for (String txt : customTexts) {
+                try {
+                    cp.addCustomText(txt);
+                } catch (IllegalArgumentException e) {
+                    System.err.println("ticket add: error (" + e.getMessage() + ")");
+                    return;
+                }
+            }
+        }
+        else if (!customTexts.isEmpty()) {
+            System.err.println("ticket add: error (product not personalizable)");
+            return;
+        }
 
         for (int i = 0; i < quantity; i++) {
-            if (lines.size() < MAX_SIZE) {
-                lines.add(product);
-            } else {
+            if (lines.size() >= MAX_SIZE) {
                 System.err.println("ticket add: error (no room for more lines)");
                 return;
             }
+            lines.add(product);
         }
+
         this.status = Status.OPEN;
     }
 
@@ -118,7 +140,9 @@ public class Ticket {
         System.out.printf("Final Price: %.1f\n", getFinalPrice());
     }
 
-    public void closeTicket(){
 
+    public void closeTicket(){
+        id = this.id + Utils.getCurrentDateTime();;
+        this.status = Status.CLOSED;
     }
 }

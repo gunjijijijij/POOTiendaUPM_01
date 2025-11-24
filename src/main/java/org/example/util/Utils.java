@@ -1,6 +1,9 @@
 package org.example.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.example.Category;
 
 public class Utils {
@@ -65,5 +68,21 @@ public class Utils {
         return now.format(formatter);
     }
 
+    public static List<String> parseCustomTexts(String command) {
+        List<String> customTexts = new ArrayList<>();
+
+        // Split at "--p"
+        String[] parts = command.split("--p");
+
+        // parts[0] is everything before the first --p, ignore it
+        for (int i = 1; i < parts.length; i++) {
+            String txt = parts[i].trim();
+            if (!txt.isEmpty()) {
+                customTexts.add(txt);
+            }
+        }
+
+        return customTexts;
+    }
 
 }

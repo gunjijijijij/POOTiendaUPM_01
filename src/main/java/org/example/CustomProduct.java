@@ -10,10 +10,11 @@ public class CustomProduct extends Product{
         this.customtexts = new ArrayList<>();
     }
     public void addCustomText(String text){
+
         if(customtexts.size() >= maxPers){
             throw new IllegalArgumentException("Maximum custom texts reached: " + maxPers);
         }
-        customtexts.add(text);
+        customtexts.add(text.trim());
         calculatePrice();
     }
     private void calculatePrice() {
