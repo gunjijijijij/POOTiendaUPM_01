@@ -1,11 +1,28 @@
 package org.example;
-
+import org.example.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Ticket {
+    private String id;
     private final int MAX_SIZE = 100;
     private List<Product> lines = new ArrayList<>();
+
+
+    public enum Status {
+        OPEN,
+        VACIO,
+        CLOSED
+    }
+
+    private Status status;
+
+    public Ticket() {
+        this.id = Utils.getCurrentDateTime() + ThreadLocalRandom.current().nextInt(10000, 100000);
+        this.status = Status.VACIO;
+
+    }
 
     // Vacía el ticket
     public void resetTicket() {
@@ -27,6 +44,7 @@ public class Ticket {
                 return;
             }
         }
+        this.status = Status.OPEN;
     }
 
     // Elimina todas las apariciones de un producto existente en el ticket
@@ -99,4 +117,6 @@ public class Ticket {
         System.out.printf("Total discount: %.1f\n", getTotalDiscount());
         System.out.printf("Final Price: %.1f\n", getFinalPrice());
     }
+
+    public void closeTicket()
 }

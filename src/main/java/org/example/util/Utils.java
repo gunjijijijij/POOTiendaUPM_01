@@ -1,5 +1,6 @@
 package org.example.util;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import org.example.Category;
 
 public class Utils {
@@ -57,5 +58,12 @@ public class Utils {
     public static String parseIntToString(int number) {
         return Integer.toString(number);
     }
+
+    public static String getCurrentDateTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd-HH:mm");
+        LocalDateTime now = LocalDateTime.now();
+        return now.format(formatter);
+    }
+
 
 }
