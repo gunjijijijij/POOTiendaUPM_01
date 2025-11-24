@@ -8,7 +8,7 @@ public class CashierIdGenerator {
     private static final Random random = new Random();
     private static final List<String> usedIds= new ArrayList<>();
 
-    private static String generateId() {
+    public static String generateId() {
         String id;
         do {
             id = createRandomId();

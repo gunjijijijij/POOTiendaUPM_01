@@ -149,7 +149,7 @@ public class CLI {
                 break;
 
             case "add":
-                handleTicketAdd(args);
+                Ticket.handleTicketAdd(args);
                 break;
 
             case "remove":
@@ -157,7 +157,7 @@ public class CLI {
                 break;
 
             case "print":
-                //currentTicket.print();
+                Ticket.print();
                 System.out.println("ticket print: ok");
                 break;
 
@@ -204,37 +204,6 @@ public class CLI {
         }
         cashiers.add(cashier);
     }
-
-    // Procesa el comando "ticket add": verifica los argumentos,
-    // maneja los errores correspondientes y utiliza Ticket
-    // para añadir el producto al Ticket.
-    private void handleTicketAdd(String[] args) {
-        if (Utils.requireMinArgs(args, 4, "Please input all the necessary arguments")) return;
-
-        String idString = args[2];
-        Integer addId = Utils.parsePositiveInt(idString, "The ID must be a positive integer.");
-        if (addId == null) return;
-
-        Integer quantity = Utils.parsePositiveInt(args[3], "The quantity must be a positive integer");
-        if (quantity == null) return;
-
-        Product product = productController.findProductById(addId);
-
-        if (product == null) {
-            System.err.println("ticket add: error (product with ID " + addId + " not found)");
-            return;
-        }
-
-        try {
-            //currentTicket.addProductTicket(product, quantity);
-            //currentTicket.print();
-            System.out.println("ticket add: ok");
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-    }
-
-
 }
 
 

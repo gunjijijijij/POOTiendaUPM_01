@@ -82,7 +82,7 @@ public class Ticket {
         if (!found) {
             throw new IllegalArgumentException("no product found with that ID");
         }
-        return found;
+        return true;
     }
 
     // Cuenta cuantos productos hay de una categoría en el ticket
@@ -122,28 +122,6 @@ public class Ticket {
         return getTotalPrice() - getTotalDiscount();
     }
 
-    // Imprime el contenido del ticket
-    private static void print() {
-        lines.sort((p1, p2) -> p1.getName().compareToIgnoreCase(p2.getName())); //ordena lines alfabeticamente
-
-        for (Product product : lines) {
-            int catCount = countCategory(product.getCategory());
-            double discount = product.getCategory().calculateDiscount(product.getPrice());
-            System.out.printf(
-                    "{class:Product, id:%d, name:'%s', category:%s, price:%.2f}%s\n",
-                    product.getId(),
-                    product.getName(),
-                    product.getCategory(),
-                    product.getPrice(),
-                    (catCount > 1 ? " **discount -" + String.format("%.2f", discount) : "")
-            );
-        }
-
-        System.out.printf("Total price: %.1f\n", getTotalPrice());
-        System.out.printf("Total discount: %.1f\n", getTotalDiscount());
-        System.out.printf("Final Price: %.1f\n", getFinalPrice());
-    }
-
     public void closeTicket(){
         id = this.id + Utils.getCurrentDateTime();
         this.status = Status.CLOSED;
@@ -166,5 +144,56 @@ public class Ticket {
         } else {
             System.err.println("ticket remove: error (no product found with that ID)");
         }
+    }
+
+    // Procesa el comando "ticket add": verifica los argumentos,
+    // maneja los errores correspondientes y utiliza Ticket
+    // para añadir el producto al Ticket.
+    public static void handleTicketAdd(String[] args) {
+        if (Utils.requireMinArgs(args, 4, "Please input all the necessary arguments")) return;
+
+        String idString = args[2];
+        Integer addId = Utils.parsePositiveInt(idString, "The ID must be a positive integer.");
+        if (addId == null) return;
+
+        Integer quantity = Utils.parsePositiveInt(args[3], "The quantity must be a positive integer");
+        if (quantity == null) return;
+
+        Product product = ProductController.findProductById(addId);
+
+        if (product == null) {
+            System.err.println("ticket add: error (product with ID " + addId + " not found)");
+            return;
+        }
+
+        try {
+            //addProductTicket(product, quantity);
+            print();
+            System.out.println("ticket add: ok");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    // Imprime el contenido del ticket
+    public static void print() {
+        lines.sort((p1, p2) -> p1.getName().compareToIgnoreCase(p2.getName())); //ordena lines alfabeticamente
+
+        for (Product product : lines) {
+            int catCount = countCategory(product.getCategory());
+            double discount = product.getCategory().calculateDiscount(product.getPrice());
+            System.out.printf(
+                    "{class:Product, id:%d, name:'%s', category:%s, price:%.2f}%s\n",
+                    product.getId(),
+                    product.getName(),
+                    product.getCategory(),
+                    product.getPrice(),
+                    (catCount > 1 ? " **discount -" + String.format("%.2f", discount) : "")
+            );
+        }
+
+        System.out.printf("Total price: %.1f\n", getTotalPrice());
+        System.out.printf("Total discount: %.1f\n", getTotalDiscount());
+        System.out.printf("Final Price: %.1f\n", getFinalPrice());
     }
 }
