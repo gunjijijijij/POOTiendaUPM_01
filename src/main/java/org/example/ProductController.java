@@ -25,7 +25,6 @@ public class ProductController {
         System.out.println("prod add: ok");
     }
 
-
     // Imprime los productos existentes en el catálogo
     public void prodList() {
         System.out.println("Catalog:");
@@ -50,8 +49,8 @@ public class ProductController {
     }
 
     // Cambia el nombre, la categoría o el precio de un producto
-    public void prodUpdate(int id, String updateType, String newValue) {
-        Product product = this.findProductById(id);
+    public static void prodUpdate(int id, String updateType, String newValue) {
+        Product product = findProductById(id);
 
         try {
             switch (updateType) {
@@ -75,13 +74,56 @@ public class ProductController {
         }
     }
 
+    // Encuentra un producto por su id
+    public static Product findProductById(int id) {
+        for (Product product : products) {
+            if (product.getId() == id) {
+                return product;
+            }
+        }
+        return null;
+    }
+
+    private static Product createProduct(int id, String name, Category category, float price, Integer maxPers) {
+        if (maxPers != null) {
+            return new CustomProduct(id, name, category, price, maxPers);
+        }
+        return new Product(id, name, category, price, null);
+    }
+
+    // Procesa el comando "prod remove": verifica los argumentos,
+    // maneja los errores correspondientes y utiliza ProductController
+    // para eliminar el nuevo producto al catálogo.
+    public static void handleProdRemove(String[] args) {
+        if (Utils.requireMinArgs(args, 3, "Usage: prod remove <id>")) return;
+
+        Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
+        if (id == null) return;
+
+        Product removed = findProductById(id);
+        if (removed == null) {
+            System.err.println("prod remove: error (no product with that ID)");
+            return;
+        }
+
+        try {
+            prodRemove(id);
+            System.out.println(removed.toString());
+            System.out.println("prod remove: ok");
+        } catch (IllegalArgumentException e) {
+            System.err.println("prod remove: error (" + e.getMessage() + ")");
+        }
+    }
+
     // Procesa el comando "prod add": verifica los argumentos,
     // maneja los errores correspondientes y utiliza ProductController
     // para añadir el nuevo producto al catálogo.
     public static void handleProdAdd(String[] args) {
         if (Utils.requireMinArgs(args, 5, "Usage: prod add <id> \"<name>\" <category> <price>")) return;
 
-        Integer id = Utils.parsePositiveInt(args[2], "The id must be a positive integer.");
+        Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
+        if (id == null) return;
+
         Validators.requirePositiveInt(id, "The ID must be a positive integer.");
 
         String name = Utils.joinQuoted(args, 3, args.length - 2).trim();
@@ -96,68 +138,43 @@ public class ProductController {
         try {
             addProduct(id, name, cat, price, null);
         } catch (IllegalArgumentException e) {
-            System.err.println( e.getMessage().trim());
-        } catch (Exception e) {
-            System.err.println( e.getMessage());
+            System.err.println("prod add: error (" + e.getMessage() + ")");
         }
     }
 
-    // Encuentra un producto por su id
-    public static Product findProductById(int id) {
-        for (Product product : products) {
-            if (product.getId() == id) {
-                return product;
-            }
-        }
-        return null;
-    }
-
-    private static void validatePrice(float price) {
-        if (price < 0)
-            throw new IllegalArgumentException("The price must be a positive number");
-    }
-
-    private static void validateNoDuplicate(int id) {
-        for (Product p : products) {
-            if (p.getId() == id)
-                throw new IllegalArgumentException("There can't be two products with the same id");
-        }
-    }
-
-    private static void validateCapacity() {
-        if (products.size() >= MAX_PRODUCTS)
-            throw new IllegalStateException("No more products can be added");
-    }
-
-    private static Product createProduct(int id, String name, Category category, float price, Integer maxPers) {
-        if (maxPers != null) {
-            return new CustomProduct(id, name, category, price, maxPers);
-        }
-        return new Product(id, name, category, price, null);
-    }
-
-
-    // Procesa el comando "prod remove": verifica los argumentos,
+    // Procesa el comando "prod update": verifica los argumentos, validando el tipo de actualización,
     // maneja los errores correspondientes y utiliza ProductController
-    // para eliminar el nuevo producto al catálogo.
-    public static void handleProdRemove(String[] args) {
-        if (Utils.requireMinArgs(args, 3, "Usage: prod remove <id>")) return;
+    // para actualizar el dato del producto.
+    public static void handleProdUpdate(String[] args) {
+        if (Utils.requireMinArgs(args, 4, "Usage: prod update <id> NAME|CATEGORY|PRICE <value>")) return;
+
         Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
         if (id == null) return;
 
-        Product removed = findProductById(id);
-        if (removed == null) {
-            System.err.println("prod remove: error (no product with that ID)");
-            return;
-        }
-        try {
-            prodRemove(id);
-            //currentTicket.ticketRemove(id);
-            System.out.println(removed.toString());
-            System.out.println("prod remove: ok");
-        } catch (IllegalArgumentException e) {
-            System.err.println("prod remove: error (" + e.getMessage() + ")");
+        String field = args[3].toUpperCase();
+        switch (field) {
+            case "NAME":
+                if (Utils.requireMinArgs(args, 5, "Usage: prod update <id> NAME \"<new name>\"")) return;
+                String newName = Utils.joinQuoted(args, 4, args.length).trim();
+                if (newName.isEmpty()) {System.err.println("The name is empty"); return; }
+                prodUpdate(id, field, newName);
+                break;
+
+            case "CATEGORY":
+                if (Utils.requireMinArgs(args, 5, "Usage: prod update <id> CATEGORY <newCategory>")) return;
+                Category newCat = Utils.parseCategory(args[4]);
+                if (newCat == null) return;
+                prodUpdate(id, field, newCat.name());
+                break;
+
+            case "PRICE":
+                if (Utils.requireMinArgs(args, 5, "Usage: prod update <id> PRICE <newPrice>")) return;
+                Float newPrice = Utils.parseNonNegativeFloat(args[4]);
+                if (newPrice == null) return;
+                prodUpdate(id, field, Float.toString(newPrice));
+                break;
+
+            default: System.err.println("Field not supported. Use NAME, CATEGORY, or PRICE."); break;
         }
     }
-
 }

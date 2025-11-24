@@ -123,7 +123,7 @@ public class CLI {
             }
 
             case "update": {
-                handleProdUpdate(args);
+                ProductController.handleProdUpdate(args);
                 break;
             }
 
@@ -204,46 +204,6 @@ public class CLI {
         }
         cashiers.add(cashier);
     }
-
-
-
-    // Procesa el comando "prod update": verifica los argumentos, validando el tipo de actualización,
-    // maneja los errores correspondientes y utiliza ProductController
-    // para actualizar el dato del producto.
-    private void handleProdUpdate(String[] args) {
-        if (Utils.requireMinArgs(args, 4, "Usage: prod update <id> NAME|CATEGORY|PRICE <value>")) return;
-
-        Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
-        if (id == null) return;
-
-        String field = args[3].toUpperCase();
-        switch (field) {
-            case "NAME":
-                if (Utils.requireMinArgs(args, 5, "Usage: prod update <id> NAME \"<new name>\"")) return;
-                String newName = Utils.joinQuoted(args, 4, args.length).trim();
-                if (newName.isEmpty()) {System.err.println("The name is empty"); return; }
-                productController.prodUpdate(id, field, newName);
-                break;
-
-            case "CATEGORY":
-                if (Utils.requireMinArgs(args, 5, "Usage: prod update <id> CATEGORY <newCategory>")) return;
-                Category newCat = Utils.parseCategory(args[4]);
-                if (newCat == null) return;
-                productController.prodUpdate(id, field, newCat.name());
-                break;
-
-            case "PRICE":
-                if (Utils.requireMinArgs(args, 5, "Usage: prod update <id> PRICE <newPrice>")) return;
-                Float newPrice = Utils.parseNonNegativeFloat(args[4]);
-                if (newPrice == null) return;
-                productController.prodUpdate(id, field, Float.toString(newPrice));
-                break;
-
-            default: System.err.println("Field not supported. Use NAME, CATEGORY, or PRICE."); break;
-        }
-    }
-
-
 
     // Procesa el comando "ticket add": verifica los argumentos,
     // maneja los errores correspondientes y utiliza Ticket
