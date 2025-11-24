@@ -153,7 +153,7 @@ public class CLI {
                 break;
 
             case "remove":
-                handleTicketRemove(args);
+                Ticket.handleTicketRemove(args);
                 break;
 
             case "print":
@@ -234,23 +234,7 @@ public class CLI {
         }
     }
 
-    // Procesa el comando "ticket remove": verifica los argumentos,
-    // maneja los errores correspondientes y utiliza Ticket
-    // para eliminar todas las apariciones del producto del ticket.
-    private void handleTicketRemove(String[] args) {
-        if (Utils.requireMinArgs(args, 3, "Usage: ticket remove <prodId>")) return;
 
-        String idString = args[2];
-        Integer removeId = Utils.parsePositiveInt(idString, "The ID must be a positive integer.");
-        if (removeId == null) return;
-
-        //boolean success = currentTicket.ticketRemove(removeId);
-        //if (success) {
-            //currentTicket.print();
-            System.out.println("ticket remove: ok");
-       // } else {
-            System.err.println("ticket remove: error (no product found with that ID)");
-        }
 }
 
 

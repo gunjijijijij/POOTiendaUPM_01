@@ -7,8 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Ticket {
     private String id;
     private final int MAX_SIZE = 100;
-    private List<Product> lines = new ArrayList<>();
-
+    private static List<Product> lines = new ArrayList<>();
 
     public enum Status {
         OPEN,
@@ -25,11 +24,11 @@ public class Ticket {
 
     // Vacía el ticket
     public void resetTicket() {
-        this.lines = new ArrayList<>();
+        lines = new ArrayList<>();
     }
 
     // Añade una cantidad x de un producto al ticket mientras no estuviera lleno
-    public void addProductTicket(Product product, int quantity, List<String> customTexts) {
+    private void addProductTicket(Product product, int quantity, List<String> customTexts) {
         if (product == null) {
             System.err.println("ticket add: error (product doesn't exist)");
             return;
@@ -70,19 +69,24 @@ public class Ticket {
     }
 
     // Elimina todas las apariciones de un producto existente en el ticket
-    public boolean ticketRemove(int productId) {
+    private static boolean ticketRemove(int productId) {
         boolean found = false;
+
         for (int i = lines.size() - 1; i >= 0; i--) {
             if (lines.get(i).getId() == productId) {
                 lines.remove(i);
                 found = true;
             }
         }
+
+        if (!found) {
+            throw new IllegalArgumentException("no product found with that ID");
+        }
         return found;
     }
 
     // Cuenta cuantos productos hay de una categoría en el ticket
-    private int countCategory(Category category) {
+    private static int countCategory(Category category) {
         int count = 0;
         for (Product product : lines) {
             if (product.getCategory() == category) {
@@ -93,7 +97,7 @@ public class Ticket {
     }
 
     // Getter del total del precio de todos los productos del ticket sin descuento
-    public double getTotalPrice() {
+    private static double getTotalPrice() {
         double total = 0;
         for (Product product : lines) {
             total += product.getPrice();
@@ -102,7 +106,7 @@ public class Ticket {
     }
 
     // Getter del descuento total del ticket
-    public double getTotalDiscount() {
+    private static double getTotalDiscount() {
         double totalDiscount = 0;
         for (Product product : lines) {
             int catCount = countCategory(product.getCategory());
@@ -114,12 +118,12 @@ public class Ticket {
     }
 
     // Getter del precio total con descuento
-    public double getFinalPrice() {
+    private static double getFinalPrice() {
         return getTotalPrice() - getTotalDiscount();
     }
 
     // Imprime el contenido del ticket
-    public void print() {
+    private static void print() {
         lines.sort((p1, p2) -> p1.getName().compareToIgnoreCase(p2.getName())); //ordena lines alfabeticamente
 
         for (Product product : lines) {
@@ -140,9 +144,27 @@ public class Ticket {
         System.out.printf("Final Price: %.1f\n", getFinalPrice());
     }
 
-
     public void closeTicket(){
-        id = this.id + Utils.getCurrentDateTime();;
+        id = this.id + Utils.getCurrentDateTime();
         this.status = Status.CLOSED;
+    }
+
+    // Procesa el comando "ticket remove": verifica los argumentos,
+    // maneja los errores correspondientes y utiliza Ticket
+    // para eliminar todas las apariciones del producto del ticket.
+    public static void handleTicketRemove(String[] args) {
+        if (Utils.requireMinArgs(args, 3, "Usage: ticket remove <prodId>")) return;
+
+        String idString = args[2];
+        Integer removeId = Utils.parsePositiveInt(idString, "The ID must be a positive integer.");
+        if (removeId == null) return;
+
+        boolean success = ticketRemove(removeId);
+        if (success) {
+            print();
+            System.out.println("ticket remove: ok");
+        } else {
+            System.err.println("ticket remove: error (no product found with that ID)");
+        }
     }
 }

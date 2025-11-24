@@ -39,14 +39,13 @@ public class ProductController {
 
     // Elimina un producto existente del catálogo
     public static void prodRemove(int id) {
-        for (Product product : products) {
-            if (product.getId() == id) {
-                products.remove(product);
-                return;
-            }
+        boolean removed = products.removeIf(p -> p.getId() == id);
+
+        if (!removed) {
+            throw new IllegalArgumentException("The product with id " + id + " was not found");
         }
-        throw new IllegalArgumentException(String.format("The product with id %s was not found", id));
     }
+
 
     // Cambia el nombre, la categoría o el precio de un producto
     public static void prodUpdate(int id, String updateType, String newValue) {
