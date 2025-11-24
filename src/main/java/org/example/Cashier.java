@@ -8,6 +8,7 @@ public class Cashier extends User {
     private static final String PREFIX = "UW";
     private static final Random random = new Random();
     private static final List<String> usedIds = new ArrayList<>();
+    private static final List<Category> tickets = new ArrayList<>();
 
     public Cashier(String name, String email) {
         super(generateId(), name, email);

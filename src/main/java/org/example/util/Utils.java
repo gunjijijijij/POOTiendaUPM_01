@@ -1,4 +1,8 @@
 package org.example.util;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.example.Category;
 
@@ -56,6 +60,29 @@ public class Utils {
 
     public static String parseIntToString(int number) {
         return Integer.toString(number);
+    }
+
+    public static String getCurrentDateTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd-HH:mm");
+        LocalDateTime now = LocalDateTime.now();
+        return now.format(formatter);
+    }
+
+    public static List<String> parseCustomTexts(String command) {
+        List<String> customTexts = new ArrayList<>();
+
+        // Split at "--p"
+        String[] parts = command.split("--p");
+
+        // parts[0] is everything before the first --p, ignore it
+        for (int i = 1; i < parts.length; i++) {
+            String txt = parts[i].trim();
+            if (!txt.isEmpty()) {
+                customTexts.add(txt);
+            }
+        }
+
+        return customTexts;
     }
 
 }

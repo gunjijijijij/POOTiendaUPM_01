@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 public class CLI {
     // Controladores principales
-    private final Ticket currentTicket = new Ticket();
     private final ProductController productController = new ProductController();
     private final List<Cashier> cashiers = new ArrayList<>();
 
@@ -44,7 +43,10 @@ public class CLI {
                     break;
 
                 case "cash":
+                    break;
 
+                case "client":
+                    break;
 
                 case "exit":
                     finish = true;
@@ -143,7 +145,7 @@ public class CLI {
 
         switch (args[1].toLowerCase()) {
             case "new":
-                currentTicket.resetTicket();
+                Ticket currentTicket = new Ticket();
                 break;
 
             case "add":
@@ -155,7 +157,7 @@ public class CLI {
                 break;
 
             case "print":
-                currentTicket.print();
+                //currentTicket.print();
                 System.out.println("ticket print: ok");
                 break;
 
@@ -224,7 +226,7 @@ public class CLI {
         if (price == null) return;
 
         try {
-            productController.addProduct(id, name, cat, price);
+            productController.addProduct(id, name, cat, price, null);
         } catch (IllegalArgumentException e) {
             System.err.println( e.getMessage().trim());
         } catch (Exception e) {
@@ -283,7 +285,7 @@ public class CLI {
         }
         try {
             productController.prodRemove(id);
-            currentTicket.ticketRemove(id);
+            //currentTicket.ticketRemove(id);
             System.out.println(removed.toString());
             System.out.println("prod remove: ok");
         } catch (IllegalArgumentException e) {
@@ -312,8 +314,8 @@ public class CLI {
         }
 
         try {
-            currentTicket.addProductTicket(product, quantity);
-            currentTicket.print();
+            //currentTicket.addProductTicket(product, quantity);
+            //currentTicket.print();
             System.out.println("ticket add: ok");
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -330,12 +332,13 @@ public class CLI {
         Integer removeId = Utils.parsePositiveInt(idString, "The ID must be a positive integer.");
         if (removeId == null) return;
 
-        boolean success = currentTicket.ticketRemove(removeId);
-        if (success) {
-            currentTicket.print();
+        //boolean success = currentTicket.ticketRemove(removeId);
+        //if (success) {
+            //currentTicket.print();
             System.out.println("ticket remove: ok");
-        } else {
+       // } else {
             System.err.println("ticket remove: error (no product found with that ID)");
         }
-    }
 }
+
+
