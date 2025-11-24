@@ -112,7 +112,7 @@ public class CLI {
 
         switch (args[1].toLowerCase()) {
             case "add": {
-                handleProdAdd(args);
+                ProductController.handleProdAdd(args);
                 break;
             }
 
@@ -128,7 +128,7 @@ public class CLI {
             }
 
             case "remove": {
-                handleProdRemove(args);
+                ProductController.handleProdRemove(args);
                 break;
             }
 
@@ -207,33 +207,6 @@ public class CLI {
 
 
 
-    // Procesa el comando "prod add": verifica los argumentos,
-    // maneja los errores correspondientes y utiliza ProductController
-    // para añadir el nuevo producto al catálogo.
-    private void handleProdAdd(String[] args) {
-        if (Utils.requireMinArgs(args, 5, "Usage: prod add <id> \"<name>\" <category> <price>")) return;
-
-        Integer id = Utils.parsePositiveInt(args[2], "The id must be a positive integer.");
-        if (id == null) return;
-
-        String name = Utils.joinQuoted(args, 3, args.length - 2).trim();
-        if (name.isEmpty()) {System.err.println("The name is empty."); return; }
-
-        Category cat = Utils.parseCategory(args[args.length - 2]);
-        if (cat == null) return;
-
-        Float price = Utils.parseNonNegativeFloat(args[args.length - 1]);
-        if (price == null) return;
-
-        try {
-            productController.addProduct(id, name, cat, price, null);
-        } catch (IllegalArgumentException e) {
-            System.err.println( e.getMessage().trim());
-        } catch (Exception e) {
-            System.err.println( e.getMessage());
-        }
-    }
-
     // Procesa el comando "prod update": verifica los argumentos, validando el tipo de actualización,
     // maneja los errores correspondientes y utiliza ProductController
     // para actualizar el dato del producto.
@@ -270,28 +243,7 @@ public class CLI {
         }
     }
 
-    // Procesa el comando "prod remove": verifica los argumentos,
-    // maneja los errores correspondientes y utiliza ProductController
-    // para eliminar el nuevo producto al catálogo.
-    private void handleProdRemove(String[] args) {
-        if (Utils.requireMinArgs(args, 3, "Usage: prod remove <id>")) return;
-        Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
-        if (id == null) return;
 
-        Product removed = productController.findProductById(id);
-        if (removed == null) {
-            System.err.println("prod remove: error (no product with that ID)");
-            return;
-        }
-        try {
-            productController.prodRemove(id);
-            //currentTicket.ticketRemove(id);
-            System.out.println(removed.toString());
-            System.out.println("prod remove: ok");
-        } catch (IllegalArgumentException e) {
-            System.err.println("prod remove: error (" + e.getMessage() + ")");
-        }
-    }
 
     // Procesa el comando "ticket add": verifica los argumentos,
     // maneja los errores correspondientes y utiliza Ticket

@@ -6,7 +6,7 @@ private LocalDate expirationdate;
 private int maxpeople;
 private float priceperperson;
 public FoodProduct(int id, String name, float priceperperson, LocalDate expirationdate, int maxpeople) {
-    super(id, name, null, 0);
+    super(id, name, null, 0, maxpeople);
     if (maxpeople > 100 || maxpeople <= 0) {
         throw new IllegalArgumentException("Max people MUST be between 1 and 100");
     }
