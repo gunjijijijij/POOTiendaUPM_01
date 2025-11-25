@@ -48,6 +48,7 @@ public class CLI {
                     break;
 
                 case "client":
+                    handleClient(commandUni);
                     break;
 
                 case "exit":
@@ -188,18 +189,35 @@ public class CLI {
                 break;
 
             case "remove":
-
+                cashierController.handleCashRemove(args);
                 break;
 
             case "list":
-
+                cashierController.list();
                 break;
 
             case "tickets":
-
+                cashierController.tickets();
                 break;
 
             default: System.err.println("Invalid command"); break;
+        }
+    }
+
+    public void handleClient(String[] args){
+        if (Utils.requireMinArgs(args, 2, "cash command needs two parameters \"\"cash \"<add|remove|list|tickets> ...\" \"\"")) return;
+
+        switch (args[1].toLowerCase()){
+            case "add":
+
+                break;
+            case "remove":
+                break;
+            case "list":
+                break;
+
+            default: System.err.println("Invalid command"); break;
+
         }
     }
 }

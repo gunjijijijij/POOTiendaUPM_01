@@ -60,4 +60,8 @@ public class CashierController {
 
     }
 
+    public void tickets(){
+
+    }
+
 }
