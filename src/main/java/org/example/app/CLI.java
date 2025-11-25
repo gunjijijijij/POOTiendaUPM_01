@@ -1,15 +1,15 @@
 package org.example.app;
 import org.example.*;
+import org.example.controller.ProductController;
 import org.example.util.Utils;
+import org.example.controller.CashierController;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class CLI {
     // Controladores principales
     private final ProductController productController = new ProductController();
-    private final List<Cashier> cashiers = new ArrayList<>();
+    private final CashierController cashierController = new CashierController();
 
     public void start() {
         init(); // Mensaje inicial
@@ -112,7 +112,7 @@ public class CLI {
 
         switch (args[1].toLowerCase()) {
             case "add": {
-                ProductController.handleProdAdd(args);
+                productController.handleProdAdd(args);
                 break;
             }
 
@@ -123,12 +123,12 @@ public class CLI {
             }
 
             case "update": {
-                ProductController.handleProdUpdate(args);
+                productController.handleProdUpdate(args);
                 break;
             }
 
             case "remove": {
-                ProductController.handleProdRemove(args);
+                productController.handleProdRemove(args);
                 break;
             }
 
@@ -170,7 +170,7 @@ public class CLI {
 
         switch (args[1].toLowerCase()) {
             case "add":
-
+                cashierController.handleCashAdd(args);
                 break;
 
             case "remove":
@@ -187,22 +187,6 @@ public class CLI {
 
             default: System.err.println("Invalid command"); break;
         }
-    }
-
-    private void handleCashAdd(String[] args){
-        if (Utils.requireMinArgs(args, 4, "Usage: cash add [<id>] \"<name>\" <email>")) return;
-
-        Cashier cashier;
-        if (args[2].startsWith("\"")) {
-            String name = Utils.joinQuoted(args, 2, args.length - 1).trim();
-            if (name.isEmpty()) {System.err.println("The name is empty."); return; }
-            cashier = new Cashier(name, args[args.length - 1]);
-        } else  {
-            String name = Utils.joinQuoted(args, 3, args.length - 1).trim();
-            if (name.isEmpty()) {System.err.println("The name is empty."); return; }
-            cashier = new Cashier(args[2], name, args[args.length - 1]);
-        }
-        cashiers.add(cashier);
     }
 }
 

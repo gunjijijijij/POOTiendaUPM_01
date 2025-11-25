@@ -1,5 +1,8 @@
-package org.example;
+package org.example.controller;
 
+import org.example.Category;
+import org.example.CustomProduct;
+import org.example.Product;
 import org.example.util.Utils;
 import org.example.exceptions.Validators;
 
@@ -93,7 +96,7 @@ public class ProductController {
     // Procesa el comando "prod remove": verifica los argumentos,
     // maneja los errores correspondientes y utiliza ProductController
     // para eliminar el nuevo producto al catálogo.
-    public static void handleProdRemove(String[] args) {
+    public void handleProdRemove(String[] args) {
         if (Utils.requireMinArgs(args, 3, "Usage: prod remove <id>")) return;
 
         Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
@@ -117,7 +120,7 @@ public class ProductController {
     // Procesa el comando "prod add": verifica los argumentos,
     // maneja los errores correspondientes y utiliza ProductController
     // para añadir el nuevo producto al catálogo.
-    public static void handleProdAdd(String[] args) {
+    public void handleProdAdd(String[] args) {
         if (Utils.requireMinArgs(args, 5, "Usage: prod add <id> \"<name>\" <category> <price>")) return;
 
         Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
@@ -144,7 +147,7 @@ public class ProductController {
     // Procesa el comando "prod update": verifica los argumentos, validando el tipo de actualización,
     // maneja los errores correspondientes y utiliza ProductController
     // para actualizar el dato del producto.
-    public static void handleProdUpdate(String[] args) {
+    public void handleProdUpdate(String[] args) {
         if (Utils.requireMinArgs(args, 4, "Usage: prod update <id> NAME|CATEGORY|PRICE <value>")) return;
 
         Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
