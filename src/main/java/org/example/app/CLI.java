@@ -200,7 +200,7 @@ public class CLI {
                 break;
 
             case "tickets":
-                cashierController.tickets();
+                cashierController.tickets(args[2]);
                 break;
 
             default: System.err.println("Invalid command"); break;

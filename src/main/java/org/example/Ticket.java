@@ -28,6 +28,14 @@ public class Ticket {
         lines = new ArrayList<>();
     }
 
+    public String getId(){
+        return id;
+    }
+
+    public Status getStatus(){
+        return status;
+    }
+
     // Añade una cantidad x de un producto al ticket mientras no estuviera lleno
     private void addProductTicket(Product product, int quantity, List<String> customTexts) {
         if (product == null) {
@@ -197,4 +205,6 @@ public class Ticket {
         System.out.printf("Total discount: %.1f\n", getTotalDiscount());
         System.out.printf("Final Price: %.1f\n", getFinalPrice());
     }
+
+
 }

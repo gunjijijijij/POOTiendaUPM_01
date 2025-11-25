@@ -1,8 +1,8 @@
 package org.example.controller;
 
 import org.example.Cashier;
-import org.example.Product;
 import org.example.util.Utils;
+import org.example.Ticket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +65,20 @@ public class CashierController {
         System.out.println("Cash list: ok");
     }
 
-    public void tickets(){
+    public void tickets(String id) {
+        Cashier cash = findCashById(id);
+        if (cash == null) {
+            System.err.println("cash tickets: error (cashier not found)");
+            return;
+        }
 
+        System.out.println("Tickets: ");
+        List<Ticket> tickets = cash.getTickets();
+        for (Ticket ticket : tickets) {
+            System.out.println("  " + ticket.getId() + "->" + ticket.getStatus());
+        }
+        System.out.println("cash tickets: ok");
     }
+
 
 }
