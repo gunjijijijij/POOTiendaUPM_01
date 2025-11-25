@@ -215,7 +215,7 @@ public class CLI {
                 clientController.handleClientAdd(args);
                 break;
             case "remove":
-                clientController.handleClientRemove();
+                clientController.handleClientRemove(args);
                 break;
             case "list":
                 clientController.list();
