@@ -23,7 +23,6 @@ public class CashierController {
         return null;
     }
 
-
     public void handleCashAdd(String[] args){
         if (Utils.requireMinArgs(args, 4, "Usage: cash add [<id>] \"<name>\" <email>")) return;
 

@@ -1,5 +1,6 @@
 package org.example.app;
 import org.example.*;
+import org.example.controller.ClientController;
 import org.example.controller.ProductController;
 import org.example.util.Utils;
 import org.example.controller.CashierController;
@@ -10,6 +11,8 @@ public class CLI {
     // Controladores principales
     private final ProductController productController = new ProductController();
     private final CashierController cashierController = new CashierController();
+
+    private final ClientController clientController = new ClientController();
     private Ticket currentTicket;
 
     public void start() {
@@ -209,11 +212,13 @@ public class CLI {
 
         switch (args[1].toLowerCase()){
             case "add":
-
+                clientController.handleClientAdd();
                 break;
             case "remove":
+                clientController.handleClientRemove();
                 break;
             case "list":
+                clientController.list();
                 break;
 
             default: System.err.println("Invalid command"); break;
