@@ -21,4 +21,9 @@ public class Cashier extends User {
     public String getType() {
         return "Cashier";
     }
+
+    public String toString(){
+        return "Cash {identifier ='" + getId() + "', name = '" + getName() + "', email = '"
+                + getEmail() + "'}";
+    }
 }

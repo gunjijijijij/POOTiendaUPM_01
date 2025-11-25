@@ -38,6 +38,8 @@ public class CashierController {
         }
 
         cashiers.add(cashier);
+        System.out.println(cashier);
+        System.out.println("cash add: ok");
     }
 
     public void handleCashRemove(String[] args){
@@ -56,7 +58,11 @@ public class CashierController {
     }
 
     public void list(){
-
+        System.out.println("Cash:");
+        for (Cashier cash : cashiers){
+            System.out.println(cash.toString());
+        }
+        System.out.println("Cash list: ok");
     }
 
     public void tickets(){
