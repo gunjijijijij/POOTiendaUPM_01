@@ -10,6 +10,7 @@ public class CLI {
     // Controladores principales
     private final ProductController productController = new ProductController();
     private final CashierController cashierController = new CashierController();
+    private Ticket currentTicket;
 
     public void start() {
         init(); // Mensaje inicial
@@ -43,6 +44,7 @@ public class CLI {
                     break;
 
                 case "cash":
+                    handleCash(commandUni);
                     break;
 
                 case "client":
@@ -145,19 +147,31 @@ public class CLI {
 
         switch (args[1].toLowerCase()) {
             case "new":
-                Ticket currentTicket = new Ticket();
+                currentTicket = new Ticket();
                 break;
 
             case "add":
-                Ticket.handleTicketAdd(args);
+                if (currentTicket == null) {
+                    System.err.println("ticket add: error (no open ticket, use: ticket new)");
+                    break;
+                }
+                currentTicket.handleTicketAdd(args);
                 break;
 
             case "remove":
-                Ticket.handleTicketRemove(args);
+                if (currentTicket == null) {
+                    System.err.println("ticket remove: error (no open ticket, use: ticket new)");
+                    break;
+                }
+                currentTicket.handleTicketRemove(args);
                 break;
 
             case "print":
-                Ticket.print();
+                if (currentTicket == null) {
+                    System.err.println("ticket print: error (no open ticket, use: ticket new)");
+                    break;
+                }
+                currentTicket.print();
                 System.out.println("ticket print: ok");
                 break;
 

@@ -1,7 +1,6 @@
 package org.example;
 
 import org.example.util.CashierIdGenerator;
-import org.example.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -11,7 +10,6 @@ public class Cashier extends User {
     private static final String PREFIX = "UW";
     private static final Random random = new Random();
     private static final List<Category> tickets = new ArrayList<>();
-
 
     public Cashier(String name, String email) {super(CashierIdGenerator.generateId(), name, email);}
 
@@ -23,5 +21,4 @@ public class Cashier extends User {
     public String getType() {
         return "Cashier";
     }
-
 }

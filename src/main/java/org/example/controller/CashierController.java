@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.Cashier;
+import org.example.Product;
 import org.example.util.Utils;
 
 import java.util.ArrayList;
@@ -8,6 +9,19 @@ import java.util.List;
 
 public class CashierController {
     private final List<Cashier> cashiers = new ArrayList<>();
+
+    public List<Cashier> getCashiers() {
+        return cashiers;
+    }
+
+    private Cashier findCashById(String id) {
+        for (Cashier cash : cashiers) {
+            if (cash.getId().equals(id)) {
+                return cash;
+            }
+        }
+        return null;
+    }
 
 
     public void handleCashAdd(String[] args){
@@ -26,4 +40,24 @@ public class CashierController {
 
         cashiers.add(cashier);
     }
+
+    public void handleCashRemove(String[] args){
+        if (Utils.requireMinArgs(args, 3, "Usage: cash remove <id>")) return;
+
+        String id = args[2];
+        if (id == null) return;
+
+        Cashier found = findCashById(id);
+        if (found == null) {
+            System.err.println("cash remove: error (id not found)");
+            return;
+        }
+
+        cashiers.remove(found);
+    }
+
+    public void list(){
+
+    }
+
 }

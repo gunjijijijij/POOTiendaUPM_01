@@ -131,7 +131,7 @@ public class Ticket {
     // Procesa el comando "ticket remove": verifica los argumentos,
     // maneja los errores correspondientes y utiliza Ticket
     // para eliminar todas las apariciones del producto del ticket.
-    public static void handleTicketRemove(String[] args) {
+    public void handleTicketRemove(String[] args) {
         if (Utils.requireMinArgs(args, 3, "Usage: ticket remove <prodId>")) return;
 
         String idString = args[2];
@@ -150,7 +150,7 @@ public class Ticket {
     // Procesa el comando "ticket add": verifica los argumentos,
     // maneja los errores correspondientes y utiliza Ticket
     // para añadir el producto al Ticket.
-    public static void handleTicketAdd(String[] args) {
+    public void handleTicketAdd(String[] args) {
         if (Utils.requireMinArgs(args, 4, "Please input all the necessary arguments")) return;
 
         String idString = args[2];
@@ -177,7 +177,7 @@ public class Ticket {
     }
 
     // Imprime el contenido del ticket
-    public static void print() {
+    public void print() {
         lines.sort((p1, p2) -> p1.getName().compareToIgnoreCase(p2.getName())); //ordena lines alfabeticamente
 
         for (Product product : lines) {
