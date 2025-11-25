@@ -212,7 +212,7 @@ public class CLI {
 
         switch (args[1].toLowerCase()){
             case "add":
-                clientController.handleClientAdd();
+                clientController.handleClientAdd(args);
                 break;
             case "remove":
                 clientController.handleClientRemove();

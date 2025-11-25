@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CashierController {
-    private final List<Cashier> cashiers = new ArrayList<>();
+    private static final List<Cashier> cashiers = new ArrayList<>();
 
     public List<Cashier> getCashiers() {
         return cashiers;
     }
 
-    private Cashier findCashById(String id) {
+    public static Cashier findCashById(String id) {
         for (Cashier cash : cashiers) {
             if (cash.getId().equals(id)) {
                 return cash;
