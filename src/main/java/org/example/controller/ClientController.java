@@ -76,6 +76,11 @@ public class ClientController {
     }
 
     public void list(){
-
+        System.out.println("Client:");
+        System.out.println("Client:");
+        for (Client client : clients){
+            System.out.println(client.toString());
+        }
+        System.out.println("Cash list: ok");
     }
 }
