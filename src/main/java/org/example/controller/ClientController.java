@@ -6,12 +6,22 @@ import org.example.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ClientController {
     private final List<Client> clients = new ArrayList<>();
 
     public List<Client> getClients(){
         return clients;
+    }
+
+    public Client findClientById(String id){
+        for (Client client : clients) {
+            if (Objects.equals(client.getId(), id)) {
+                return client;
+            }
+        }
+        return null;
     }
 
     public void handleClientAdd(String[] args){
@@ -47,8 +57,22 @@ public class ClientController {
         }
     }
 
-    public void handleClientRemove(){
+    public void handleClientRemove(String[] args){
+        if (Utils.requireMinArgs(args, 3, "Usage: client remove <id>")) return;
 
+        String id = Utils.joinQuoted(args, 2, args.length - 1).trim();
+        if (id.isEmpty()) { System.out.println("The identifier is empty."); return;}
+
+        Client found = findClientById(id);
+        if (found == null) {System.err.println("client remove: error (no client with that ID)"); return;}
+
+        try {
+            clients.remove(found);
+            System.out.println(found);
+            System.out.println("prod remove: ok");
+        } catch (IllegalArgumentException e) {
+            System.err.println("prod remove: error (" + e.getMessage() + ")");
+        }
     }
 
     public void list(){
