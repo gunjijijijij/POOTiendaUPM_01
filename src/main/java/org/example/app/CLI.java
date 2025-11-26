@@ -78,20 +78,31 @@ public class CLI {
     // Imprime el guía de comandos
     private void help () {
         System.out.println("Commands:");
-        System.out.println(" prod add <id> \"<name>\" <category> <price>");
-        System.out.println(" prod list");
-        System.out.println(" prod update <id> NAME|CATEGORY|PRICE <value>");
-        System.out.println(" prod remove <id>");
-        System.out.println(" ticket new");
-        System.out.println(" ticket add <prodId> <quantity>");
-        System.out.println(" ticket remove <prodId>");
-        System.out.println(" ticket print");
-        System.out.println(" echo \"<text>\"");
-        System.out.println(" help");
-        System.out.println(" exit");
-        System.out.println(" \nCategories: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
-        System.out.println("Discounts if there are ≥2 units in the category: MERCH 0%, STATIONERY 5%, CLOTHES 7%, BOOK 10%,\n" +
-                "ELECTRONICS 3%.");
+        System.out.println("  client add \"<nombre>\" <DNI> <email> <cashId>");
+        System.out.println("  client remove <DNI>");
+        System.out.println("  client list");
+        System.out.println("  cash add [<id>] \"<nombre>\"<email>");
+        System.out.println("  cash remove <id>");
+        System.out.println("  cash list");
+        System.out.println("  cash tickets <id>");
+        System.out.println("  ticket new [<id>] <cashId> <userId>");
+        System.out.println("  ticket add <ticketId><cashId> <prodId> <amount> [--p<txt> --p<txt>]");
+        System.out.println("  ticket remove <ticketId><cashId> <prodId>");
+        System.out.println("  ticket print <ticketId> <cashId>");
+        System.out.println("  ticket list");
+        System.out.println("  prod add <id> \"<name>\" <category> <price>");
+        System.out.println("  prod update <id> NAME|CATEGORY|PRICE <value>");
+        System.out.println("  prod addFood [<id>] \"<name>\" <price> <expiration:yyyy-MM-dd> <max_people>");
+        System.out.println("  prod addMeeting [<id>] \"<name>\" <price> <expiration:yyyy-MM-dd> <max_people>");
+        System.out.println("  prod list");
+        System.out.println("  prod remove <id>");
+        System.out.println("  help");
+        System.out.println("  echo “<text>”");
+        System.out.println("  exit");
+        System.out.println();
+        System.out.println("Categories: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
+        System.out.println("Discounts if there are ≥2 units in the category: MERCH 0%, STATIONERY 5%, CLOTHES 7%, BOOK 10%, ELECTRONICS 3%.");
+        System.out.println();
     }
 
     // Repite el texto entre comillas
