@@ -23,8 +23,8 @@ public abstract class User {
         return email;
     }
 
-    public void setDni(String dni) {
-        this.id = dni;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setEmail(String email) {
@@ -33,12 +33,5 @@ public abstract class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public abstract String getType();
-
-    @Override
-    public String toString() {
-        return "{class: " + getType() + ", id: '" + id + "', name: '" + name + "', email: '" + email + "'}";
     }
 }

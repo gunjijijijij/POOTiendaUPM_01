@@ -55,6 +55,7 @@ public class CashierController {
         }
 
         cashiers.remove(found);
+        System.out.println("cash remove: ok");
     }
 
     public void list(){
@@ -62,7 +63,7 @@ public class CashierController {
         for (Cashier cash : cashiers){
             System.out.println(cash.toString());
         }
-        System.out.println("Cash list: ok");
+        System.out.println("cash list: ok");
     }
 
     public void tickets(String id) {

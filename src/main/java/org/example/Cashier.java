@@ -17,14 +17,8 @@ public class Cashier extends User {
         super(CashierIdGenerator.validateId(id), name, email);
     }
 
-    @Override
-    public String getType() {
-        return "Cashier";
-    }
-
     public String toString(){
-        return "Cash {identifier ='" + getId() + "', name = '" + getName() + "', email = '"
-                + getEmail() + "'}";
+        return "Cash{identifier='" + getId() + "', name='" + getName() + "', email='" + getEmail() + "'}";
     }
 
     public List<Ticket> getTickets(){
