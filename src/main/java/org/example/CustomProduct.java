@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomProduct extends Product {
-    private List<String> customtexts;
+    private static List<String> customtexts;
 
     public CustomProduct(int id, String name, Category category, float price, Integer maxPers) {
         super(id, name, category, price, maxPers);
         this.customtexts = new ArrayList<>();
     }
 
-    public void addCustomText(String text) {
+    public static void addCustomText(String text) {
 
         if (customtexts.size() >= maxPers) {
             throw new IllegalArgumentException("Maximum custom texts reached: " + maxPers);
@@ -20,16 +20,12 @@ public class CustomProduct extends Product {
         calculatePrice();
     }
 
-    private void calculatePrice() {
-        this.price = super.price + (super.price * (float) 0.10 * customtexts.size());
+    private static void calculatePrice() {
+       // this.price = super.price + (super.price * (float) 0.10 * customtexts.size());
     }
 
     public List<String> getCustomtexts() {
         return new ArrayList<>(customtexts);
-    }
-
-    public int getMaxCustomtexts() {
-        return maxPers;
     }
 
     @Override

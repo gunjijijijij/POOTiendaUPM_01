@@ -11,21 +11,16 @@ import java.time.format.DateTimeFormatter;
 public class TicketIdGenerator {
     private static final Random random = new Random();
 
-    private static String generateOpenTicketId(String ticketId){
-        String id = (ticketId != null && !ticketId.isEmpty())
-                ? ticketId
-                : generateRandomNumber();
-
-
+    public static String generateOpenTicketId(){
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd-HH:mm-");
 
         String formatDate = now.format(formatter);
 
-        return formatDate + id;
+        return formatDate + generateRandomNumber();
     }
 
-    private static String generateCloseTicketId(String ticketId){
+    public static String generateCloseTicketId(String ticketId){
         if (ticketId == null) return null;
 
         LocalDateTime now = LocalDateTime.now();

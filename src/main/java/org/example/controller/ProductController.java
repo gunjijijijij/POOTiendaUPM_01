@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ProductController {
     private static final int MAX_PRODUCTS = 200;
-    private static List<Product> products = new ArrayList<>();
+    private static ArrayList<Product> products = new ArrayList<>();
 
     // Añade un nuevo producto al catálogo si no existe otro con el mismo id
     private static void addProduct(int id, String name, Category category, float price, Integer maxPers) {

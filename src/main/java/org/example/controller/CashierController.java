@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CashierController {
-    private static final List<Cashier> cashiers = new ArrayList<>();
+    private static final ArrayList<Cashier> cashiers = new ArrayList<>();
 
-    public List<Cashier> getCashiers() {
+    public ArrayList<Cashier> getCashiers() {
         return cashiers;
     }
 

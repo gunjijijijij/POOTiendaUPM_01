@@ -63,19 +63,13 @@ public class Utils {
         return Integer.toString(number);
     }
 
-    public static String getCurrentDateTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd-HH:mm");
-        LocalDateTime now = LocalDateTime.now();
-        return now.format(formatter);
-    }
 
-    public static List<String> parseCustomTexts(String command) {
-        List<String> customTexts = new ArrayList<>();
+    public static ArrayList<String> parseCustomTexts(String command) {
+        ArrayList<String> customTexts = new ArrayList<>();
 
-        // Split at "--p"
         String[] parts = command.split("--p");
 
-        // parts[0] is everything before the first --p, ignore it
+
         for (int i = 1; i < parts.length; i++) {
             String txt = parts[i].trim();
             if (!txt.isEmpty()) {

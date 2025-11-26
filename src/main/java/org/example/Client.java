@@ -1,8 +1,11 @@
 package org.example;
 
+import java.util.ArrayList;
+
 public class Client extends User {
     private Cashier registeredBy;
     private String dni;
+    ArrayList<Ticket> tickets = new ArrayList<>();
 
     public Client(String dni, String name, String email, Cashier registeredBy) {
         super(dni, name, email);
@@ -15,6 +18,10 @@ public class Client extends User {
 
     public String getDni() {
         return dni;
+    }
+
+    public ArrayList<Ticket> getTickets() {
+        return tickets;
     }
 
     @Override

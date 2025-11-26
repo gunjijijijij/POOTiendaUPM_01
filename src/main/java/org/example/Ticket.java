@@ -1,13 +1,14 @@
 package org.example;
 import org.example.controller.ProductController;
-import org.example.util.Utils;
+import org.example.util.TicketIdGenerator;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import org.example.util.Utils;
+
 
 public class Ticket {
     private String id;
-    private final int MAX_SIZE = 100;
+    private static final int MAX_SIZE = 100;
     private static List<Product> lines = new ArrayList<>();
 
     public enum Status {
@@ -16,10 +17,10 @@ public class Ticket {
         CLOSED
     }
 
-    private Status status;
+    private static Status status;
 
     public Ticket() {
-        this.id = Utils.getCurrentDateTime() + ThreadLocalRandom.current().nextInt(10000, 100000);
+        this.id = TicketIdGenerator.generateOpenTicketId();
         this.status = Status.VACIO;
     }
 
@@ -37,7 +38,7 @@ public class Ticket {
     }
 
     // Añade una cantidad x de un producto al ticket mientras no estuviera lleno
-    private void addProductTicket(Product product, int quantity, List<String> customTexts) {
+    public static void addProductTicket(Product product, int quantity, ArrayList<String> customTexts) {
         if (product == null) {
             System.err.println("ticket add: error (product doesn't exist)");
             return;
@@ -74,11 +75,11 @@ public class Ticket {
             lines.add(product);
         }
 
-        this.status = Status.OPEN;
+       status = Status.OPEN;
     }
 
     // Elimina todas las apariciones de un producto existente en el ticket
-    private static boolean ticketRemove(int productId) {
+    public static boolean ticketRemove(int productId) {
         boolean found = false;
 
         for (int i = lines.size() - 1; i >= 0; i--) {
@@ -132,7 +133,7 @@ public class Ticket {
     }
 
     public void closeTicket(){
-        id = this.id + Utils.getCurrentDateTime();
+        id = TicketIdGenerator.generateCloseTicketId(id);
         this.status = Status.CLOSED;
     }
 

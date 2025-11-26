@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Objects;
 
 public class ClientController {
-    private final List<Client> clients = new ArrayList<>();
+    private static final ArrayList<Client> clients = new ArrayList<>();
 
-    public List<Client> getClients(){
+    public ArrayList<Client> getClients(){
         return clients;
     }
 
-    public Client findClientById(String id){
+    public static Client findClientById(String id){
         for (Client client : clients) {
             if (Objects.equals(client.getId(), id)) {
                 return client;
