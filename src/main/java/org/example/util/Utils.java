@@ -1,4 +1,5 @@
 package org.example.util;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -84,5 +85,15 @@ public class Utils {
 
         return customTexts;
     }
-
+    public static LocalDate parseExpirationDate(String date) {
+        try {
+            return LocalDate.parse(date);
+        } catch (Exception e) {
+            System.err.println("Invalid date format. Use yyyy-MM-dd");
+            return null;
+        }
+    }
+    public static boolean isValidFoodCreation(LocalDate expiration) {
+        return LocalDate.now().plusDays(3).isBefore(expiration);
+    }
 }

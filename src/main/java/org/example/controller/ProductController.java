@@ -2,10 +2,13 @@ package org.example.controller;
 
 import org.example.Category;
 import org.example.CustomProduct;
+import org.example.FoodProduct;
 import org.example.Product;
+import org.example.util.ProductIdGenerator;
 import org.example.util.Utils;
 import org.example.exceptions.Validators;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,7 +132,10 @@ public class ProductController {
         Validators.requirePositiveInt(id, "The ID must be a positive integer.");
 
         String name = Utils.joinQuoted(args, 3, args.length - 2).trim();
-        if (name.isEmpty()) {System.err.println("The name is empty."); return; }
+        if (name.isEmpty()) {
+            System.err.println("The name is empty.");
+            return;
+        }
 
         Category cat = Utils.parseCategory(args[args.length - 2]);
         if (cat == null) return;
@@ -158,7 +164,10 @@ public class ProductController {
             case "NAME":
                 if (Utils.requireMinArgs(args, 5, "Usage: prod update <id> NAME \"<new name>\"")) return;
                 String newName = Utils.joinQuoted(args, 4, args.length).trim();
-                if (newName.isEmpty()) {System.err.println("The name is empty"); return; }
+                if (newName.isEmpty()) {
+                    System.err.println("The name is empty");
+                    return;
+                }
                 prodUpdate(id, field, newName);
                 break;
 
@@ -176,7 +185,55 @@ public class ProductController {
                 prodUpdate(id, field, Float.toString(newPrice));
                 break;
 
-            default: System.err.println("Field not supported. Use NAME, CATEGORY, or PRICE."); break;
+            default:
+                System.err.println("Field not supported. Use NAME, CATEGORY, or PRICE.");
+                break;
         }
     }
+
+    public void handleProdAddFood(String[] args) {
+        if (Utils.requireMinArgs(args, 6, "Usage: prod addFood [<id>] \"<name>\" <price> <expiration:yyyy-MM-dd> <max_people>")) {
+            return;
+        }
+        Integer id = null;
+        int index = 2;
+        if (!args[2].startsWith("\"")) { //recordar que el id es opcional en food product
+            id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
+            if (id == null) return;
+            index = 3;
+        }
+        String name = Utils.joinQuoted(args, index, args.length - 3);
+        if (name.isEmpty()) {
+            System.err.println("The name is empty.");
+            return;
+        }
+        Float price = Utils.parseNonNegativeFloat(args[args.length - 3]);
+        if (price == null) return;
+
+        LocalDate expiration = Utils.parseExpirationDate(args[args.length - 2]);
+        if (expiration == null) return;
+
+        Integer maxPeople = Utils.parsePositiveInt(args[args.length - 1], "Max people must be between 1 and 100");
+        if (maxPeople == null) return;
+        if (maxPeople < 1 || maxPeople > 100) {
+            System.err.println("Max people must be between 1 and 100");
+            return;
+        }
+        if (!Utils.isValidFoodCreation(expiration)) {
+            System.err.println("Food product requires at least 3 days planning");
+            return;
+        }
+        addFoodProduct(id,name,price,expiration,maxPeople);
+    }
+    private void addFoodProduct(Integer id, String name, float price, LocalDate expiration, int maxPeople){
+        int finalid = (id!=null) ? id : ProductIdGenerator.generateId();
+        if(findProductById(finalid) != null){
+            throw new IllegalArgumentException("Product ID " + finalid + " already exists");
+        }
+        FoodProduct product = new FoodProduct(finalid,name, price, expiration, maxPeople);
+        products.add(product);
+        System.out.println(product);
+        System.out.println("prod addFood: ok");
+    }
+
 }

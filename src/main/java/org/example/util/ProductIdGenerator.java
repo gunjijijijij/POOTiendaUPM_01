@@ -13,7 +13,7 @@ public class ProductIdGenerator { //clase similar a cashier
             available.add(i);
         }
     }
-    private static int generateId() {
+    public static int generateId() {
         if (available.isEmpty()) {
             throw new IllegalStateException("No more product IDs available!");
         }
