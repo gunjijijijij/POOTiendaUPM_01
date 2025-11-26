@@ -11,11 +11,11 @@ import java.util.Objects;
 public class ClientController {
     private static final ArrayList<Client> clients = new ArrayList<>();
 
-    public ArrayList<Client> getClients(){
+    public ArrayList<Client> getClients() {
         return clients;
     }
 
-    public static Client findClientById(String id){
+    public static Client findClientById(String id) {
         for (Client client : clients) {
             if (Objects.equals(client.getId(), id)) {
                 return client;
@@ -24,20 +24,32 @@ public class ClientController {
         return null;
     }
 
-    public void handleClientAdd(String[] args){
+    public void handleClientAdd(String[] args) {
         if (Utils.requireMinArgs(args, 5, "Usage: client add \"<name>\" <DNI> <email> <cashId>")) return;
 
         String name = Utils.joinQuoted(args, 2, args.length - 3).trim();
-        if (name.isEmpty()) {System.err.println("The name is empty."); return; }
+        if (name.isEmpty()) {
+            System.err.println("The name is empty.");
+            return;
+        }
 
-        String dni = Utils.joinQuoted(args, args.length - 3, args.length - 3).trim();
-        if (dni.isEmpty()) { System.out.println("The dni is empty."); return; }
+        String dni = args[3];
+        if (dni.isEmpty()) {
+            System.out.println("The dni is empty.");
+            return;
+        }
 
-        String email = Utils.joinQuoted(args, args.length - 2, args.length - 2).trim();
-        if (email.isEmpty()){ System.out.println("The email is empty."); return; }
+        String email = args[4];
+        if (email.isEmpty()) {
+            System.out.println("The email is empty.");
+            return;
+        }
 
-        String cashId = Utils.joinQuoted(args, args.length - 1, args.length - 1).trim();
-        if (cashId.isEmpty()){ System.out.println("The cashId is empty"); return; }
+        String cashId = args[5];
+        if (cashId.isEmpty()) {
+            System.out.println("The cashId is empty");
+            return;
+        }
 
         Cashier cashier = CashierController.findCashById(cashId);
         if (cashier == null) {
@@ -57,14 +69,20 @@ public class ClientController {
         }
     }
 
-    public void handleClientRemove(String[] args){
+    public void handleClientRemove(String[] args) {
         if (Utils.requireMinArgs(args, 3, "Usage: client remove <id>")) return;
 
         String id = Utils.joinQuoted(args, 2, args.length - 1).trim();
-        if (id.isEmpty()) { System.out.println("The identifier is empty."); return;}
+        if (id.isEmpty()) {
+            System.out.println("The identifier is empty.");
+            return;
+        }
 
         Client found = findClientById(id);
-        if (found == null) {System.err.println("client remove: error (no client with that ID)"); return;}
+        if (found == null) {
+            System.err.println("client remove: error (no client with that ID)");
+            return;
+        }
 
         try {
             clients.remove(found);
@@ -75,10 +93,10 @@ public class ClientController {
         }
     }
 
-    public void list(){
+    public void list() {
         System.out.println("Client:");
         System.out.println("Client:");
-        for (Client client : clients){
+        for (Client client : clients) {
             System.out.println(client.toString());
         }
         System.out.println("Cash list: ok");
