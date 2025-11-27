@@ -13,21 +13,6 @@ public class ProductController {
     private static final int MAX_PRODUCTS = 200;
     private static ArrayList<Product> products = new ArrayList<>();
 
-    // Añade un nuevo producto al catálogo si no existe otro con el mismo id
-    private static void addProduct(int id, String name, Category category, float price, Integer maxPers) {
-        Validators.requirePositiveInt(id, "The ID must be a positive integer");
-        Validators.requireValidProductName(name);
-        Validators.requireValidCategory(category);
-        Validators.requireValidPrice(price);
-        Validators.requireCapacityNotExceeded(products.size(), MAX_PRODUCTS);
-
-        Product product = createProduct(id, name, category, price, maxPers);
-        products.add(product);
-
-        System.out.println(product);
-        System.out.println("prod add: ok");
-    }
-
     // Imprime los productos existentes en el catálogo
     public void prodList() {
         System.out.println("Catalog:");
@@ -49,7 +34,6 @@ public class ProductController {
         }
     }
 
-
     // Cambia el nombre, la categoría o el precio de un producto
     public static void prodUpdate(int id, String updateType, String newValue) {
         Product product = findProductById(id);
@@ -68,7 +52,7 @@ public class ProductController {
                     product.setPrice(Float.parseFloat(newValue));
                     break;
             }
-            System.out.println(product.toString());
+            System.out.println(product);
             System.out.println("prod update: ok");
 
         } catch (IllegalArgumentException exception) {
@@ -84,13 +68,6 @@ public class ProductController {
             }
         }
         return null;
-    }
-
-    private static Product createProduct(int id, String name, Category category, float price, Integer maxPers) {
-        if (maxPers != null) {
-            return new CustomProduct(id, name, category, price, maxPers);
-        }
-        return new Product(id, name, category, price, null);
     }
 
     // Procesa el comando "prod remove": verifica los argumentos,
@@ -121,30 +98,57 @@ public class ProductController {
     // maneja los errores correspondientes y utiliza ProductController
     // para añadir el nuevo producto al catálogo.
     public void handleProdAdd(String[] args) {
-        if (Utils.requireMinArgs(args, 5, "Usage: prod add <id> \"<name>\" <category> <price>")) return;
+        if (Utils.requireMinArgs(args, 5,
+                "Usage: prod add <id> \"<name>\" <category> <price> [<maxPers>]")) return;
 
+        // id siempre en args[2]
         Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
         if (id == null) return;
 
-        Validators.requirePositiveInt(id, "The ID must be a positive integer.");
+        // ¿Hay maxPers?
+        boolean hasMaxPers = (args.length >= 7);
 
-        String name = Utils.joinQuoted(args, 3, args.length - 2).trim();
+        // Índices de category, price y maxPers según el caso
+        int idxCategory;
+        int idxPrice;
+        int idxMaxPers = -1;
+
+        if (hasMaxPers) {
+            idxCategory = args.length - 3;
+            idxPrice    = args.length - 2;
+            idxMaxPers  = args.length - 1;
+        } else {
+            idxCategory = args.length - 2;
+            idxPrice    = args.length - 1;
+        }
+
+        // name: todo lo que va entre id y category
+        String name = Utils.joinQuoted(args, 3, idxCategory - 1).trim();
         if (name.isEmpty()) {
             System.err.println("The name is empty.");
             return;
         }
 
-        Category cat = Utils.parseCategory(args[args.length - 2]);
-        if (cat == null) return;
+        Category category = Utils.parseCategory(args[idxCategory]);
+        if (category == null) return;
 
-        Float price = Utils.parseNonNegativeFloat(args[args.length - 1]);
+        Float price = Utils.parseNonNegativeFloat(args[idxPrice]);
         if (price == null) return;
 
-        try {
-            addProduct(id, name, cat, price, null);
-        } catch (IllegalArgumentException e) {
-            System.err.println("prod add: error (" + e.getMessage() + ")");
+        Integer maxPers = null;
+        if (hasMaxPers) {
+            maxPers = Utils.parsePositiveInt(args[idxMaxPers],
+                    "maxPers must be a positive integer.");
+            if (maxPers == null) return;
         }
+
+        Product product;
+        product = new CustomProduct(id, name, category, price, maxPers);
+
+        products.add(product);
+
+        System.out.println(product);
+        System.out.println("prod add: ok");
     }
 
     // Procesa el comando "prod update": verifica los argumentos, validando el tipo de actualización,
