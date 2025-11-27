@@ -85,12 +85,21 @@ public class TicketController {
                 "The product ID must be a positive integer.");
         if (productId == null) return;
 
+        Product product = ProductController.findProductById(productId);
+        if (product == null) {
+            System.err.println("ticket add: error (product with ID " + productId + " not found)");
+            return;
+        }
+
         Integer quantity = Utils.parsePositiveInt(quantityStr,
                 "Quantity must be a positive integer.");
         if (quantity == null) return;
 
         String fullCommand = String.join(" ", args);
-        ArrayList<String> customTexts = Utils.parseCustomTexts(fullCommand);
+        ArrayList<String> customTexts = new ArrayList<>();
+        if (product.esPersonalizable()){
+            customTexts = Utils.parseCustomTexts(fullCommand);
+        }
 
         if (!Cashier.isTicketOfCash(cashId)) {
             System.err.println("Error: This cashier cannot access the ticket");
@@ -103,14 +112,8 @@ public class TicketController {
             return;
         }
 
-        Product product = ProductController.findProductById(productId);
-        if (product == null) {
-            System.err.println("ticket add: error (product with ID " + productId + " not found)");
-            return;
-        }
-
         try {
-            ticket.addProductTicket(product, quantity, customTexts);
+            Ticket.addProductTicket(product, quantity, customTexts);
             ticket.print();
             System.out.println("ticket add: ok");
 

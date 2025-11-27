@@ -69,9 +69,14 @@ public class Utils {
 
         String[] parts = command.split("--p");
 
-
         for (int i = 1; i < parts.length; i++) {
             String txt = parts[i].trim();
+
+            int spaceIndex = txt.indexOf(' ');
+            if (spaceIndex != -1) {
+                txt = txt.substring(0, spaceIndex);
+            }
+
             if (!txt.isEmpty()) {
                 customTexts.add(txt);
             }
@@ -79,6 +84,7 @@ public class Utils {
 
         return customTexts;
     }
+
     public static LocalDate parseExpirationDate(String date) {
         try {
             return LocalDate.parse(date);

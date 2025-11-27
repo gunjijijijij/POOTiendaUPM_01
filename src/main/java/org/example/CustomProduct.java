@@ -4,28 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomProduct extends Product {
-    private static ArrayList<String> customtexts = new ArrayList<>();
+    private final int maxPers;
+    private final List<String> customTexts = new ArrayList<>();
 
-    public CustomProduct(int id, String name, Category category, float price, Integer maxPers) {
-        super(id, name, category, price, maxPers);
-
+    public CustomProduct(int id, String name, Category category, float price, int maxPers) {
+        super(id, name, category, price, null);
+        this.maxPers = maxPers;
     }
 
-    public static void addCustomText(String text) {
-        if (customtexts.size() >= maxPers) {
+    public void addCustomText(String text) {
+        if (customTexts.size() >= maxPers) {
             throw new IllegalArgumentException("Maximum custom texts reached: " + maxPers);
         }
-
-        customtexts.add(text.trim());
+        customTexts.add(text.trim());
     }
-
     public List<String> getCustomtexts() {
-        return new ArrayList<>(customtexts);
+        return new ArrayList<>(customTexts);
     }
 
     @Override
     public float getPrice() {
-        return super.getPrice() * (1 + (0.10f * customtexts.size()));
+        return super.getPrice() * (1 + (0.10f * customTexts.size()));
     }
 
     public String getType() {
@@ -43,6 +42,6 @@ public class CustomProduct extends Product {
     }
 
     public void clearCustomTexts() {
-        customtexts.clear();
+        customTexts.clear();
     }
 }

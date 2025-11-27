@@ -5,7 +5,7 @@ public class Product {
     protected String name;
     protected Category category;
     protected float price;
-    protected static Integer maxPers;
+    protected Integer maxPers;
 
     public Product(Integer id, String name, Category category, float price, Integer maxPers) {
         this.id = id;
