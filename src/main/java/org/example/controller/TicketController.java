@@ -70,10 +70,8 @@ public class TicketController {
         System.out.println("ticket new: " + ticketId);
     }
 
-
-
     public void handleTicketAdd(String[] args) {
-        if (Utils.requireMinArgs(args, 5,
+        if (Utils.requireMinArgs(args, 6,
                 "Usage: ticket add <ticketId> <cashId> <prodId> <quantity> [--pTXT --pTXT]"))
             return;
 

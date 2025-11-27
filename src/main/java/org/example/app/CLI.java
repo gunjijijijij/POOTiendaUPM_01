@@ -2,6 +2,7 @@ package org.example.app;
 import org.example.*;
 import org.example.controller.ClientController;
 import org.example.controller.ProductController;
+import org.example.controller.TicketController;
 import org.example.util.Utils;
 import org.example.controller.CashierController;
 
@@ -11,9 +12,8 @@ public class CLI {
     // Controladores principales
     private final ProductController productController = new ProductController();
     private final CashierController cashierController = new CashierController();
-
     private final ClientController clientController = new ClientController();
-    private Ticket currentTicket;
+    private final TicketController ticketController = new TicketController();
 
     public void start() {
         init(); // Mensaje inicial
@@ -26,8 +26,8 @@ public class CLI {
             String line = sc.nextLine().trim();
             if (line.isEmpty()) continue;
 
-            String[] commandUni = line.split(" ");
-            String cmd = commandUni[0].toLowerCase(); // Primera palabra = comando tipo help, echo, prod, ticket o exit
+            String[] commandUni = line.split("\\s+");
+            String cmd = commandUni[0].toLowerCase(); // normalizado a minúsculas
 
             switch (cmd) {
                 case "help":
@@ -124,76 +124,61 @@ public class CLI {
     }
 
     // Maneja los subcomandos relacionados con productos
-    private void handleProdCommand (String[]args){
-        if (Utils.requireMinArgs(args, 2, "Use: prod <add|list|update|remove> ...")) return;
+    private void handleProdCommand (String[] args){
+        if (Utils.requireMinArgs(args, 2,
+                "Use: prod <add|addFood|addMeeting|list|update|remove> ...")) return;
 
-        switch (args[1].toLowerCase()) {
-            case "add": {
+        String sub = args[1].toLowerCase();
+
+
+        switch (sub) {
+            case "add":
                 productController.handleProdAdd(args);
                 break;
-            }
-            case "addfood": {
+            case "addfood":
                 productController.handleProdAddFood(args);
                 break;
-            }
-            case "addmeeting": {
+            case "addmeeting":
                 productController.handleProdAddMeeting(args);
                 break;
-            }
-            case "list": {
+            case "list":
                 productController.prodList();
                 System.out.println("prod list: ok");
                 break;
-            }
-
-            case "update": {
+            case "update":
                 productController.handleProdUpdate(args);
                 break;
-            }
-
-            case "remove": {
+            case "remove":
                 productController.handleProdRemove(args);
                 break;
-            }
-
-            default: {
+            default:
                 System.err.println("Subcommand not found. Use: add | addFood | addMeeting | list | update | remove");
                 break;
-            }
         }
     }
+
+
 
     // Maneja los subcomandos relacionados con tickets
     private void handleTicketCommand (String[]args){
         if (Utils.requireMinArgs(args, 2, "ticket command needs two parameters \"\"ticket \"<add|list|update|remove> ...\" \"\"")) return;
 
+
         switch (args[1].toLowerCase()) {
             case "new":
-                currentTicket = new Ticket();
+                ticketController.handleTicketAdd(args);
                 break;
 
             case "add":
-                if (currentTicket == null) {
-                    System.err.println("ticket add: error (no open ticket, use: ticket new)");
-                    break;
-                }
-               // currentTicket.handleTicketAdd(args);
+                ticketController.handleTicketAdd(args);
                 break;
 
             case "remove":
-                if (currentTicket == null) {
-                    System.err.println("ticket remove: error (no open ticket, use: ticket new)");
-                    break;
-                }
-                //currentTicket.handleTicketRemove(args);
+                ticketController.handleTicketRemove(args);
                 break;
 
             case "print":
-                if (currentTicket == null) {
-                    System.err.println("ticket print: error (no open ticket, use: ticket new)");
-                    break;
-                }
-                currentTicket.print();
+                ticketController.handleTicketPrint(args);
                 System.out.println("ticket print: ok");
                 break;
 
