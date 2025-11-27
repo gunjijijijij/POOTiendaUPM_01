@@ -170,7 +170,7 @@ public class CLI {
                     System.err.println("ticket add: error (no open ticket, use: ticket new)");
                     break;
                 }
-                currentTicket.handleTicketAdd(args);
+               // currentTicket.handleTicketAdd(args);
                 break;
 
             case "remove":
@@ -178,7 +178,7 @@ public class CLI {
                     System.err.println("ticket remove: error (no open ticket, use: ticket new)");
                     break;
                 }
-                currentTicket.handleTicketRemove(args);
+                //currentTicket.handleTicketRemove(args);
                 break;
 
             case "print":

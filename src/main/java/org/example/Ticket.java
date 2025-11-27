@@ -39,6 +39,10 @@ public class Ticket {
 
     // Añade una cantidad x de un producto al ticket mientras no estuviera lleno
     public static void addProductTicket(Product product, int quantity, ArrayList<String> customTexts) {
+        if (status == Status.CLOSED) {
+            throw new IllegalStateException("ticket add: error (ticket is closed)");
+        }
+
         if (product == null) {
             System.err.println("ticket add: error (product doesn't exist)");
             return;
@@ -81,6 +85,11 @@ public class Ticket {
     // Elimina todas las apariciones de un producto existente en el ticket
     public static boolean ticketRemove(int productId) {
         boolean found = false;
+        if (status == Status.CLOSED) {
+            System.err.println("ticket remove: error (ticket is closed)");
+            return false;
+        }
+
 
         for (int i = lines.size() - 1; i >= 0; i--) {
             if (lines.get(i).getId() == productId) {
@@ -140,50 +149,12 @@ public class Ticket {
     // Procesa el comando "ticket remove": verifica los argumentos,
     // maneja los errores correspondientes y utiliza Ticket
     // para eliminar todas las apariciones del producto del ticket.
-    public void handleTicketRemove(String[] args) {
-        if (Utils.requireMinArgs(args, 3, "Usage: ticket remove <prodId>")) return;
 
-        String idString = args[2];
-        Integer removeId = Utils.parsePositiveInt(idString, "The ID must be a positive integer.");
-        if (removeId == null) return;
-
-        boolean success = ticketRemove(removeId);
-        if (success) {
-            print();
-            System.out.println("ticket remove: ok");
-        } else {
-            System.err.println("ticket remove: error (no product found with that ID)");
-        }
-    }
 
     // Procesa el comando "ticket add": verifica los argumentos,
     // maneja los errores correspondientes y utiliza Ticket
     // para añadir el producto al Ticket.
-    public void handleTicketAdd(String[] args) {
-        if (Utils.requireMinArgs(args, 4, "Please input all the necessary arguments")) return;
 
-        String idString = args[2];
-        Integer addId = Utils.parsePositiveInt(idString, "The ID must be a positive integer.");
-        if (addId == null) return;
-
-        Integer quantity = Utils.parsePositiveInt(args[3], "The quantity must be a positive integer");
-        if (quantity == null) return;
-
-        Product product = ProductController.findProductById(addId);
-
-        if (product == null) {
-            System.err.println("ticket add: error (product with ID " + addId + " not found)");
-            return;
-        }
-
-        try {
-            //addProductTicket(product, quantity);
-            print();
-            System.out.println("ticket add: ok");
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-    }
 
     // Imprime el contenido del ticket
     public void print() {

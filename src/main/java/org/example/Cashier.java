@@ -24,4 +24,13 @@ public class Cashier extends User {
     public List<Ticket> getTickets(){
         return tickets;
     }
+
+    public static boolean isTicketOfCash(String ticketId){
+        for  (Ticket ticket : tickets){
+            if(ticket.getId().equals(ticketId)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

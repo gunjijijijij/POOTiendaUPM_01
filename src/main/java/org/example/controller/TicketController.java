@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.*;
 
+import org.example.util.TicketIdGenerator;
 import org.example.util.Utils;
 
 import java.util.ArrayList;
@@ -19,37 +20,162 @@ public class TicketController {
         return null;
     }
 
-    public void ticketNew(String cashId, String userId){
-        Ticket ticket = new Ticket();
-        Cashier currentCash = CashierController.findCashById(cashId);
-        currentCash.getTickets().add(ticket);
-        Client currentClient = ClientController.findClientById(userId);
-        currentClient.getTickets().add(ticket);
-    }
+    public void handleTicketNew(String[] args) {
+        if (args.length < 4) {
+            System.err.println("Usage: ticket new [<id>] <cashId> <userId>");
+            return;
+        }
 
-    public void ticketAdd(String ticketId, String cashId, int prodId, int amount, String customT) {
-        Product currentProd = ProductController.findProductById(prodId);
-        ArrayList<String> customTexts = Utils.parseCustomTexts(customT);
-        if (currentProd.esPersonalizable()) {
-            for (String customText : customTexts) {
-                CustomProduct.addCustomText(customText);
+        String ticketId;
+        String cashId;
+        String userId;
+
+        if (args.length == 4) {
+            cashId = args[2];
+            userId = args[3];
+
+            do {
+                ticketId = TicketIdGenerator.generateOpenTicketId();
+            } while (TicketController.findTicketById(ticketId) != null);
+
+        } else {
+            ticketId = args[2];
+            cashId = args[3];
+            userId = args[4];
+
+            if (TicketController.findTicketById(ticketId) != null) {
+                System.err.println("ticket new: error (ticket id already exists)");
+                return;
             }
         }
-        //no entiedno porque se pasa cashid como argumento si en teoria el cash ya deberia tener constancia de
-        //sus propios tickets
-        Cashier currentCash = CashierController.findCashById(cashId);
-        Ticket currentTicket = TicketController.findTicketById(ticketId);
-        currentTicket.addProductTicket(currentProd, amount, customTexts);
+
+        Cashier cashier = CashierController.findCashById(cashId);
+        if (cashier == null) {
+            System.err.println("ticket new: error (cashier not found)");
+            return;
+        }
+
+        Client client = ClientController.findClientById(userId);
+        if (client == null) {
+            System.err.println("ticket new: error (client not found)");
+            return;
+        }
+
+        Ticket ticket = new Ticket();
+
+        cashier.getTickets().add(ticket);
+        client.getTickets().add(ticket);
+        tickets.add(ticket);
+
+        System.out.println("ticket new: " + ticketId);
     }
 
-    public void ticketDelete(String ticketId, String cashId, int prodId) {
-        Cashier currentCash = CashierController.findCashById(cashId);
-        Ticket currentTicket = TicketController.findTicketById(ticketId);
-        if(Ticket.ticketRemove(prodId)){
-            System.out.println(
-            );
 
+
+    public void handleTicketAdd(String[] args) {
+        if (Utils.requireMinArgs(args, 5,
+                "Usage: ticket add <ticketId> <cashId> <prodId> <quantity> [--pTXT --pTXT]"))
+            return;
+
+        String ticketId = args[2];
+        String cashId   = args[3];
+        String prodId   = args[4];
+        String quantityStr = args[5];
+
+
+        Integer productId = Utils.parsePositiveInt(prodId,
+                "The product ID must be a positive integer.");
+        if (productId == null) return;
+
+        Integer quantity = Utils.parsePositiveInt(quantityStr,
+                "Quantity must be a positive integer.");
+        if (quantity == null) return;
+
+        String fullCommand = String.join(" ", args);
+        ArrayList<String> customTexts = Utils.parseCustomTexts(fullCommand);
+
+        if (!Cashier.isTicketOfCash(cashId)) {
+            System.err.println("Error: This cashier cannot access the ticket");
+            return;
         }
+
+        Ticket ticket = TicketController.findTicketById(ticketId);
+        if (ticket == null) {
+            System.err.println("ticket add: error (ticket does not exist)");
+            return;
+        }
+
+        Product product = ProductController.findProductById(productId);
+        if (product == null) {
+            System.err.println("ticket add: error (product with ID " + productId + " not found)");
+            return;
+        }
+
+        try {
+            ticket.addProductTicket(product, quantity, customTexts);
+            ticket.print();
+            System.out.println("ticket add: ok");
+
+        } catch (Exception e) {
+            System.err.println("ticket add: error (" + e.getMessage() + ")");
+        }
+    }
+
+
+    public void handleTicketRemove(String[] args) {
+        if (Utils.requireMinArgs(args, 5, "Usage: ticket remove <ticketId> <cashId> <prodId>"))
+            return;
+
+        String ticketId = args[2];
+        String cashId   = args[3];
+        String prodId   = args[4];
+
+        Integer productId = Utils.parsePositiveInt(prodId,
+                "The product ID must be a positive integer.");
+        if (productId == null) return;
+
+        // Check that cashier owns this ticket
+        if (!Cashier.isTicketOfCash(cashId)) {
+            System.err.println("Error: This cashier cannot access the ticket");
+            return;
+        }
+
+        Ticket ticket = TicketController.findTicketById(ticketId);
+        if (ticket == null) {
+            System.err.println("ticket remove: error (ticket does not exist)");
+            return;
+        }
+
+        boolean removed = ticket.ticketRemove(productId);
+
+        if (removed) {
+            ticket.print();     // show updated ticket
+            System.out.println("ticket remove: ok");
+        } else {
+            System.err.println("ticket remove: error (no product found with that ID)");
+        }
+    }
+
+    public void handleTicketPrint(String[] args) {
+
+        if (Utils.requireMinArgs(args, 4, "Usage: ticket print <ticketId> <cashId>"))
+            return;
+
+        String ticketId = args[2];
+        String cashId   = args[3];
+
+        if (!Cashier.isTicketOfCash(cashId)) {
+            System.err.println("Error: This cashier cannot access the ticket");
+            return;
+        }
+
+        Ticket ticket = TicketController.findTicketById(ticketId);
+        if (ticket == null) {
+            System.err.println("ticket print: error (ticket does not exist)");
+            return;
+        }
+        ticket.closeTicket();
+        ticket.print();
     }
 
 
