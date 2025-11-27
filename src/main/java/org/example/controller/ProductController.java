@@ -1,9 +1,6 @@
 package org.example.controller;
 
-import org.example.Category;
-import org.example.CustomProduct;
-import org.example.FoodProduct;
-import org.example.Product;
+import org.example.*;
 import org.example.util.ProductIdGenerator;
 import org.example.util.Utils;
 import org.example.exceptions.Validators;
@@ -226,7 +223,7 @@ public class ProductController {
         addFoodProduct(id,name,price,expiration,maxPeople);
     }
     private void addFoodProduct(Integer id, String name, float price, LocalDate expiration, int maxPeople){
-        int finalid = (id!=null) ? id : ProductIdGenerator.generateId();
+        int finalid = (id!=null) ? id : ProductIdGenerator.generateId(); //si no existe id, lo genera
         if(findProductById(finalid) != null){
             throw new IllegalArgumentException("Product ID " + finalid + " already exists");
         }
@@ -235,5 +232,49 @@ public class ProductController {
         System.out.println(product);
         System.out.println("prod addFood: ok");
     }
+    public void handleProdAddMeeting(String[] args){
+        if (Utils.requireMinArgs(args, 6, "Usage: prod addMeeting [<id>] \"<name>\" <price> <expiration:yyyy-MM-dd> <max_people>")) {
+            return;
+        }
+        Integer id = null;
+        int index = 2;
+        if (!args[2].startsWith("\"")) { //recordar que el id es opcional, comprobamos si hay
+            id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
+            if (id == null) return;
+            index = 3;
+        }
+        String name = Utils.joinQuoted(args, index, args.length - 3);
+        if (name.isEmpty()) {
+            System.err.println("The name is empty.");
+            return;
+        }
+        Float price = Utils.parseNonNegativeFloat(args[args.length - 3]);
+        if (price == null) return;
 
-}
+        LocalDate expiration = Utils.parseExpirationDate(args[args.length - 2]);
+        if (expiration == null) return;
+
+        Integer maxPeople = Utils.parsePositiveInt(args[args.length - 1], "Max people must be between 1 and 100");
+        if (maxPeople == null) return;
+        if (maxPeople < 1 || maxPeople > 100) {
+            System.err.println("Max people must be between 1 and 100");
+            return;
+        }
+        if (!Utils.isValidMeetingCreation(expiration)) {
+            System.err.println("Meeting product requires at least 12 hours planning");
+            return;
+        }
+        addMeetingProduct(id,name,price,expiration,maxPeople);
+    }
+    private void addMeetingProduct(Integer id, String name, float price, LocalDate expiration, int maxPeople){
+        int finalid = (id!=null) ? id : ProductIdGenerator.generateId(); //si no existe id, lo genera
+        if(findProductById(finalid) != null){
+            throw new IllegalArgumentException("Product ID " + finalid + " already exists");
+        }
+        MeetingProduct product = new MeetingProduct(finalid,name, price, expiration, maxPeople);
+        products.add(product);
+        System.out.println(product);
+        System.out.println("prod addMeeting: ok");
+    }
+    }
+

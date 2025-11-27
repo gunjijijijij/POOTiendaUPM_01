@@ -90,4 +90,10 @@ public class Utils {
     public static boolean isValidFoodCreation(LocalDate expiration) {
         return LocalDate.now().plusDays(3).isBefore(expiration);
     }
+    public static boolean isValidMeetingCreation(LocalDate expiration){ //requiere al menos doce horas de planning
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime minDateTime = now.plusHours(12);
+        LocalDateTime expirationDateTime = expiration.atTime(23,59); //Es la fecha expiration a la última hora posible
+        return expirationDateTime.isAfter(minDateTime); //el dia expiration a las 23:59 sea al menos 12 horas despues de NOW
+    }
 }

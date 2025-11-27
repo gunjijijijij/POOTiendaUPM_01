@@ -132,7 +132,14 @@ public class CLI {
                 productController.handleProdAdd(args);
                 break;
             }
-
+            case "addfood": {
+                productController.handleProdAddFood(args);
+                break;
+            }
+            case "addmeeting": {
+                productController.handleProdAddMeeting(args);
+                break;
+            }
             case "list": {
                 productController.prodList();
                 System.out.println("prod list: ok");
@@ -150,7 +157,7 @@ public class CLI {
             }
 
             default: {
-                System.err.println("Subcommand not found. Use: add | list | update | remove");
+                System.err.println("Subcommand not found. Use: add | addFood | addMeeting | list | update | remove");
                 break;
             }
         }
