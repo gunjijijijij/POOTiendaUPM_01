@@ -21,6 +21,10 @@ public class Ticket {
         this.id = TicketIdGenerator.generateOpenTicketId();
         status = Status.VACIO;
     }
+    public Ticket(String id) {
+        this.id = id;
+        status = Status.VACIO;
+    }
 
     public String getId(){
         return id;
@@ -171,5 +175,10 @@ public class Ticket {
         System.out.printf("Final Price: %.1f\n", getFinalPrice());
     }
 
+    @Override
+    public String toString() {
+        String state = status.equals(Status.CLOSED) ? "CLOSE" : (lines.isEmpty() ? "EMPTY" : "OPEN");
+        return id + " - " + state;
+    }
 
 }

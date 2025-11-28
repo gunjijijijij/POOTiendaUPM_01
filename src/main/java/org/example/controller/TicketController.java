@@ -27,6 +27,7 @@ public class TicketController {
             return;
         }
 
+        Ticket ticket;
         String ticketId;
         String cashId;
         String userId;
@@ -34,10 +35,8 @@ public class TicketController {
         if (args.length == 4) {
             cashId = args[2];
             userId = args[3];
+            ticket = new Ticket();
 
-            do {
-                ticketId = TicketIdGenerator.generateOpenTicketId();
-            } while (TicketController.findTicketById(ticketId) != null);
 
         } else {
             ticketId = args[2];
@@ -47,6 +46,8 @@ public class TicketController {
             if (TicketController.findTicketById(ticketId) != null) {
                 System.out.println("ticket new: error (ticket id already exists)");
                 return;
+            }else{
+                ticket = new Ticket(ticketId);
             }
         }
 
@@ -62,13 +63,12 @@ public class TicketController {
             return;
         }
 
-        Ticket ticket = new Ticket();
 
         cashier.getTickets().add(ticket);
         client.getTickets().add(ticket);
         tickets.add(ticket);
 
-        System.out.println("ticket: " + ticketId);
+        System.out.println("ticket: " + ticket.getId());
         ticket.print();
     }
 
@@ -82,6 +82,12 @@ public class TicketController {
         String prodId = args[4];
         String quantityStr = args[5];
 
+
+        Cashier cashier = CashierController.findCashById(cashId);
+        if (cashier == null) {
+            System.err.println("ticket add: error (cashier with ID " + cashId + " not found)");
+            return;
+        }
 
         Integer productId = Utils.parsePositiveInt(prodId,
                 "The product ID must be a positive integer.");
@@ -103,7 +109,8 @@ public class TicketController {
             customTexts = Utils.parseCustomTexts(fullCommand);
         }
 
-        if (!Cashier.isTicketOfCash(cashId)) {
+
+        if (!cashier.isTicketOfCash(ticketId)) {
             System.out.println("Error: This cashier cannot access the ticket");
             return;
         }
@@ -133,15 +140,19 @@ public class TicketController {
         String cashId = args[3];
         String prodId = args[4];
 
+        Cashier cashier = CashierController.findCashById(cashId);
+        if (cashier == null) {
+            System.err.println("ticket add: error (cashier with ID " + cashId + " not found)");
+            return;
+        }
+
         Integer productId = Utils.parsePositiveInt(prodId,
                 "The product ID must be a positive integer.");
         if (productId == null) return;
 
         // Check that cashier owns this ticket
-        if (!Cashier.isTicketOfCash(cashId)) {
+        if (!cashier.isTicketOfCash(ticketId)) {
             System.out.println("Error: This cashier cannot access the ticket");
-            return;
-        }
 
         Ticket ticket = TicketController.findTicketById(ticketId);
         if (ticket == null) {
@@ -167,7 +178,13 @@ public class TicketController {
         String ticketId = args[2];
         String cashId = args[3];
 
-        if (!Cashier.isTicketOfCash(cashId)) {
+        Cashier cashier = CashierController.findCashById(cashId);
+        if (cashier == null) {
+            System.out.println("ticket add: error (cashier with ID " + cashId + " not found)");
+            return;
+        }
+
+        if (!cashier.isTicketOfCash(ticketId)) {
             System.out.println("Error: This cashier cannot access the ticket");
             return;
         }
