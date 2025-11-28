@@ -4,17 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomProduct extends Product {
-    private final int maxPers;
     private final List<String> customTexts = new ArrayList<>();
 
     public CustomProduct(int id, String name, Category category, float price, int maxPers) {
-        super(id, name, category, price, null);
-        this.maxPers = maxPers;
+        super(id, name, category, price, maxPers);
+        if (maxPers < 0){
+            throw new IllegalArgumentException("Max customizations cannot be negative.");
+        }
     }
 
     public void addCustomText(String text) {
-        if (customTexts.size() >= maxPers) {
-            throw new IllegalArgumentException("Maximum custom texts reached: " + maxPers);
+        if (text == null||text.trim().isEmpty()) {
+            throw new IllegalArgumentException("Custom text cannot be null or empty.");
+        }
+        if (customTexts.size() >= this.maxPers) {
+            throw new IllegalArgumentException("Maximum custom texts reached: " + this.maxPers);
         }
         customTexts.add(text.trim());
     }
@@ -38,7 +42,7 @@ public class CustomProduct extends Product {
                 + ", category: " + category
                 + ", base price: " + super.getPrice()
                 + ", final price: " + getPrice()
-                + ", maxCustomtexts: " + maxPers + "}";
+                + ", maxCustomtexts: " + this.maxPers + "}";
     }
 
     public void clearCustomTexts() {

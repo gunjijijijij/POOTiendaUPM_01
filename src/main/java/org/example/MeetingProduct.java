@@ -10,7 +10,7 @@ public class MeetingProduct extends Product {
     private float pricePerPerson;
 
     public MeetingProduct(int id, String name, float pricePerPerson, LocalDate expirationDate, int maxPeople) {
-        super(id, name, null, 0, maxPeople);
+        super(id, name, null, 0f, maxPeople);
 
         if (maxPeople > 100 || maxPeople <= 0) {
             throw new IllegalArgumentException("Max people MUST be between 1 and 100 ME CAGO EN DIOS");

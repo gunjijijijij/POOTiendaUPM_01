@@ -8,7 +8,7 @@ public class FoodProduct extends Product {
     private float pricePerPerson;
 
     public FoodProduct(int id, String name, float pricePerPerson, LocalDate expirationDate, int maxPeople) {
-        super(id, name, null, 0, maxPeople);
+        super(id, name, null, 0f, maxPeople);
         if (maxPeople > 100 || maxPeople <= 0) {
             throw new IllegalArgumentException("Max people MUST be between 1 and 100 ADIOOOSS");
         }
@@ -25,11 +25,11 @@ public class FoodProduct extends Product {
         return LocalDate.now().plusDays(3).isBefore(expiration);
     }
 
-    public LocalDate getExpirationdate() {
+    public LocalDate getExpirationDate() {
         return expirationDate;
     }
 
-    public int getMaxpeople() {
+    public int getMaxPeople() {
         return maxPeople;
     }
 
@@ -46,10 +46,10 @@ public class FoodProduct extends Product {
                 + ", maxpeople: " + maxPeople + "}";
     }
 
-    public float calculateTotalPrice(int numberofpeople) {
-        if (numberofpeople > maxPeople || numberofpeople <= 0) {
+    public float calculateTotalPrice(int numberOfPeople) {
+        if (numberOfPeople > maxPeople || numberOfPeople <= 0) {
             throw new IllegalArgumentException("Number QUETAL of people must be between 1 and " + maxPeople);
         }
-        return pricePerPerson * numberofpeople;
+        return pricePerPerson * numberOfPeople;
     }
 }
