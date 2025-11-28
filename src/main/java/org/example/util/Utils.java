@@ -10,7 +10,7 @@ import org.example.Category;
 public class Utils {
     // Verifica si hay suficientes argumentos
     public static boolean requireMinArgs(String[] args, int min, String usage) {
-        if (args.length < min) { System.err.println(usage); return true; }
+        if (args.length < min) { System.out.println(usage); return true; }
         return false;
     }
 
@@ -18,10 +18,10 @@ public class Utils {
     public static Integer parsePositiveInt(String s, String errMsg) {
         try {
             int v = Integer.parseInt(s);
-            if (v <= 0) { System.err.println(errMsg); return null; }
+            if (v <= 0) { System.out.println(errMsg); return null; }
             return v;
         } catch (NumberFormatException e) {
-            System.err.println(errMsg);
+            System.out.println(errMsg);
             return null;
         }
     }
@@ -30,10 +30,10 @@ public class Utils {
     public static Float parseNonNegativeFloat(String s) {
         try {
             float v = Float.parseFloat(s);
-            if (v < 0f) { System.err.println("Price must be a non-negative number."); return null; }
+            if (v < 0f) { System.out.println("Price must be a non-negative number."); return null; }
             return v;
         } catch (NumberFormatException e) {
-            System.err.println("Price must be a non-negative number.");
+            System.out.println("Price must be a non-negative number.");
             return null;
         }
     }
@@ -43,7 +43,7 @@ public class Utils {
         try {
             return Category.valueOf(s.toUpperCase());
         } catch (IllegalArgumentException e) {
-            System.err.println("Invalid category. Use: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
+            System.out.println("Invalid category. Use: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
             return null;
         }
     }
@@ -89,7 +89,7 @@ public class Utils {
         try {
             return LocalDate.parse(date);
         } catch (Exception e) {
-            System.err.println("Invalid date format. Use yyyy-MM-dd");
+            System.out.println("Invalid date format. Use yyyy-MM-dd");
             return null;
         }
     }

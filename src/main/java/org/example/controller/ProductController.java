@@ -81,7 +81,7 @@ public class ProductController {
 
         Product removed = findProductById(id);
         if (removed == null) {
-            System.err.println("prod remove: error (no product with that ID)");
+            System.out.println("prod remove: error (no product with that ID)");
             return;
         }
 
@@ -90,7 +90,7 @@ public class ProductController {
             System.out.println(removed.toString());
             System.out.println("prod remove: ok");
         } catch (IllegalArgumentException e) {
-            System.err.println("prod remove: error (" + e.getMessage() + ")");
+            System.out.println("prod remove: error (" + e.getMessage() + ")");
         }
     }
 
@@ -129,7 +129,7 @@ public class ProductController {
 
         String name = Utils.joinQuoted(args, 3, args.length - 2).trim();
         if (name.isEmpty()) {
-            System.err.println("The name is empty.");
+            System.out.println("The name is empty.");
             return;
         }
 
@@ -142,7 +142,7 @@ public class ProductController {
         try {
             addProduct(id, name, category, price, null);
         } catch (IllegalArgumentException e) {
-            System.err.println("prod add: error (" + e.getMessage() + ")");
+            System.out.println("prod add: error (" + e.getMessage() + ")");
         }
     }
 
@@ -155,13 +155,19 @@ public class ProductController {
         Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
         if (id == null) return;
 
+        Product updated = findProductById(id);
+        if (updated == null) {
+            System.out.println("prod update: error (no product with that ID)");
+            return;
+        }
+
         String field = args[3].toUpperCase();
         switch (field) {
             case "NAME":
                 if (Utils.requireMinArgs(args, 5, "Usage: prod update <id> NAME \"<new name>\"")) return;
                 String newName = Utils.joinQuoted(args, 4, args.length).trim();
                 if (newName.isEmpty()) {
-                    System.err.println("The name is empty");
+                    System.out.println("The name is empty");
                     return;
                 }
                 prodUpdate(id, field, newName);
@@ -182,7 +188,7 @@ public class ProductController {
                 break;
 
             default:
-                System.err.println("Field not supported. Use NAME, CATEGORY, or PRICE.");
+                System.out.println("Field not supported. Use NAME, CATEGORY, or PRICE.");
                 break;
         }
     }
@@ -200,7 +206,7 @@ public class ProductController {
         }
         String name = Utils.joinQuoted(args, index, args.length - 3);
         if (name.isEmpty()) {
-            System.err.println("The name is empty.");
+            System.out.println("The name is empty.");
             return;
         }
         Float price = Utils.parseNonNegativeFloat(args[args.length - 3]);
@@ -209,14 +215,14 @@ public class ProductController {
         LocalDate expiration = Utils.parseExpirationDate(args[args.length - 2]);
         if (expiration == null) return;
 
-        Integer maxPeople = Utils.parsePositiveInt(args[args.length - 1], "Max people must be between 1 and 100");
+        Integer maxPeople = Utils.parsePositiveInt(args[args.length - 1], "Max people must be a positive integer.");
         if (maxPeople == null) return;
         if (maxPeople < 1 || maxPeople > 100) {
-            System.err.println("Max people must be between 1 and 100");
+            System.out.println("Max people must be between 1 and 100 ME QUIERO IR");
             return;
         }
         if (!Utils.isValidFoodCreation(expiration)) {
-            System.err.println("Food product requires at least 3 days planning");
+            System.out.println("Food product requires at least 3 days planning");
             return;
         }
         addFoodProduct(id,name,price,expiration,maxPeople);
@@ -235,16 +241,19 @@ public class ProductController {
         if (Utils.requireMinArgs(args, 6, "Usage: prod addMeeting [<id>] \"<name>\" <price> <expiration:yyyy-MM-dd> <max_people>")) {
             return;
         }
-        Integer id = null;
+
+        Integer id = 0;
         int index = 2;
+
         if (!args[2].startsWith("\"")) { //recordar que el id es opcional, comprobamos si hay
             id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
             if (id == null) return;
             index = 3;
         }
+
         String name = Utils.joinQuoted(args, index, args.length - 3);
         if (name.isEmpty()) {
-            System.err.println("The name is empty.");
+            System.out.println("The name is empty.");
             return;
         }
         Float price = Utils.parseNonNegativeFloat(args[args.length - 3]);
@@ -253,14 +262,14 @@ public class ProductController {
         LocalDate expiration = Utils.parseExpirationDate(args[args.length - 2]);
         if (expiration == null) return;
 
-        Integer maxPeople = Utils.parsePositiveInt(args[args.length - 1], "Max people must be between 1 and 100");
+        Integer maxPeople = Utils.parsePositiveInt(args[args.length - 1], "Max people must be a positive integer.");
         if (maxPeople == null) return;
         if (maxPeople < 1 || maxPeople > 100) {
-            System.err.println("Max people must be between 1 and 100");
+            System.out.println("Max people must be between 1 and 100 HOLAAAAAAAAAAA");
             return;
         }
         if (!Utils.isValidMeetingCreation(expiration)) {
-            System.err.println("Meeting product requires at least 12 hours planning");
+            System.out.println("Meeting product requires at least 12 hours planning");
             return;
         }
         addMeetingProduct(id,name,price,expiration,maxPeople);

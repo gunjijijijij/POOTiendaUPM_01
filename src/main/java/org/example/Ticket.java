@@ -37,13 +37,13 @@ public class Ticket {
         }
 
         if (product == null) {
-            System.err.println("ticket add: error (product doesn't exist)");
+            System.out.println("ticket add: error (product doesn't exist)");
             return;
         }
         if (product instanceof MeetingProduct || product instanceof FoodProduct) {
             for (Product p : lines) {
                 if (p instanceof MeetingProduct || p instanceof FoodProduct) {
-                    System.err.println("ticket add: error (meeting/food product already in ticket)");
+                    System.out.println("ticket add: error (meeting/food product already in ticket)");
                     return;
                 }
             }
@@ -54,19 +54,19 @@ public class Ticket {
                 try {
                     cp.addCustomText(txt);
                 } catch (IllegalArgumentException e) {
-                    System.err.println("ticket add: error (" + e.getMessage() + ")");
+                    System.out.println("ticket add: error (" + e.getMessage() + ")");
                     return;
                 }
             }
         }
         else if (!customTexts.isEmpty()) {
-            System.err.println("ticket add: error (product not personalizable)");
+            System.out.println("ticket add: error (product not personalizable)");
             return;
         }
 
         for (int i = 0; i < quantity; i++) {
             if (lines.size() >= MAX_SIZE) {
-                System.err.println("ticket add: error (no room for more lines)");
+                System.out.println("ticket add: error (no room for more lines)");
                 return;
             }
             lines.add(product);
@@ -79,7 +79,7 @@ public class Ticket {
     public static boolean ticketRemove(int productId) {
         boolean found = false;
         if (status == Status.CLOSED) {
-            System.err.println("ticket remove: error (ticket is closed)");
+            System.out.println("ticket remove: error (ticket is closed)");
             return false;
         }
 

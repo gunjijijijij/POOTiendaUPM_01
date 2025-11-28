@@ -29,11 +29,11 @@ public class CashierController {
         Cashier cashier;
         if (args[2].startsWith("\"")) {
             String name = Utils.joinQuoted(args, 2, args.length - 1).trim();
-            if (name.isEmpty()) {System.err.println("The name is empty."); return; }
+            if (name.isEmpty()) {System.out.println("The name is empty."); return; }
             cashier = new Cashier(name, args[args.length - 1]);
         } else  {
             String name = Utils.joinQuoted(args, 3, args.length - 1).trim();
-            if (name.isEmpty()) {System.err.println("The name is empty."); return; }
+            if (name.isEmpty()) {System.out.println("The name is empty."); return; }
             cashier = new Cashier(args[2], name, args[args.length - 1]);
         }
 
@@ -50,7 +50,7 @@ public class CashierController {
 
         Cashier found = findCashById(id);
         if (found == null) {
-            System.err.println("cash remove: error (id not found)");
+            System.out.println("cash remove: error (id not found)");
             return;
         }
 
@@ -69,7 +69,7 @@ public class CashierController {
     public void tickets(String id) {
         Cashier cash = findCashById(id);
         if (cash == null) {
-            System.err.println("cash tickets: error (cashier not found)");
+            System.out.println("cash tickets: error (cashier not found)");
             return;
         }
 
