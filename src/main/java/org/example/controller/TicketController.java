@@ -154,19 +154,20 @@ public class TicketController {
         if (!cashier.isTicketOfCash(ticketId)) {
             System.out.println("Error: This cashier cannot access the ticket");
 
-        Ticket ticket = TicketController.findTicketById(ticketId);
-        if (ticket == null) {
-            System.out.println("ticket remove: error (ticket does not exist)");
-            return;
-        }
+            Ticket ticket = TicketController.findTicketById(ticketId);
+            if (ticket == null) {
+                System.out.println("ticket remove: error (ticket does not exist)");
+                return;
+            }
 
-        boolean removed = ticket.ticketRemove(productId);
+            boolean removed = ticket.ticketRemove(productId);
 
-        if (removed) {
-            ticket.print();
-            System.out.println("ticket remove: ok");
-        } else {
-            System.out.println("ticket remove: error (no product found with that ID)");
+            if (removed) {
+                ticket.print();
+                System.out.println("ticket remove: ok");
+            } else {
+                System.out.println("ticket remove: error (no product found with that ID)");
+            }
         }
     }
 
