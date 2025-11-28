@@ -22,7 +22,6 @@ public class Product {
         this.price = price;
     }
 
-
     // Getters y setters con validación
 
     public Integer getId() {
