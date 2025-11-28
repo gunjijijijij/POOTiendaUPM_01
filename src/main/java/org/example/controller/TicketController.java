@@ -180,7 +180,7 @@ public class TicketController {
         ticket.print();
     }
 
-    public void handleTicketList(String[] args) {
+    public void handleTicketList() {
 
         ArrayList<Cashier> cashiers = CashierController.getCashiers();
         if (cashiers.isEmpty()) {

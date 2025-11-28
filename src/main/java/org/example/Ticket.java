@@ -1,9 +1,7 @@
 package org.example;
-import org.example.controller.ProductController;
 import org.example.util.TicketIdGenerator;
 import java.util.ArrayList;
 import java.util.List;
-import org.example.util.Utils;
 
 
 public class Ticket {
@@ -21,12 +19,7 @@ public class Ticket {
 
     public Ticket() {
         this.id = TicketIdGenerator.generateOpenTicketId();
-        this.status = Status.VACIO;
-    }
-
-    // Vacía el ticket
-    public void resetTicket() {
-        lines = new ArrayList<>();
+        status = Status.VACIO;
     }
 
     public String getId(){
@@ -143,7 +136,7 @@ public class Ticket {
 
     public void closeTicket(){
         id = TicketIdGenerator.generateCloseTicketId(id);
-        this.status = Status.CLOSED;
+        status = Status.CLOSED;
     }
 
     // Procesa el comando "ticket remove": verifica los argumentos,

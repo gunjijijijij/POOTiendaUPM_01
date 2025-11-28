@@ -183,7 +183,7 @@ public class CLI {
                 break;
 
             case "list":
-                ticketController.handleTicketList(args);
+                ticketController.handleTicketList();
 
             default: System.err.println("Invalid command"); break;
         }
