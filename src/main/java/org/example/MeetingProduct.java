@@ -13,7 +13,7 @@ public class MeetingProduct extends Product {
         super(id, name, null, 0, maxPeople);
 
         if (maxPeople > 100 || maxPeople <= 0) {
-            throw new IllegalArgumentException("Max people MUST be between 1 and 100");
+            throw new IllegalArgumentException("Max people MUST be between 1 and 100 ME CAGO EN DIOS");
         }
 
         if (!isValidCreation(expirationDate)) {
@@ -57,7 +57,7 @@ public class MeetingProduct extends Product {
     public float calculateTotalPrice(int numberOfPeople) {
         if (numberOfPeople > maxPeople || numberOfPeople <= 0) {
             throw new IllegalArgumentException(
-                    "Number of people must be between 1 and " + maxPeople);
+                    "Number of people YA NO? must be between 1 and " + maxPeople);
         }
         return pricePerPerson * numberOfPeople;
     }

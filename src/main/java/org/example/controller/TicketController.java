@@ -23,7 +23,7 @@ public class TicketController {
 
     public void handleTicketNew(String[] args) {
         if (args.length < 4) {
-            System.err.println("Usage: ticket new [<id>] <cashId> <userId>");
+            System.out.println("Usage: ticket new [<id>] <cashId> <userId>");
             return;
         }
 
@@ -45,20 +45,20 @@ public class TicketController {
             userId = args[4];
 
             if (TicketController.findTicketById(ticketId) != null) {
-                System.err.println("ticket new: error (ticket id already exists)");
+                System.out.println("ticket new: error (ticket id already exists)");
                 return;
             }
         }
 
         Cashier cashier = CashierController.findCashById(cashId);
         if (cashier == null) {
-            System.err.println("ticket new: error (cashier not found)");
+            System.out.println("ticket new: error (cashier not found)");
             return;
         }
 
         Client client = ClientController.findClientById(userId);
         if (client == null) {
-            System.err.println("ticket new: error (client not found)");
+            System.out.println("ticket new: error (client not found)");
             return;
         }
 
@@ -68,7 +68,8 @@ public class TicketController {
         client.getTickets().add(ticket);
         tickets.add(ticket);
 
-        System.out.println("ticket new: " + ticketId);
+        System.out.println("ticket: " + ticketId);
+        ticket.print();
     }
 
     public void handleTicketAdd(String[] args) {
@@ -88,7 +89,7 @@ public class TicketController {
 
         Product product = ProductController.findProductById(productId);
         if (product == null) {
-            System.err.println("ticket add: error (product with ID " + productId + " not found)");
+            System.out.println("ticket add: error (product with ID " + productId + " not found)");
             return;
         }
 
@@ -103,13 +104,13 @@ public class TicketController {
         }
 
         if (!Cashier.isTicketOfCash(cashId)) {
-            System.err.println("Error: This cashier cannot access the ticket");
+            System.out.println("Error: This cashier cannot access the ticket");
             return;
         }
 
         Ticket ticket = TicketController.findTicketById(ticketId);
         if (ticket == null) {
-            System.err.println("ticket add: error (ticket does not exist)");
+            System.out.println("ticket add: error (ticket does not exist)");
             return;
         }
 
@@ -119,7 +120,7 @@ public class TicketController {
             System.out.println("ticket add: ok");
 
         } catch (Exception e) {
-            System.err.println("ticket add: error (" + e.getMessage() + ")");
+            System.out.println("ticket add: error (" + e.getMessage() + ")");
         }
     }
 
@@ -138,23 +139,23 @@ public class TicketController {
 
         // Check that cashier owns this ticket
         if (!Cashier.isTicketOfCash(cashId)) {
-            System.err.println("Error: This cashier cannot access the ticket");
+            System.out.println("Error: This cashier cannot access the ticket");
             return;
         }
 
         Ticket ticket = TicketController.findTicketById(ticketId);
         if (ticket == null) {
-            System.err.println("ticket remove: error (ticket does not exist)");
+            System.out.println("ticket remove: error (ticket does not exist)");
             return;
         }
 
         boolean removed = ticket.ticketRemove(productId);
 
         if (removed) {
-            ticket.print();     // show updated ticket
+            ticket.print();
             System.out.println("ticket remove: ok");
         } else {
-            System.err.println("ticket remove: error (no product found with that ID)");
+            System.out.println("ticket remove: error (no product found with that ID)");
         }
     }
 
@@ -167,13 +168,13 @@ public class TicketController {
         String cashId = args[3];
 
         if (!Cashier.isTicketOfCash(cashId)) {
-            System.err.println("Error: This cashier cannot access the ticket");
+            System.out.println("Error: This cashier cannot access the ticket");
             return;
         }
 
         Ticket ticket = TicketController.findTicketById(ticketId);
         if (ticket == null) {
-            System.err.println("ticket print: error (ticket does not exist)");
+            System.out.println("ticket print: error (ticket does not exist)");
             return;
         }
         ticket.closeTicket();

@@ -27,7 +27,7 @@ public class ClientController {
 
         String name = Utils.joinQuoted(args, 2, args.length - 3).trim();
         if (name.isEmpty()) {
-            System.err.println("The name is empty.");
+            System.out.println("The name is empty.");
             return;
         }
 
@@ -51,7 +51,7 @@ public class ClientController {
 
         Cashier cashier = CashierController.findCashById(cashId);
         if (cashier == null) {
-            System.err.println("client add: error (cashier not found)");
+            System.out.println("client add: error (cashier not found)");
             return;
         }
 
@@ -63,7 +63,7 @@ public class ClientController {
             System.out.println("client add: ok");
 
         } catch (IllegalArgumentException e) {
-            System.err.println("client add: error (" + e.getMessage() + ")");
+            System.out.println("client add: error (" + e.getMessage() + ")");
         }
     }
 
@@ -78,7 +78,7 @@ public class ClientController {
 
         Client found = findClientById(id);
         if (found == null) {
-            System.err.println("client remove: error (no client with that ID)");
+            System.out.println("client remove: error (no client with that ID)");
             return;
         }
 
@@ -86,7 +86,7 @@ public class ClientController {
             clients.remove(found);
             System.out.println("client remove: ok");
         } catch (IllegalArgumentException e) {
-            System.err.println("client remove: error (" + e.getMessage() + ")");
+            System.out.println("client remove: error (" + e.getMessage() + ")");
         }
     }
 

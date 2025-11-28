@@ -1,5 +1,4 @@
 package org.example.app;
-import org.example.*;
 import org.example.controller.ClientController;
 import org.example.controller.ProductController;
 import org.example.controller.TicketController;
