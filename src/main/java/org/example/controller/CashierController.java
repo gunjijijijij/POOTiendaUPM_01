@@ -10,7 +10,7 @@ import java.util.List;
 public class CashierController {
     private static final ArrayList<Cashier> cashiers = new ArrayList<>();
 
-    public ArrayList<Cashier> getCashiers() {
+    public static ArrayList<Cashier> getCashiers() {
         return cashiers;
     }
 
@@ -22,8 +22,6 @@ public class CashierController {
         }
         return null;
     }
-
-
 
     public void handleCashAdd(String[] args){
         if (Utils.requireMinArgs(args, 4, "Usage: cash add [<id>] \"<name>\" <email>")) return;

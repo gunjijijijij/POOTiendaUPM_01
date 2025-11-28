@@ -6,6 +6,7 @@ import org.example.util.TicketIdGenerator;
 import org.example.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 
 public class TicketController {
@@ -76,8 +77,8 @@ public class TicketController {
             return;
 
         String ticketId = args[2];
-        String cashId   = args[3];
-        String prodId   = args[4];
+        String cashId = args[3];
+        String prodId = args[4];
         String quantityStr = args[5];
 
 
@@ -128,8 +129,8 @@ public class TicketController {
             return;
 
         String ticketId = args[2];
-        String cashId   = args[3];
-        String prodId   = args[4];
+        String cashId = args[3];
+        String prodId = args[4];
 
         Integer productId = Utils.parsePositiveInt(prodId,
                 "The product ID must be a positive integer.");
@@ -163,7 +164,7 @@ public class TicketController {
             return;
 
         String ticketId = args[2];
-        String cashId   = args[3];
+        String cashId = args[3];
 
         if (!Cashier.isTicketOfCash(cashId)) {
             System.err.println("Error: This cashier cannot access the ticket");
@@ -179,5 +180,37 @@ public class TicketController {
         ticket.print();
     }
 
+    public void handleTicketList(String[] args) {
 
+        ArrayList<Cashier> cashiers = CashierController.getCashiers();
+        if (cashiers.isEmpty()) {
+            System.out.println("ticket list: (no cashiers available)");
+            return;
+        }
+
+        // Ordenar los cajeros por su id
+        cashiers.sort(Comparator.comparing(Cashier::getId));
+
+        boolean anyTicket = false;
+
+        for (Cashier c : cashiers) {
+            ArrayList<Ticket> tickets = c.getTickets();
+
+            if (!tickets.isEmpty()) {
+                anyTicket = true;
+                System.out.println("Cashier " + c.getId() + ":");
+                for (Ticket t : tickets) {
+                    System.out.println("  " + t);
+                }
+            }
+        }
+
+        if (!anyTicket) {
+            System.out.println("ticket list: (no tickets available)");
+            return;
+        }
+
+        System.out.println("ticket list: ok");
+
+    }
 }

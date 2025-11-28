@@ -166,7 +166,7 @@ public class CLI {
 
         switch (args[1].toLowerCase()) {
             case "new":
-                ticketController.handleTicketAdd(args);
+                ticketController.handleTicketNew(args);
                 break;
 
             case "add":
@@ -181,6 +181,9 @@ public class CLI {
                 ticketController.handleTicketPrint(args);
                 System.out.println("ticket print: ok");
                 break;
+
+            case "list":
+                ticketController.handleTicketList(args);
 
             default: System.err.println("Invalid command"); break;
         }
