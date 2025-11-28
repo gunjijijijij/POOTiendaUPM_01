@@ -67,10 +67,10 @@ public class Product {
 
     @Override
     public String toString() {
-        return "{class: Product, id: " + id
-                + ", name: '" + name
-                + "', category: " + category
-                + ", price: " + price + "}";
+        return "{class:Product, id: " + id
+                + ", name:'" + name
+                + "', category:" + category
+                + ", price:" + price + "}";
     }
 
 }
