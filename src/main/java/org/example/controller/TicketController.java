@@ -68,7 +68,8 @@ public class TicketController {
         client.getTickets().add(ticket);
         tickets.add(ticket);
 
-        System.out.println("ticket new: " + ticketId);
+        System.out.println("ticket: " + ticketId);
+        ticket.print();
     }
 
     public void handleTicketAdd(String[] args) {
@@ -151,7 +152,7 @@ public class TicketController {
         boolean removed = ticket.ticketRemove(productId);
 
         if (removed) {
-            ticket.print();     // show updated ticket
+            ticket.print();
             System.out.println("ticket remove: ok");
         } else {
             System.err.println("ticket remove: error (no product found with that ID)");
