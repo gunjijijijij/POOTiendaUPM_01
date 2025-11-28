@@ -97,6 +97,28 @@ public class ProductController {
     // Procesa el comando "prod add": verifica los argumentos,
     // maneja los errores correspondientes y utiliza ProductController
     // para añadir el nuevo producto al catálogo.
+
+    private static void addProduct(int id, String name, Category category, float price, Integer maxPers) {
+        Validators.requirePositiveInt(id, "The ID must be a positive integer");
+        Validators.requireValidProductName(name);
+        Validators.requireValidCategory(category);
+        Validators.requireValidPrice(price);
+        Validators.requireCapacityNotExceeded(products.size(), MAX_PRODUCTS);
+
+        Product product = createProduct(id, name, category, price, maxPers);
+        products.add(product);
+
+        System.out.println(product);
+        System.out.println("prod add: ok");
+    }
+
+    private static Product createProduct(int id, String name, Category category, float price, Integer maxPers) {
+        if (maxPers != null) {
+            return new CustomProduct(id, name, category, price, maxPers);
+        }
+        return new Product(id, name, category, price, null);
+    }
+
     public void handleProdAdd(String[] args) {
         if (Utils.requireMinArgs(args, 5,
                 "Usage: prod add <id> \"<name>\" <category> <price> [<maxPers>]")) return;
@@ -105,50 +127,23 @@ public class ProductController {
         Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
         if (id == null) return;
 
-        // ¿Hay maxPers?
-        boolean hasMaxPers = (args.length >= 7);
-
-        // Índices de category, price y maxPers según el caso
-        int idxCategory;
-        int idxPrice;
-        int idxMaxPers = -1;
-
-        if (hasMaxPers) {
-            idxCategory = args.length - 3;
-            idxPrice    = args.length - 2;
-            idxMaxPers  = args.length - 1;
-        } else {
-            idxCategory = args.length - 2;
-            idxPrice    = args.length - 1;
-        }
-
-        // name: todo lo que va entre id y category
-        String name = Utils.joinQuoted(args, 3, idxCategory - 1).trim();
+        String name = Utils.joinQuoted(args, 3, args.length - 2).trim();
         if (name.isEmpty()) {
             System.err.println("The name is empty.");
             return;
         }
 
-        Category category = Utils.parseCategory(args[idxCategory]);
+        Category category = Utils.parseCategory(args[args.length - 2]);
         if (category == null) return;
 
-        Float price = Utils.parseNonNegativeFloat(args[idxPrice]);
+        Float price = Utils.parseNonNegativeFloat(args[args.length - 1]);
         if (price == null) return;
 
-        Integer maxPers = null;
-        if (hasMaxPers) {
-            maxPers = Utils.parsePositiveInt(args[idxMaxPers],
-                    "maxPers must be a positive integer.");
-            if (maxPers == null) return;
+        try {
+            addProduct(id, name, category, price, null);
+        } catch (IllegalArgumentException e) {
+            System.err.println("prod add: error (" + e.getMessage() + ")");
         }
-
-        Product product;
-        product = new CustomProduct(id, name, category, price, maxPers);
-
-        products.add(product);
-
-        System.out.println(product);
-        System.out.println("prod add: ok");
     }
 
     // Procesa el comando "prod update": verifica los argumentos, validando el tipo de actualización,

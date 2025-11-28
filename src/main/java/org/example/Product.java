@@ -15,6 +15,14 @@ public class Product {
         this.maxPers = maxPers;
     }
 
+    public Product(Integer id, String name, Category category, float price){
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.price = price;
+    }
+
+
     // Getters y setters con validación
 
     public Integer getId() {

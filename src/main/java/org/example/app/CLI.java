@@ -35,7 +35,7 @@ public class CLI {
                     break;
 
                 case "echo":
-                    echo(line);
+                    echo(commandUni);
                     break;
 
                 case "prod":
@@ -98,7 +98,7 @@ public class CLI {
         System.out.println("  prod list");
         System.out.println("  prod remove <id>");
         System.out.println("  help");
-        System.out.println("  echo “<text>”");
+        System.out.println("  echo \"<text>\"");
         System.out.println("  exit");
         System.out.println();
         System.out.println("Categories: MERCH, STATIONERY, CLOTHES, BOOK, ELECTRONICS");
@@ -106,16 +106,8 @@ public class CLI {
     }
 
     // Repite el texto entre comillas
-    private void echo (String fullLine) {
-        int firstSpace = fullLine.indexOf(' ');
-        if (firstSpace < 0 || firstSpace == fullLine.length() - 1) {
-            System.err.println("Usage: echo \"<text>\"");
-            return;
-        }
-        String message = fullLine.substring(firstSpace + 1).trim();
-        if (message.startsWith("\"") && message.endsWith("\"") && message.length() >= 2) {
-            message = message.substring(1, message.length() - 1);
-        }
+    private void echo (String[] fullLine) {
+        String message =  Utils.joinQuoted(fullLine, 1, fullLine.length).trim();
         if (message.isEmpty()) {
             System.err.println("The echo message is empty.");
             return;
