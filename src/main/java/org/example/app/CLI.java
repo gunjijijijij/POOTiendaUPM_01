@@ -108,7 +108,7 @@ public class CLI {
     private void echo (String[] fullLine) {
         String message =  Utils.joinQuoted(fullLine, 1, fullLine.length).trim();
         if (message.isEmpty()) {
-            System.err.println("The echo message is empty.");
+            System.out.println("The echo message is empty.");
             return;
         }
         System.out.println(message);
@@ -143,7 +143,7 @@ public class CLI {
                 productController.handleProdRemove(args);
                 break;
             default:
-                System.err.println("Subcommand not found. Use: add | addFood | addMeeting | list | update | remove");
+                System.out.println("Subcommand not found. Use: add | addFood | addMeeting | list | update | remove");
                 break;
         }
     }
@@ -175,8 +175,8 @@ public class CLI {
 
             case "list":
                 ticketController.handleTicketList();
-
-            default: System.err.println("Invalid command"); break;
+                break;
+            default: System.out.println("Invalid command"); break;
         }
     }
 
@@ -200,7 +200,7 @@ public class CLI {
                 cashierController.tickets(args[2]);
                 break;
 
-            default: System.err.println("Invalid command"); break;
+            default: System.out.println("Invalid command"); break;
         }
     }
 
@@ -218,7 +218,7 @@ public class CLI {
                 clientController.list();
                 break;
 
-            default: System.err.println("Invalid command"); break;
+            default: System.out.println("Invalid command"); break;
 
         }
     }
