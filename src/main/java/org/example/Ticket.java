@@ -7,23 +7,21 @@ import java.util.List;
 public class Ticket {
     private String id;
     private static final int MAX_SIZE = 100;
-    private static List<Product> lines = new ArrayList<>();
+    private List<Product> lines = new ArrayList<>();
 
     public enum Status {
         OPEN,
-        VACIO,
-        CLOSED
+        EMPTY,
+        CLOSE
     }
 
-    private static Status status;
+    private Status status = Status.EMPTY;
 
     public Ticket() {
         this.id = TicketIdGenerator.generateOpenTicketId();
-        status = Status.VACIO;
     }
     public Ticket(String id) {
         this.id = id;
-        status = Status.VACIO;
     }
 
     public String getId(){
@@ -35,8 +33,8 @@ public class Ticket {
     }
 
     // Añade una cantidad x de un producto al ticket mientras no estuviera lleno
-    public static void addProductTicket(Product product, int quantity, ArrayList<String> customTexts) {
-        if (status == Status.CLOSED) {
+    public void addProductTicket(Product product, int quantity, ArrayList<String> customTexts) {
+        if (status == Status.CLOSE) {
             throw new IllegalStateException("ticket add: error (ticket is closed)");
         }
 
@@ -80,9 +78,9 @@ public class Ticket {
     }
 
     // Elimina todas las apariciones de un producto existente en el ticket
-    public static boolean ticketRemove(int productId) {
+    public boolean ticketRemove(int productId) {
         boolean found = false;
-        if (status == Status.CLOSED) {
+        if (status == Status.CLOSE) {
             System.out.println("ticket remove: error (ticket is closed)");
             return false;
         }
@@ -102,7 +100,7 @@ public class Ticket {
     }
 
     // Cuenta cuantos productos hay de una categoría en el ticket
-    private static int countCategory(Category category) {
+    private int countCategory(Category category) {
         int count = 0;
         for (Product product : lines) {
             if (product.getCategory() == category) {
@@ -113,7 +111,7 @@ public class Ticket {
     }
 
     // Getter del total del precio de todos los productos del ticket sin descuento
-    private static double getTotalPrice() {
+    private double getTotalPrice() {
         double total = 0;
         for (Product product : lines) {
             total += product.getPrice();
@@ -122,7 +120,7 @@ public class Ticket {
     }
 
     // Getter del descuento total del ticket
-    private static double getTotalDiscount() {
+    private double getTotalDiscount() {
         double totalDiscount = 0;
         for (Product product : lines) {
             int catCount = countCategory(product.getCategory());
@@ -134,13 +132,13 @@ public class Ticket {
     }
 
     // Getter del precio total con descuento
-    private static double getFinalPrice() {
+    private double getFinalPrice() {
         return getTotalPrice() - getTotalDiscount();
     }
 
     public void closeTicket(){
         id = TicketIdGenerator.generateCloseTicketId(id);
-        status = Status.CLOSED;
+        status = Status.CLOSE;
     }
 
     // Procesa el comando "ticket remove": verifica los argumentos,
@@ -161,7 +159,7 @@ public class Ticket {
             int catCount = countCategory(product.getCategory());
             double discount = product.getCategory().calculateDiscount(product.getPrice());
             System.out.printf(
-                    "{class:Product, id:%d, name:'%s', category:%s, price:%.2f}%s\n",
+                    "  {class:Product, id:%d, name:'%s', category:%s, price:%.2f}%s\n",
                     product.getId(),
                     product.getName(),
                     product.getCategory(),
@@ -170,15 +168,14 @@ public class Ticket {
             );
         }
 
-        System.out.printf("Total price: %.1f\n", getTotalPrice());
-        System.out.printf("Total discount: %.1f\n", getTotalDiscount());
-        System.out.printf("Final Price: %.1f\n", getFinalPrice());
+        System.out.printf("  Total price: %.1f\n", getTotalPrice());
+        System.out.printf("  Total discount: %.1f\n", getTotalDiscount());
+        System.out.printf("  Final Price: %.1f\n", getFinalPrice());
     }
 
     @Override
     public String toString() {
-        String state = status.equals(Status.CLOSED) ? "CLOSE" : (lines.isEmpty() ? "EMPTY" : "OPEN");
-        return id + " - " + state;
+        return id + " - " + status.toString();
     }
 
 }

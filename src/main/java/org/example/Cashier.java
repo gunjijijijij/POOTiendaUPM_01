@@ -9,7 +9,8 @@ import java.util.List;
 public class Cashier extends User {
     private static final String PREFIX = "UW";
     private static final Random random = new Random();
-    private static final ArrayList<Ticket> tickets = new ArrayList<>();
+
+    private ArrayList<Ticket> tickets = new ArrayList<>();
 
     public Cashier(String name, String email) {super(CashierIdGenerator.generateId(), name, email);}
 
@@ -25,9 +26,8 @@ public class Cashier extends User {
         return tickets;
     }
 
-    public static boolean isTicketOfCash(String ticketId){
-
-        for  (Ticket ticket : tickets){
+    public boolean isTicketOfCash(String ticketId){
+        for (Ticket ticket : tickets){
             if(ticket.getId().equals(ticketId)){
                 return true;
             }

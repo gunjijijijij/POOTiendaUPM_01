@@ -5,6 +5,7 @@ import org.example.*;
 import org.example.util.TicketIdGenerator;
 import org.example.util.Utils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -70,6 +71,7 @@ public class TicketController {
 
         System.out.println("ticket: " + ticket.getId());
         ticket.print();
+        System.out.println("ticket new: ok");
     }
 
     public void handleTicketAdd(String[] args) {
@@ -122,7 +124,8 @@ public class TicketController {
         }
 
         try {
-            Ticket.addProductTicket(product, quantity, customTexts);
+            ticket.addProductTicket(product, quantity, customTexts);
+            System.out.println("Ticket: " + ticket.getId());
             ticket.print();
             System.out.println("ticket add: ok");
 
@@ -153,21 +156,22 @@ public class TicketController {
         // Check that cashier owns this ticket
         if (!cashier.isTicketOfCash(ticketId)) {
             System.out.println("Error: This cashier cannot access the ticket");
+        }
 
-            Ticket ticket = TicketController.findTicketById(ticketId);
-            if (ticket == null) {
-                System.out.println("ticket remove: error (ticket does not exist)");
-                return;
-            }
+        Ticket ticket = TicketController.findTicketById(ticketId);
+        if (ticket == null) {
+            System.out.println("ticket remove: error (ticket does not exist)");
+            return;
+        }
 
-            boolean removed = ticket.ticketRemove(productId);
+        boolean removed = ticket.ticketRemove(productId);
 
-            if (removed) {
-                ticket.print();
-                System.out.println("ticket remove: ok");
-            } else {
-                System.out.println("ticket remove: error (no product found with that ID)");
-            }
+        if (removed) {
+            System.out.println("Ticket: " + ticket.getId());
+            ticket.print();
+            System.out.println("ticket remove: ok");
+        } else {
+            System.out.println("ticket remove: error (no product found with that ID)");
         }
     }
 
@@ -196,6 +200,7 @@ public class TicketController {
             return;
         }
         ticket.closeTicket();
+        System.out.println("Ticket: " + ticket.getId());
         ticket.print();
     }
 
