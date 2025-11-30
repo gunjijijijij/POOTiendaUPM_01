@@ -37,6 +37,10 @@ public class FoodProduct extends Product {
         return "FoodProduct";
     }
 
+    public double getDiscount() {
+        return 0;
+    }
+
     @Override
     public String toString() {
         return "{class: Product, id: " + id

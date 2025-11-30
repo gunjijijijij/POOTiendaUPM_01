@@ -28,6 +28,8 @@ public class CLI {
             String[] commandUni = line.split("\\s+");
             String cmd = commandUni[0].toLowerCase(); // normalizado a minúsculas
 
+            System.out.println("tUPM>" + line);
+
             switch (cmd) {
                 case "help":
                     help();

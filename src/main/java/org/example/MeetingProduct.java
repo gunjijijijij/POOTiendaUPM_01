@@ -45,13 +45,17 @@ public class MeetingProduct extends Product {
         return "MeetingProduct";
     }
 
+    public double getDiscount() {
+        return 0;
+    }
+
     @Override
     public String toString() {
-        return "{class: Product, id: " + id
+        return "{class: Meeting, id: " + id
                 + ", name: '" + name
-                + "', pricePerPerson: " + pricePerPerson
-                + ", expirationDate: " + expirationDate
-                + ", maxPeople: " + maxPeople + "}";
+                + "', price: " + pricePerPerson
+                + ", date of Event: " + expirationDate
+                + ", max people allowed: " + maxPeople + "}";
     }
 
     public float calculateTotalPrice(int numberOfPeople) {

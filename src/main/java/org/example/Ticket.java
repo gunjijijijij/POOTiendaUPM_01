@@ -123,7 +123,8 @@ public class Ticket {
     private double getTotalDiscount() {
         double totalDiscount = 0;
         for (Product product : lines) {
-            int catCount = countCategory(product.getCategory());
+            Category category = product.getCategory();
+            int catCount = category != null ? countCategory(category) : 0;
             if (catCount > 1) {
                 totalDiscount += product.getCategory().calculateDiscount(product.getPrice());
             }
@@ -156,15 +157,13 @@ public class Ticket {
         lines.sort((p1, p2) -> p1.getName().compareToIgnoreCase(p2.getName())); //ordena lines alfabeticamente
 
         for (Product product : lines) {
-            int catCount = countCategory(product.getCategory());
-            double discount = product.getCategory().calculateDiscount(product.getPrice());
+            Category category = product.getCategory();
+            int catCount = category != null ? countCategory(category) : 0;
+            double discount = product.getDiscount();
             System.out.printf(
-                    "  {class:Product, id:%d, name:'%s', category:%s, price:%.2f}%s\n",
-                    product.getId(),
-                    product.getName(),
-                    product.getCategory(),
-                    product.getPrice(),
-                    (catCount > 1 ? " **discount -" + String.format("%.2f", discount) : "")
+                    "  %s%s\n",
+                    product,
+                    catCount > 1 && discount > 0 ? " **discount -" + String.format("%.2f", discount) : ""
             );
         }
 

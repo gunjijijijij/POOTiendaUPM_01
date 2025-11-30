@@ -65,6 +65,10 @@ public class Product {
         return maxPers != null;
     }
 
+    public double getDiscount() {
+        return category.calculateDiscount(price);
+    }
+
     @Override
     public String toString() {
         return "{class:Product, id: " + id
