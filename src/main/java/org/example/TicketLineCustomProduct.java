@@ -24,8 +24,8 @@ public class TicketLineCustomProduct extends TicketLine {
         StringBuilder sb = new StringBuilder();
         sb.append("{class:ProductPersonalized")
                 .append(", id:").append(product.id)
-                .append(", name:").append(product.name)
-                .append(", category:").append(product.category)
+                .append(", name:'").append(product.name)
+                .append("', category:").append(product.category)
                 .append(", price:").append(this.getPrice())
                 .append(", maxPersonal:").append(customProduct.getMaxCustomizations());
 

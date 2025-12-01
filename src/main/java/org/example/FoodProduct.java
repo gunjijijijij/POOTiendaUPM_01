@@ -45,11 +45,11 @@ public class FoodProduct extends Product {
 
     @Override
     public String toString() {
-        return "{class: Food, id:" + id
+        return "{class:Food, id:" + id
                 + ", name:'" + name
-                + ", price:" + price
+                + "', price:" + price
                 + ", date of Event:" + expirationDate
-                + ", maxpeople:" + maxPeople + "}";
+                + ", max people allowed:" + maxPeople + "}";
     }
 
     public float calculateTotalPrice(int numberOfPeople) {

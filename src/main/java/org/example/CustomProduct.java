@@ -20,9 +20,9 @@ public class CustomProduct extends Product {
 
     @Override
     public String toString() {
-        return "{class: ProductPersonalized, id:" + id
+        return "{class:ProductPersonalized, id:" + id
                 + ", name:'" + name
-                + ", category:" + category
+                + "', category:" + category
                 + ", price:" + getPrice()
                 + ", maxPersonal:" + this.maxCustomizations + "}";
     }

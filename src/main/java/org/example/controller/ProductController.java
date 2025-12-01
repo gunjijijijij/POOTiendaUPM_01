@@ -54,6 +54,7 @@ public class ProductController {
             }
             System.out.println(product);
             System.out.print("prod update: ok");
+            System.out.println();
 
         } catch (IllegalArgumentException exception) {
             System.out.println("prod update: error (" + exception.getMessage() + ")");

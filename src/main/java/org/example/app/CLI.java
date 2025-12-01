@@ -63,13 +63,16 @@ public class CLI {
                     System.out.println("Invalid command");
                     break;
             }
-            System.out.println();
+            if (!finish) {
+                System.out.println();
+            }
         }
         end(); // Mensaje final
     }
 
     private void end () {
-        System.out.println("Bye");
+        System.out.println("Closing application.");
+        System.out.println("Goodbye!");
     }
 
     private void init () {

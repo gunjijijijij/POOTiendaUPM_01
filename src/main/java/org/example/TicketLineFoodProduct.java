@@ -20,9 +20,13 @@ public class TicketLineFoodProduct extends TicketLine {
         return foodProduct.getPricePerPerson() * numPeopleAttending;
     }
 
+    public double getDiscount() {
+        return 0;
+    }
+
     @Override
     public String toString() {
-        return "{class:ProductPersonalized"
+        return "{class:Food"
                 + ", id:" + product.id
                 + ", name:" + product.name
                 + ", category:" + product.category

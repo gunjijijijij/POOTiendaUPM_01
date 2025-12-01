@@ -67,7 +67,7 @@ public class TicketController {
         client.getTickets().add(ticket);
         tickets.add(ticket);
 
-        System.out.println("ticket: " + ticket.getId());
+        System.out.println("Ticket : " + ticket.getId());
         ticket.print();
         System.out.println("ticket new: ok");
     }
@@ -116,7 +116,7 @@ public class TicketController {
         try {
             ArrayList<String> customTexts = Utils.parseCustomTexts(args);
             ticket.addProductTicket(product, quantity, customTexts);
-            System.out.println("Ticket: " + ticket.getId());
+            System.out.println("Ticket : " + ticket.getId());
             ticket.print();
             System.out.println("ticket add: ok");
         } catch (Exception e) {
@@ -157,7 +157,7 @@ public class TicketController {
         boolean removed = ticket.ticketRemove(productId);
 
         if (removed) {
-            System.out.println("Ticket: " + ticket.getId());
+            System.out.println("Ticket : " + ticket.getId());
             ticket.print();
             System.out.println("ticket remove: ok");
         } else {
@@ -190,7 +190,7 @@ public class TicketController {
             return;
         }
         ticket.closeTicket();
-        System.out.println("Ticket: " + ticket.getId());
+        System.out.println("Ticket : " + ticket.getId());
         ticket.print();
     }
 

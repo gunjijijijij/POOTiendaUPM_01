@@ -49,11 +49,11 @@ public class MeetingProduct extends Product {
 
     @Override
     public String toString() {
-        return "{class: Meeting, id: " + id
-                + ", name: '" + name
-                + "', price: " + price
-                + ", date of Event: " + expirationDate
-                + ", max people allowed: " + maxPeople + "}";
+        return "{class:Meeting, id:" + id
+                + ", name:'" + name
+                + "', price:" + price
+                + ", date of Event:" + expirationDate
+                + ", max people allowed:" + maxPeople + "}";
     }
 
     @Override

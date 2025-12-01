@@ -18,13 +18,17 @@ public class TicketLineMeetingProduct extends TicketLine {
         return meetingProduct.getPricePerPerson() * numPeopleAttending;
     }
 
+    public double getDiscount() {
+        return 0;
+    }
+
     @Override
     public String toString() {
         return "{class:Meeting"
                 + ", id:" + product.id
-                + ", name:" + product.name
+                + ", name:'" + product.name
+                + "', price:" + this.getPrice()
                 + ", date of Event:" + meetingProduct.getExpirationDate()
-                + ", price:" + this.getPrice()
                 + ", max people allowed:" + meetingProduct.getMaxPeople()
                 + ", actual people in event:" + numPeopleAttending
                 + "}";
