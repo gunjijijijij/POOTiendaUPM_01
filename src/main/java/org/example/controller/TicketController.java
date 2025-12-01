@@ -212,7 +212,7 @@ public class TicketController {
 
             if (!tickets.isEmpty()) {
                 anyTicket = true;
-                System.out.println("Cashier " + c.getId() + ":");
+                System.out.println("Ticket List:");
                 for (Ticket t : tickets) {
                     System.out.println("  " + t);
                 }
