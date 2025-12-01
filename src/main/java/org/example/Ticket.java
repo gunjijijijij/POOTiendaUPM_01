@@ -116,16 +116,6 @@ public class Ticket {
         status = Status.CLOSE;
     }
 
-    // Procesa el comando "ticket remove": verifica los argumentos,
-    // maneja los errores correspondientes y utiliza Ticket
-    // para eliminar todas las apariciones del producto del ticket.
-
-
-    // Procesa el comando "ticket add": verifica los argumentos,
-    // maneja los errores correspondientes y utiliza Ticket
-    // para añadir el producto al Ticket.
-
-
     // Imprime el contenido del ticket
     public void print() {
         lines.sort((l1, l2) -> l1.getProduct().getName().compareToIgnoreCase(l2.getProduct().getName())); //ordena lines alfabeticamente
