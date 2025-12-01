@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 public class TicketIdGenerator {
     private static final Random random = new Random();
 
-    public static String generateOpenTicketId(){
+    public static String generateOpenTicketId() {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd-HH:mm-");
 
@@ -20,7 +20,7 @@ public class TicketIdGenerator {
         return formatDate + generateRandomNumber();
     }
 
-    public static String generateCloseTicketId(String ticketId){
+    public static String generateCloseTicketId(String ticketId) {
         if (ticketId == null) return null;
 
         LocalDateTime now = LocalDateTime.now();
@@ -31,7 +31,7 @@ public class TicketIdGenerator {
         return ticketId + formatDate;
     }
 
-    private static String generateRandomNumber(){
+    private static String generateRandomNumber() {
         StringBuilder randomString = new StringBuilder();
 
         for (int i = 0; i < 5; i++) {

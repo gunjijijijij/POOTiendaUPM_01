@@ -1,4 +1,5 @@
 package org.example.app;
+
 import org.example.controller.ClientController;
 import org.example.controller.ProductController;
 import org.example.controller.TicketController;
@@ -70,18 +71,18 @@ public class CLI {
         end(); // Mensaje final
     }
 
-    private void end () {
+    private void end() {
         System.out.println("Closing application.");
         System.out.println("Goodbye!");
     }
 
-    private void init () {
+    private void init() {
         System.out.println("Welcome to the ticket module App");
         System.out.println("Ticket module. Type 'help' to see commands.");
     }
 
     // Imprime el guía de comandos
-    private void help () {
+    private void help() {
         System.out.println("Commands:");
         System.out.println("  client add \"<nombre>\" <DNI> <email> <cashId>");
         System.out.println("  client remove <DNI>");
@@ -110,8 +111,8 @@ public class CLI {
     }
 
     // Repite el texto entre comillas
-    private void echo (String[] fullLine) {
-        String message =  Utils.joinQuoted(fullLine, 1, fullLine.length).trim();
+    private void echo(String[] fullLine) {
+        String message = Utils.joinQuoted(fullLine, 1, fullLine.length).trim();
         if (message.isEmpty()) {
             System.out.println("The echo message is empty.");
             return;
@@ -120,7 +121,7 @@ public class CLI {
     }
 
     // Maneja los subcomandos relacionados con productos
-    private void handleProdCommand (String[] args){
+    private void handleProdCommand(String[] args) {
         if (Utils.requireMinArgs(args, 2,
                 "Use: prod <add|addFood|addMeeting|list|update|remove> ...")) return;
 
@@ -154,10 +155,10 @@ public class CLI {
     }
 
 
-
     // Maneja los subcomandos relacionados con tickets
-    private void handleTicketCommand (String[]args){
-        if (Utils.requireMinArgs(args, 2, "ticket command needs two parameters \"\"ticket \"<add|list|update|remove> ...\" \"\"")) return;
+    private void handleTicketCommand(String[] args) {
+        if (Utils.requireMinArgs(args, 2, "ticket command needs two parameters \"\"ticket \"<add|list|update|remove> ...\" \"\""))
+            return;
 
 
         switch (args[1].toLowerCase()) {
@@ -181,12 +182,15 @@ public class CLI {
             case "list":
                 ticketController.handleTicketList();
                 break;
-            default: System.out.println("Invalid command"); break;
+            default:
+                System.out.println("Invalid command");
+                break;
         }
     }
 
-    private void handleCash(String[] args){
-        if (Utils.requireMinArgs(args, 2, "cash command needs two parameters \"\"cash \"<add|remove|list|tickets> ...\" \"\"")) return;
+    private void handleCash(String[] args) {
+        if (Utils.requireMinArgs(args, 2, "cash command needs two parameters \"\"cash \"<add|remove|list|tickets> ...\" \"\""))
+            return;
 
         switch (args[1].toLowerCase()) {
             case "add":
@@ -205,14 +209,17 @@ public class CLI {
                 cashierController.tickets(args[2]);
                 break;
 
-            default: System.out.println("Invalid command"); break;
+            default:
+                System.out.println("Invalid command");
+                break;
         }
     }
 
-    public void handleClient(String[] args){
-        if (Utils.requireMinArgs(args, 2, "cash command needs two parameters \"\"cash \"<add|remove|list|tickets> ...\" \"\"")) return;
+    public void handleClient(String[] args) {
+        if (Utils.requireMinArgs(args, 2, "cash command needs two parameters \"\"cash \"<add|remove|list|tickets> ...\" \"\""))
+            return;
 
-        switch (args[1].toLowerCase()){
+        switch (args[1].toLowerCase()) {
             case "add":
                 clientController.handleClientAdd(args);
                 break;
@@ -223,7 +230,9 @@ public class CLI {
                 clientController.list();
                 break;
 
-            default: System.out.println("Invalid command"); break;
+            default:
+                System.out.println("Invalid command");
+                break;
 
         }
     }

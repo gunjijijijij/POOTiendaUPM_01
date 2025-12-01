@@ -10,6 +10,7 @@ public class Client extends User {
         super(id, name, email);
         this.registeredBy = registeredBy;
     }
+
     public Cashier getRegisteredBy() {
         return registeredBy;
     }
@@ -20,6 +21,6 @@ public class Client extends User {
 
     @Override
     public String toString() {
-        return  "Client{identifier='"+getId()+"', name='"+name+"', email='"+email+"', cash="+(registeredBy != null ? registeredBy.getId() : "null")+"}";
+        return "Client{identifier='" + getId() + "', name='" + name + "', email='" + email + "', cash=" + (registeredBy != null ? registeredBy.getId() : "null") + "}";
     }
 }

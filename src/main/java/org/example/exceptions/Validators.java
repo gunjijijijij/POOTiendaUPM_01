@@ -33,5 +33,4 @@ public class Validators {
             throw new IllegalStateException("No more products can be added, the maximum is " + maxProducts);
         }
     }
-
 }

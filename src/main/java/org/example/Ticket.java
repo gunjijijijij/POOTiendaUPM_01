@@ -1,5 +1,7 @@
 package org.example;
+
 import org.example.util.TicketIdGenerator;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,15 +22,16 @@ public class Ticket {
     public Ticket() {
         this.id = TicketIdGenerator.generateOpenTicketId();
     }
+
     public Ticket(String id) {
         this.id = id;
     }
 
-    public String getId(){
+    public String getId() {
         return id;
     }
 
-    public Status getStatus(){
+    public Status getStatus() {
         return status;
     }
 
@@ -111,7 +114,7 @@ public class Ticket {
         return getTotalPrice() - getTotalDiscount();
     }
 
-    public void closeTicket(){
+    public void closeTicket() {
         id = TicketIdGenerator.generateCloseTicketId(id);
         status = Status.CLOSE;
     }
@@ -141,5 +144,4 @@ public class Ticket {
     public String toString() {
         return id + " - " + status.toString();
     }
-
 }

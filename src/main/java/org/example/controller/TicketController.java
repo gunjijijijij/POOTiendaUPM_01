@@ -45,7 +45,7 @@ public class TicketController {
             if (TicketController.findTicketById(ticketId) != null) {
                 System.out.println("ticket new: error (ticket id already exists)");
                 return;
-            }else{
+            } else {
                 ticket = new Ticket(ticketId);
             }
         }

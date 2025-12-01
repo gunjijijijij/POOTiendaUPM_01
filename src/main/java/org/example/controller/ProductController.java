@@ -238,19 +238,21 @@ public class ProductController {
             System.out.println("Food product requires at least 3 days planning");
             return;
         }
-        addFoodProduct(id,name,price,expiration,maxPeople);
+        addFoodProduct(id, name, price, expiration, maxPeople);
     }
-    private void addFoodProduct(Integer id, String name, float price, LocalDate expiration, int maxPeople){
-        int finalid = (id!=null) ? id : ProductIdGenerator.generateId(); //si no existe id, lo genera
-        if(findProductById(finalid) != null){
+
+    private void addFoodProduct(Integer id, String name, float price, LocalDate expiration, int maxPeople) {
+        int finalid = (id != null) ? id : ProductIdGenerator.generateId(); //si no existe id, lo genera
+        if (findProductById(finalid) != null) {
             throw new IllegalArgumentException("Product ID " + finalid + " already exists");
         }
-        FoodProduct product = new FoodProduct(finalid,name, price, expiration, maxPeople);
+        FoodProduct product = new FoodProduct(finalid, name, price, expiration, maxPeople);
         products.add(product);
         System.out.println(product);
         System.out.println("prod addFood: ok");
     }
-    public void handleProdAddMeeting(String[] args){
+
+    public void handleProdAddMeeting(String[] args) {
         if (Utils.requireMinArgs(args, 6, "Usage: prod addMeeting [<id>] \"<name>\" <price> <expiration:yyyy-MM-dd> <max_people>")) {
             return;
         }
@@ -285,17 +287,18 @@ public class ProductController {
             System.out.println("Meeting product requires at least 12 hours planning");
             return;
         }
-        addMeetingProduct(id,name,price,expiration,maxPeople);
+        addMeetingProduct(id, name, price, expiration, maxPeople);
     }
-    private void addMeetingProduct(Integer id, String name, float price, LocalDate expiration, int maxPeople){
-        int finalid = (id!=null) ? id : ProductIdGenerator.generateId(); //si no existe id, lo genera
-        if(findProductById(finalid) != null){
+
+    private void addMeetingProduct(Integer id, String name, float price, LocalDate expiration, int maxPeople) {
+        int finalid = (id != null) ? id : ProductIdGenerator.generateId(); //si no existe id, lo genera
+        if (findProductById(finalid) != null) {
             throw new IllegalArgumentException("Product ID " + finalid + " already exists");
         }
-        MeetingProduct product = new MeetingProduct(finalid,name, price, expiration, maxPeople);
+        MeetingProduct product = new MeetingProduct(finalid, name, price, expiration, maxPeople);
         products.add(product);
         System.out.println(product);
         System.out.println("prod addMeeting: ok");
     }
-    }
+}
 

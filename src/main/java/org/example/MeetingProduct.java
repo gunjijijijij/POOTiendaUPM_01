@@ -58,7 +58,7 @@ public class MeetingProduct extends Product {
 
     @Override
     public List<TicketLine> createTicketLine(int quantity, List<String> customTexts) {
-        if (customTexts != null ) throw new IllegalArgumentException("this product doesn't support customizations");
+        if (customTexts != null) throw new IllegalArgumentException("this product doesn't support customizations");
         List<TicketLine> result = new ArrayList<>();
         result.add(new TicketLineMeetingProduct(this, quantity));
         return result;

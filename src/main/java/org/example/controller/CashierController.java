@@ -23,17 +23,23 @@ public class CashierController {
         return null;
     }
 
-    public void handleCashAdd(String[] args){
+    public void handleCashAdd(String[] args) {
         if (Utils.requireMinArgs(args, 4, "Usage: cash add [<id>] \"<name>\" <email>")) return;
 
         Cashier cashier;
         if (args[2].startsWith("\"")) {
             String name = Utils.joinQuoted(args, 2, args.length - 1).trim();
-            if (name.isEmpty()) {System.out.println("The name is empty."); return; }
+            if (name.isEmpty()) {
+                System.out.println("The name is empty.");
+                return;
+            }
             cashier = new Cashier(name, args[args.length - 1]);
-        } else  {
+        } else {
             String name = Utils.joinQuoted(args, 3, args.length - 1).trim();
-            if (name.isEmpty()) {System.out.println("The name is empty."); return; }
+            if (name.isEmpty()) {
+                System.out.println("The name is empty.");
+                return;
+            }
             cashier = new Cashier(args[2], name, args[args.length - 1]);
         }
 
@@ -42,7 +48,7 @@ public class CashierController {
         System.out.println("cash add: ok");
     }
 
-    public void handleCashRemove(String[] args){
+    public void handleCashRemove(String[] args) {
         if (Utils.requireMinArgs(args, 3, "Usage: cash remove <id>")) return;
 
         String id = args[2];
@@ -58,9 +64,9 @@ public class CashierController {
         System.out.println("cash remove: ok");
     }
 
-    public void list(){
+    public void list() {
         System.out.println("Cash:");
-        for (Cashier cash : cashiers){
+        for (Cashier cash : cashiers) {
             System.out.println("  " + cash.toString());
         }
         System.out.println("cash list: ok");
@@ -80,6 +86,4 @@ public class CashierController {
         }
         System.out.println("cash tickets: ok");
     }
-
-
 }

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class CashierIdGenerator {
     private static final Random random = new Random();
-    private static final List<String> usedIds= new ArrayList<>();
+    private static final List<String> usedIds = new ArrayList<>();
 
     public static String generateId() {
         String id;
@@ -18,7 +18,7 @@ public class CashierIdGenerator {
         return id;
     }
 
-    private static String createRandomId(){
+    private static String createRandomId() {
         StringBuilder sb = new StringBuilder("UW");
 
         for (int i = 0; i < 7; i++) {
@@ -28,7 +28,7 @@ public class CashierIdGenerator {
         return sb.toString();
     }
 
-    public static String validateId(String id){
+    public static String validateId(String id) {
         if (id.length() != 9) {
             throw new IllegalArgumentException("Cashier ID must have format: UWxxxxxxx");
         }
@@ -51,11 +51,11 @@ public class CashierIdGenerator {
         return id;
     }
 
-    public static void removeId(String id){
+    public static void removeId(String id) {
         usedIds.remove(id);
     }
 
-    public static boolean idExist(String id){
+    public static boolean idExist(String id) {
         return usedIds.contains(id);
     }
 }

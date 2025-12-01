@@ -12,23 +12,25 @@ public class Cashier extends User {
 
     private ArrayList<Ticket> tickets = new ArrayList<>();
 
-    public Cashier(String name, String email) {super(CashierIdGenerator.generateId(), name, email);}
+    public Cashier(String name, String email) {
+        super(CashierIdGenerator.generateId(), name, email);
+    }
 
     public Cashier(String id, String name, String email) {
         super(CashierIdGenerator.validateId(id), name, email);
     }
 
-    public String toString(){
+    public String toString() {
         return "Cash{identifier='" + getId() + "', name='" + getName() + "', email='" + getEmail() + "'}";
     }
 
-    public ArrayList<Ticket> getTickets(){
+    public ArrayList<Ticket> getTickets() {
         return tickets;
     }
 
-    public boolean isTicketOfCash(String ticketId){
-        for (Ticket ticket : tickets){
-            if(ticket.getId().equals(ticketId)){
+    public boolean isTicketOfCash(String ticketId) {
+        for (Ticket ticket : tickets) {
+            if (ticket.getId().equals(ticketId)) {
                 return true;
             }
         }

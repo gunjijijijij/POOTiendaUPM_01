@@ -57,7 +57,7 @@ public class Product {
 
 
     public List<TicketLine> createTicketLine(int quantity, List<String> customTexts) {
-        if  (customTexts != null) {
+        if (customTexts != null) {
             throw new IllegalArgumentException("The custom text list can't be null.");
         }
         List<TicketLine> result = new ArrayList<>();
@@ -74,5 +74,4 @@ public class Product {
                 + "', category:" + category
                 + ", price:" + price + "}";
     }
-
 }
