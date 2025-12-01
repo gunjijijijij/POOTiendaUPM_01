@@ -104,13 +104,17 @@ public class ProductController {
         Validators.requireValidProductName(name);
         Validators.requireValidCategory(category);
         Validators.requireValidPrice(price);
-        Validators.requireCapacityNotExceeded(products.size(), MAX_PRODUCTS);
 
-        Product product = createProduct(id, name, category, price, maxPers);
-        products.add(product);
+        if (products.size() < MAX_PRODUCTS){
+            Product product = createProduct(id, name, category, price, maxPers);
+            products.add(product);
 
-        System.out.println(product);
-        System.out.println("prod add: ok");
+            System.out.println(product);
+            System.out.println("prod add: ok");
+        }else{
+            System.out.println("No more products can be added, the maximum is " + MAX_PRODUCTS);
+        }
+
     }
 
     private static Product createProduct(int id, String name, Category category, float price, Integer maxPers) {
@@ -127,6 +131,10 @@ public class ProductController {
         // id siempre en args[2]
         Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
         if (id == null) return;
+        if (findProductById(id) != null){
+            System.out.println("prod add: error (A product with that id already exists)");
+            return;
+        };
 
         int i;
         for (i = 4; i < args.length; i++) {

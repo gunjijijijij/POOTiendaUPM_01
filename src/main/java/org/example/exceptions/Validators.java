@@ -28,9 +28,4 @@ public class Validators {
         }
     }
 
-    public static void requireCapacityNotExceeded(int currentSize, int maxProducts) {
-        if (currentSize >= maxProducts) {
-            throw new IllegalStateException("No more products can be added, the maximum is " + maxProducts);
-        }
-    }
 }
