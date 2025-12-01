@@ -89,7 +89,7 @@ public class TicketController {
 
         Cashier cashier = CashierController.findCashById(cashId);
         if (cashier == null) {
-            System.err.println("ticket add: error (cashier with ID " + cashId + " not found)");
+            System.out.println("ticket add: error (cashier with ID " + cashId + " not found)");
             return;
         }
 
