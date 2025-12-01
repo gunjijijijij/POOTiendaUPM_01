@@ -15,6 +15,10 @@ public class TicketLine {
         return product.getPrice();
     }
 
+    public double getDiscount() {
+        return product.getCategory().calculateDiscount(getPrice());
+    }
+
     @Override
     public String toString() {
         return product.toString();

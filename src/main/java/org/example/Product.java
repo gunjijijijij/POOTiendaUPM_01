@@ -55,9 +55,6 @@ public class Product {
         this.price = price;
     }
 
-    public double getDiscount() {
-        return category.calculateDiscount(price);
-    }
 
     public List<TicketLine> createTicketLine(int quantity, List<String> customTexts) {
         if  (customTexts != null) {

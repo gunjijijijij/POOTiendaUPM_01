@@ -100,7 +100,7 @@ public class Ticket {
             Category category = product.getCategory();
             int catCount = category != null ? countCategory(category) : 0;
             if (catCount > 1) {
-                totalDiscount += product.getCategory().calculateDiscount(product.getPrice());
+                totalDiscount += line.getDiscount();
             }
         }
         return totalDiscount;
@@ -134,7 +134,7 @@ public class Ticket {
             Product product = line.getProduct();
             Category category = product.getCategory();
             int catCount = category != null ? countCategory(category) : 0;
-            double discount = product.getDiscount();
+            double discount = line.getDiscount();
             System.out.printf(
                     "  %s%s\n",
                     line,
