@@ -1,21 +1,15 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Product {
     protected int id;
     protected String name;
     protected Category category;
     protected float price;
-    protected Integer maxPers;
 
-    public Product(Integer id, String name, Category category, float price, Integer maxPers) {
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.price = price;
-        this.maxPers = maxPers;
-    }
-
-    public Product(Integer id, String name, Category category, float price){
+    public Product(Integer id, String name, Category category, float price) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -61,17 +55,24 @@ public class Product {
         this.price = price;
     }
 
-    public boolean esPersonalizable() {
-        return maxPers != null;
-    }
-
     public double getDiscount() {
         return category.calculateDiscount(price);
     }
 
+    public List<TicketLine> createTicketLine(int quantity, List<String> customTexts) {
+        if  (customTexts != null) {
+            throw new IllegalArgumentException("The custom text list can't be null.");
+        }
+        List<TicketLine> result = new ArrayList<>();
+        for (int i = 0; i < quantity; i++) {
+            result.add(new TicketLine(this));
+        }
+        return result;
+    }
+
     @Override
     public String toString() {
-        return "{class:Product, id: " + id
+        return "{class:Product, id:" + id
                 + ", name:'" + name
                 + "', category:" + category
                 + ", price:" + price + "}";

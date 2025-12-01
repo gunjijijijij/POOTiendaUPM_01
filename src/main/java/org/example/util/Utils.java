@@ -64,25 +64,20 @@ public class Utils {
     }
 
 
-    public static ArrayList<String> parseCustomTexts(String command) {
+    public static ArrayList<String> parseCustomTexts(String[] args) {
         ArrayList<String> customTexts = new ArrayList<>();
 
-        String[] parts = command.split("--p");
-
-        for (int i = 1; i < parts.length; i++) {
-            String txt = parts[i].trim();
-
-            int spaceIndex = txt.indexOf(' ');
-            if (spaceIndex != -1) {
-                txt = txt.substring(0, spaceIndex);
-            }
-
-            if (!txt.isEmpty()) {
-                customTexts.add(txt);
+        for (int i = 6; i < args.length; i++) {
+            if (args[i].startsWith("--p")) {
+                try {
+                    String text = args[i].substring(3);
+                    customTexts.add(text);
+                } catch (IndexOutOfBoundsException e) {
+                    throw new IllegalArgumentException("there should be text following the --p flag");
+                }
             }
         }
-
-        return customTexts;
+        return customTexts.isEmpty() ? null : customTexts;
     }
 
     public static LocalDate parseExpirationDate(String date) {

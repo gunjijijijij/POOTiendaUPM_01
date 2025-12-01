@@ -28,7 +28,7 @@ public class CLI {
             String[] commandUni = line.split("\\s+");
             String cmd = commandUni[0].toLowerCase(); // normalizado a minúsculas
 
-            System.out.println("tUPM>" + line);
+            System.out.println("tUPM> " + line);
 
             switch (cmd) {
                 case "help":
@@ -113,7 +113,7 @@ public class CLI {
             System.out.println("The echo message is empty.");
             return;
         }
-        System.out.println(message);
+        System.out.println("\"" + message + "\" ");
     }
 
     // Maneja los subcomandos relacionados con productos

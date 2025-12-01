@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ProductController {
     private static final int MAX_PRODUCTS = 200;
-    private static ArrayList<Product> products = new ArrayList<>();
+    private static List<Product> products = new ArrayList<>();
 
     // Imprime los productos existentes en el catálogo
     public void prodList() {
@@ -20,7 +20,7 @@ public class ProductController {
             System.out.println("There aren't any products in the catalog.");
         } else {
             for (Product product : products) {
-                System.out.println(product.toString());
+                System.out.println("  " + product.toString());
             }
         }
     }
@@ -53,7 +53,7 @@ public class ProductController {
                     break;
             }
             System.out.println(product);
-            System.out.println("prod update: ok");
+            System.out.print("prod update: ok");
 
         } catch (IllegalArgumentException exception) {
             System.out.println("prod update: error (" + exception.getMessage() + ")");
@@ -116,7 +116,7 @@ public class ProductController {
         if (maxPers != null) {
             return new CustomProduct(id, name, category, price, maxPers);
         }
-        return new Product(id, name, category, price, null);
+        return new Product(id, name, category, price);
     }
 
     public void handleProdAdd(String[] args) {
@@ -127,20 +127,32 @@ public class ProductController {
         Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
         if (id == null) return;
 
-        String name = Utils.joinQuoted(args, 3, args.length - 2).trim();
+        int i;
+        for (i = 4; i < args.length; i++) {
+            if (args[i].endsWith("\"")) {
+                break;
+            }
+        }
+
+        String name = Utils.joinQuoted(args, 3, i + 1).trim();
         if (name.isEmpty()) {
             System.out.println("The name is empty.");
             return;
         }
 
-        Category category = Utils.parseCategory(args[args.length - 2]);
+        Category category = Utils.parseCategory(args[i + 1]);
         if (category == null) return;
 
-        Float price = Utils.parseNonNegativeFloat(args[args.length - 1]);
+        Float price = Utils.parseNonNegativeFloat(args[i + 2]);
         if (price == null) return;
 
+        Integer maxPers = null;
+        if (args.length > i + 3) {
+            maxPers = Utils.parsePositiveInt(args[args.length - 1], "The maximum number of people allowed should be a positive integer");
+        }
+
         try {
-            addProduct(id, name, category, price, null);
+            addProduct(id, name, category, price, maxPers);
         } catch (IllegalArgumentException e) {
             System.out.println("prod add: error (" + e.getMessage() + ")");
         }
@@ -218,7 +230,7 @@ public class ProductController {
         Integer maxPeople = Utils.parsePositiveInt(args[args.length - 1], "Max people must be a positive integer.");
         if (maxPeople == null) return;
         if (maxPeople < 1 || maxPeople > 100) {
-            System.out.println("Max people must be between 1 and 100 ME QUIERO IR");
+            System.out.println("Max people must be between 1 and 100");
             return;
         }
         if (!Utils.isValidFoodCreation(expiration)) {
@@ -265,7 +277,7 @@ public class ProductController {
         Integer maxPeople = Utils.parsePositiveInt(args[args.length - 1], "Max people must be a positive integer.");
         if (maxPeople == null) return;
         if (maxPeople < 1 || maxPeople > 100) {
-            System.out.println("Max people must be between 1 and 100 HOLAAAAAAAAAAA");
+            System.out.println("Max people must be between 1 and 100");
             return;
         }
         if (!Utils.isValidMeetingCreation(expiration)) {

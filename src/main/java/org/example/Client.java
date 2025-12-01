@@ -20,6 +20,6 @@ public class Client extends User {
 
     @Override
     public String toString() {
-        return  "Client{identifier='"+getId()+"', name='"+name+"', email='"+email+"', cash='"+(registeredBy != null ? registeredBy.getId() : "null")+"'}";
+        return  "Client{identifier='"+getId()+"', name='"+name+"', email='"+email+"', cash="+(registeredBy != null ? registeredBy.getId() : "null")+"}";
     }
 }

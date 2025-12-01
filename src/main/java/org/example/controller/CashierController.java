@@ -61,7 +61,7 @@ public class CashierController {
     public void list(){
         System.out.println("Cash:");
         for (Cashier cash : cashiers){
-            System.out.println(cash.toString());
+            System.out.println("  " + cash.toString());
         }
         System.out.println("cash list: ok");
     }

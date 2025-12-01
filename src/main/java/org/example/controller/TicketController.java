@@ -2,10 +2,8 @@ package org.example.controller;
 
 import org.example.*;
 
-import org.example.util.TicketIdGenerator;
 import org.example.util.Utils;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -84,7 +82,6 @@ public class TicketController {
         String prodId = args[4];
         String quantityStr = args[5];
 
-
         Cashier cashier = CashierController.findCashById(cashId);
         if (cashier == null) {
             System.err.println("ticket add: error (cashier with ID " + cashId + " not found)");
@@ -105,13 +102,6 @@ public class TicketController {
                 "Quantity must be a positive integer.");
         if (quantity == null) return;
 
-        String fullCommand = String.join(" ", args);
-        ArrayList<String> customTexts = new ArrayList<>();
-        if (product.esPersonalizable()){
-            customTexts = Utils.parseCustomTexts(fullCommand);
-        }
-
-
         if (!cashier.isTicketOfCash(ticketId)) {
             System.out.println("Error: This cashier cannot access the ticket");
             return;
@@ -124,11 +114,11 @@ public class TicketController {
         }
 
         try {
+            ArrayList<String> customTexts = Utils.parseCustomTexts(args);
             ticket.addProductTicket(product, quantity, customTexts);
             System.out.println("Ticket: " + ticket.getId());
             ticket.print();
             System.out.println("ticket add: ok");
-
         } catch (Exception e) {
             System.out.println("ticket add: error (" + e.getMessage() + ")");
         }

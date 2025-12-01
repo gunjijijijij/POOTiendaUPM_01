@@ -7,7 +7,7 @@ import java.util.List;
 public class Ticket {
     private String id;
     private static final int MAX_SIZE = 100;
-    private List<Product> lines = new ArrayList<>();
+    private final List<TicketLine> lines = new ArrayList<>();
 
     public enum Status {
         OPEN,
@@ -33,48 +33,22 @@ public class Ticket {
     }
 
     // Añade una cantidad x de un producto al ticket mientras no estuviera lleno
-    public void addProductTicket(Product product, int quantity, ArrayList<String> customTexts) {
+    public void addProductTicket(Product product, int quantity, List<String> customTexts) {
         if (status == Status.CLOSE) {
-            throw new IllegalStateException("ticket add: error (ticket is closed)");
+            throw new IllegalStateException("ticket is closed");
         }
 
         if (product == null) {
-            System.out.println("ticket add: error (product doesn't exist)");
-            return;
-        }
-        if (product instanceof MeetingProduct || product instanceof FoodProduct) {
-            for (Product p : lines) {
-                if (p instanceof MeetingProduct || p instanceof FoodProduct) {
-                    System.out.println("ticket add: error (meeting/food product already in ticket)");
-                    return;
-                }
-            }
-        }
-        if (product instanceof CustomProduct ) {
-            CustomProduct cp = (CustomProduct) product;
-            for (String txt : customTexts) {
-                try {
-                    cp.addCustomText(txt);
-                } catch (IllegalArgumentException e) {
-                    System.out.println("ticket add: error (" + e.getMessage() + ")");
-                    return;
-                }
-            }
-        }
-        else if (!customTexts.isEmpty()) {
-            System.out.println("ticket add: error (product not personalizable)");
-            return;
+            throw new IllegalStateException("product doesn't exist");
         }
 
-        for (int i = 0; i < quantity; i++) {
-            if (lines.size() >= MAX_SIZE) {
-                System.out.println("ticket add: error (no room for more lines)");
-                return;
-            }
-            lines.add(product);
+        List<TicketLine> ticketLines = product.createTicketLine(quantity, customTexts);
+        if (lines.size() + ticketLines.size() > MAX_SIZE) {
+            throw new IllegalArgumentException("invalid quantity, ticket would exceed max size");
         }
+        lines.addAll(ticketLines);
 
-       status = Status.OPEN;
+        status = Status.OPEN;
     }
 
     // Elimina todas las apariciones de un producto existente en el ticket
@@ -85,9 +59,8 @@ public class Ticket {
             return false;
         }
 
-
         for (int i = lines.size() - 1; i >= 0; i--) {
-            if (lines.get(i).getId() == productId) {
+            if (lines.get(i).getProduct().getId() == productId) {
                 lines.remove(i);
                 found = true;
             }
@@ -102,8 +75,8 @@ public class Ticket {
     // Cuenta cuantos productos hay de una categoría en el ticket
     private int countCategory(Category category) {
         int count = 0;
-        for (Product product : lines) {
-            if (product.getCategory() == category) {
+        for (TicketLine line : lines) {
+            if (line.getProduct().getCategory() == category) {
                 count++;
             }
         }
@@ -113,8 +86,8 @@ public class Ticket {
     // Getter del total del precio de todos los productos del ticket sin descuento
     private double getTotalPrice() {
         double total = 0;
-        for (Product product : lines) {
-            total += product.getPrice();
+        for (TicketLine line : lines) {
+            total += line.getPrice();
         }
         return total;
     }
@@ -122,7 +95,8 @@ public class Ticket {
     // Getter del descuento total del ticket
     private double getTotalDiscount() {
         double totalDiscount = 0;
-        for (Product product : lines) {
+        for (TicketLine line : lines) {
+            Product product = line.getProduct();
             Category category = product.getCategory();
             int catCount = category != null ? countCategory(category) : 0;
             if (catCount > 1) {
@@ -154,15 +128,16 @@ public class Ticket {
 
     // Imprime el contenido del ticket
     public void print() {
-        lines.sort((p1, p2) -> p1.getName().compareToIgnoreCase(p2.getName())); //ordena lines alfabeticamente
+        lines.sort((l1, l2) -> l1.getProduct().getName().compareToIgnoreCase(l2.getProduct().getName())); //ordena lines alfabeticamente
 
-        for (Product product : lines) {
+        for (TicketLine line : lines) {
+            Product product = line.getProduct();
             Category category = product.getCategory();
             int catCount = category != null ? countCategory(category) : 0;
             double discount = product.getDiscount();
             System.out.printf(
                     "  %s%s\n",
-                    product,
+                    line,
                     catCount > 1 && discount > 0 ? " **discount -" + String.format("%.2f", discount) : ""
             );
         }
