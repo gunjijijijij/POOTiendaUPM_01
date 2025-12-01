@@ -78,6 +78,11 @@ public class TicketController {
             return;
 
         String ticketId = args[2];
+        if (findTicketById(ticketId) == null){
+            System.out.println("ticket add: error (ticket does not exist)");
+            return;
+        }
+
         String cashId = args[3];
         String prodId = args[4];
         String quantityStr = args[5];
@@ -130,12 +135,17 @@ public class TicketController {
             return;
 
         String ticketId = args[2];
+        Ticket ticket = findTicketById(ticketId);
+        if (ticket == null) {
+            System.out.println("ticket remove: error (ticket does not exist)");
+            return;
+        }
         String cashId = args[3];
         String prodId = args[4];
 
         Cashier cashier = CashierController.findCashById(cashId);
         if (cashier == null) {
-            System.err.println("ticket add: error (cashier with ID " + cashId + " not found)");
+            System.out.println("ticket add: error (cashier with ID " + cashId + " not found)");
             return;
         }
 
@@ -146,11 +156,6 @@ public class TicketController {
         // Check that cashier owns this ticket
         if (!cashier.isTicketOfCash(ticketId)) {
             System.out.println("Error: This cashier cannot access the ticket");
-        }
-
-        Ticket ticket = TicketController.findTicketById(ticketId);
-        if (ticket == null) {
-            System.out.println("ticket remove: error (ticket does not exist)");
             return;
         }
 
@@ -189,6 +194,7 @@ public class TicketController {
             System.out.println("ticket print: error (ticket does not exist)");
             return;
         }
+
         ticket.closeTicket();
         System.out.println("Ticket : " + ticket.getId());
         ticket.print();
