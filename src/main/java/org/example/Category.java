@@ -3,7 +3,7 @@ package org.example;
 // Categorías válidas en la tienda
 public enum Category {
     MERCH(0.0),
-    STATIONARY(0.05),
+    STATIONERY(0.05),
     CLOTHES(0.07),
     BOOK(0.1),
     ELECTRONICS(0.03);
