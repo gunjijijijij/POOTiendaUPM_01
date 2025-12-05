@@ -1,33 +1,46 @@
 package org.example.app;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import org.example.controller.ClientController;
 import org.example.controller.ProductController;
 import org.example.controller.TicketController;
 import org.example.util.Utils;
 import org.example.controller.CashierController;
 
-import java.util.Scanner;
-
 public class CLI {
-    // Controladores principales
+
     private final ProductController productController = new ProductController();
     private final CashierController cashierController = new CashierController();
     private final ClientController clientController = new ClientController();
     private final TicketController ticketController = new TicketController();
 
-    public void start() {
-        init(); // Mensaje inicial
+    public void start(String inputFile) {
+        init();
 
-        Scanner sc = new Scanner(System.in);
+        Scanner sc;
+
+        try {
+            if (inputFile != null) {
+                sc = new Scanner(new File(inputFile));
+            } else {
+                sc = new Scanner(System.in);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File '" + inputFile + "' not found.");
+            return;
+        }
+
         boolean finish = false;
 
-        // Bucle principal: se ejecuta hasta que el usuario escriba "exit"
         while (!finish && sc.hasNextLine()) {
             String line = sc.nextLine().trim();
             if (line.isEmpty()) continue;
 
             String[] commandUni = line.split("\\s+");
-            String cmd = commandUni[0].toLowerCase(); // normalizado a minúsculas
+            String cmd = commandUni[0].toLowerCase();
 
             System.out.println("tUPM> " + line);
 
@@ -68,7 +81,9 @@ public class CLI {
                 System.out.println();
             }
         }
-        end(); // Mensaje final
+
+        sc.close();
+        end();
     }
 
     private void end() {
