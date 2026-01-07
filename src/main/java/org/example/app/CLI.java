@@ -88,11 +88,11 @@ public class CLI {
 
     private void end() {
         System.out.println("Closing application.");
-        System.out.println("Goodbye!");
+        System.out.print("Goodbye!");
     }
 
     private void init() {
-        System.out.println("Welcome to the ticket module App");
+        System.out.println("Welcome to the ticket module App.");
         System.out.println("Ticket module. Type 'help' to see commands.");
     }
 
