@@ -39,7 +39,7 @@ public class CLI {
             String line = sc.nextLine().trim();
             if (line.isEmpty()) continue;
 
-            String[] commandUni = line.split("\\s+");
+            String[] commandUni = Utils.parseLine(line).toArray(new String[0]);
             String cmd = commandUni[0].toLowerCase();
 
             System.out.println("tUPM> " + line);
@@ -127,7 +127,7 @@ public class CLI {
 
     // Repite el texto entre comillas
     private void echo(String[] fullLine) {
-        String message = Utils.joinQuoted(fullLine, 1, fullLine.length).trim();
+        String message = fullLine[1].trim();
         if (message.isEmpty()) {
             System.out.println("The echo message is empty.");
             return;
@@ -141,7 +141,6 @@ public class CLI {
                 "Use: prod <add|addFood|addMeeting|list|update|remove> ...")) return;
 
         String sub = args[1].toLowerCase();
-
 
         switch (sub) {
             case "add":

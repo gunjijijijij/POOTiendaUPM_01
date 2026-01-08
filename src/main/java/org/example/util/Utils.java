@@ -58,15 +58,42 @@ public class Utils {
         }
     }
 
-    // Une argumentos entre comillas (para los nombres de productos con espacios)
-    public static String joinQuoted(String[] args, int i0, int iN) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = i0; i < iN; i++) sb.append(args[i]).append(" ");
-        String name = sb.toString().trim();
-        if (name.startsWith("\"") && name.endsWith("\"") && name.length() >= 2) {
-            name = name.substring(1, name.length() - 1);
+    public static List<String> parseLine(String line) {
+        line = line.trim();
+        boolean isBetweenQuotes = false;
+        boolean followsWhitespace = false;
+        List<String> result = new ArrayList<>();
+        StringBuilder curr = new StringBuilder();
+        for (char c : line.toCharArray()) {
+            if (c == '"') {
+                followsWhitespace = false;
+                isBetweenQuotes = !isBetweenQuotes;
+                if (!isBetweenQuotes) {
+                    followsWhitespace = true;
+                    result.add(curr.toString());
+                    curr = new StringBuilder();
+                }
+                continue;
+            }
+
+            if (isBetweenQuotes) {
+                curr.append(c);
+                continue;
+            }
+
+            if (!Character.isWhitespace(c)) {
+                followsWhitespace = false;
+                curr.append(c);
+            } else if (!followsWhitespace) {
+                result.add(curr.toString());
+                curr = new StringBuilder();
+                followsWhitespace = true;
+            }
         }
-        return name;
+        if (curr.length() > 0) {
+            result.add(curr.toString());
+        }
+        return result;
     }
 
     public static String parseIntToString(int number) {

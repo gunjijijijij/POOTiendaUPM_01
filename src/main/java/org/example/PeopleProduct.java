@@ -9,11 +9,10 @@ public abstract class PeopleProduct extends Product {
 
     private final LocalDate expirationDate;
     private final int maxPeople;
-    private final float pricePerPerson;
     private int numPeopleAttending = 0;
 
     public PeopleProduct(int id, String name, float pricePerPerson, LocalDate expirationDate, int maxPeople) {
-        super(id, name, null, 0f);
+        super(id, name, null, pricePerPerson);
 
         if (maxPeople > 100 || maxPeople <= 0) {
             throw new IllegalArgumentException("Max people MUST be between 1 and 100");
@@ -25,7 +24,6 @@ public abstract class PeopleProduct extends Product {
 
         this.expirationDate = expirationDate;
         this.maxPeople = maxPeople;
-        this.pricePerPerson = pricePerPerson;
     }
     
     public PeopleProduct(PeopleProduct peopleProduct, int numPeopleAttending) {
@@ -57,7 +55,7 @@ public abstract class PeopleProduct extends Product {
         StringBuilder sb = new StringBuilder();
         sb.append("{class:").append(className).append(", id:").append(id)
                 .append(", name:'").append(name)
-                .append("', price:").append(price)
+                .append("', price:").append(price * numPeopleAttending)
                 .append(", date of Event:").append(expirationDate)
                 .append(", max people allowed:").append(maxPeople);
         if (numPeopleAttending != 0) {
@@ -71,7 +69,11 @@ public abstract class PeopleProduct extends Product {
     public abstract List<Product> addToTicket(int quantity, List<String> customTexts);
 
     public float getPricePerPerson() {
-        return pricePerPerson;
+        return price;
+    }
+
+    public float getPrice() {
+        return price * numPeopleAttending;
     }
 }
 

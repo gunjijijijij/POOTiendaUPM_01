@@ -30,7 +30,7 @@ public class CustomProduct extends Product {
         sb.append("{class:ProductPersonalized, id:").append(id)
                 .append(", name:'").append(name)
                 .append("', category:").append(category)
-                .append(", price:").append(price)
+                .append(", price:").append(this.getPrice())
                 .append(", maxPersonal:").append(maxCustomizations);
         if (customTexts != null) {
             sb.append(", customizations:").append(customTexts);
@@ -50,5 +50,12 @@ public class CustomProduct extends Product {
             result.add(new CustomProduct(this, customTexts));
         }
         return result;
+    }
+
+    @Override
+    public float getPrice() {
+        if (customTexts != null)
+            return super.getPrice() * (1 + (0.10f * customTexts.size()));
+        return super.getPrice();
     }
 }

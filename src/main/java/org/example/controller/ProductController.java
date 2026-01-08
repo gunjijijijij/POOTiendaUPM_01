@@ -143,21 +143,21 @@ public class ProductController {
             }
         }
 
-        String name = Utils.joinQuoted(args, 3, i + 1).trim();
+        String name = args[3].trim();
         if (name.isEmpty()) {
             System.out.println("The name is empty.");
             return;
         }
 
-        Category category = Utils.parseCategory(args[i + 1]);
+        Category category = Utils.parseCategory(args[4]);
         if (category == null) return;
 
-        Float price = Utils.parseNonNegativeFloat(args[i + 2]);
+        Float price = Utils.parseNonNegativeFloat(args[5]);
         if (price == null) return;
 
         Integer maxPers = null;
-        if (args.length > i + 3) {
-            maxPers = Utils.parsePositiveInt(args[args.length - 1], "The maximum number of people allowed should be a positive integer");
+        if (args.length == 7) {
+            maxPers = Utils.parsePositiveInt(args[6], "The maximum number of people allowed should be a positive integer");
         }
 
         try {
@@ -186,7 +186,7 @@ public class ProductController {
         switch (field) {
             case "NAME":
                 if (Utils.requireMinArgs(args, 5, "Usage: prod update <id> NAME \"<new name>\"")) return;
-                String newName = Utils.joinQuoted(args, 4, args.length).trim();
+                String newName = args[4].trim();
                 if (newName.isEmpty()) {
                     System.out.println("The name is empty");
                     return;
@@ -220,12 +220,12 @@ public class ProductController {
         }
         Integer id = null;
         int index = 2;
-        if (!args[2].startsWith("\"")) { //recordar que el id es opcional en food product
+        if (args.length == 6) { //recordar que el id es opcional en food product
             id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
             if (id == null) return;
             index = 3;
         }
-        String name = Utils.joinQuoted(args, index, args.length - 3);
+        String name = args[3];
         if (name.isEmpty()) {
             System.out.println("The name is empty.");
             return;
@@ -274,7 +274,7 @@ public class ProductController {
             index = 3;
         }
 
-        String name = Utils.joinQuoted(args, index, args.length - 3);
+        String name = args[index];
         if (name.isEmpty()) {
             System.out.println("The name is empty.");
             return;

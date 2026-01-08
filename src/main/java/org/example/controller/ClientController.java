@@ -25,7 +25,7 @@ public class ClientController {
     public void handleClientAdd(String[] args) {
         if (Utils.requireMinArgs(args, 5, "Usage: client add \"<name>\" <DNI> <email> <cashId>")) return;
 
-        String name = Utils.joinQuoted(args, 2, args.length - 3).trim();
+        String name = args[2].trim();
         if (name.isEmpty()) {
             System.out.println("The name is empty.");
             return;
