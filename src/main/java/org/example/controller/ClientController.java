@@ -32,8 +32,8 @@ public class ClientController {
         }
 
         String id = args[3];
-        if (id.isEmpty()) {
-            System.out.println("The identifier is empty.");
+        if (id.isEmpty() || !isValidID(id)) {
+            System.out.println("The identifier is empty or invalid.");
             return;
         }
 
@@ -96,5 +96,9 @@ public class ClientController {
             System.out.println(client.toString());
         }
         System.out.println("client list: ok");
+    }
+
+    public boolean isValidID(String id) {
+        return id.matches("[A-HJ-NP-S]?[0-9]{7}[A-Z]") || id.matches("\\d{8}[A-Z]");;
     }
 }

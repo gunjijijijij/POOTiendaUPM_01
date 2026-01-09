@@ -24,11 +24,5 @@ public class Client extends User {
         return "Client{identifier='" + getId() + "', name='" + name + "', email='" + email + "', cash=" + (registeredBy != null ? registeredBy.getId() : "null") + "}";
     }
 
-    public boolean isValidDNI(String DNI){
-        return getId().matches("\\d{8}[A-Z]");
-    }
 
-    public boolean isValidNIF() {
-        return getId().matches("[A-HJ-NP-S]?[0-9]{7}[A-Z]");
-    }
 }
