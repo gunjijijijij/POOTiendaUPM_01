@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 public class TicketIdGenerator {
     private static final Random random = new Random();
+    private static int serviceTicketCounter = 0;
 
     public static String generateOpenTicketId() {
         LocalDateTime now = LocalDateTime.now();
@@ -41,4 +42,10 @@ public class TicketIdGenerator {
 
         return randomString.toString();
     }
+
+    public static String generateServiceTicketId(){
+        serviceTicketCounter++;
+        return serviceTicketCounter + "S";
+    }
+
 }
