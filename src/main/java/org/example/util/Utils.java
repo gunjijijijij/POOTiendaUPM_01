@@ -109,4 +109,6 @@ public class Utils {
         LocalDateTime expirationDateTime = expiration.atTime(23, 59); //Es la fecha expiration a la última hora posible
         return expirationDateTime.isAfter(minDateTime); //el dia expiration a las 23:59 sea al menos 12 horas despues de NOW
     }
+
+
 }
