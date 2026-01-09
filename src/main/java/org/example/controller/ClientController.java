@@ -2,8 +2,9 @@ package org.example.controller;
 
 import org.example.Cashier;
 import org.example.*;
+import org.example.util.CompanyClient;
+import org.example.util.IndividualClient;
 import org.example.util.Utils;
-
 import java.util.ArrayList;
 
 public class ClientController {
@@ -56,9 +57,13 @@ public class ClientController {
         }
 
         try {
-            Client client = new Client(id, name, email, cashier);
+            Client client;
+            if(isNIF(id)) {
+                client = new CompanyClient(id, name, email, cashier);
+            }else{
+                client = new IndividualClient(id,name,email,cashier);
+            }
             clients.add(client);
-
             System.out.println(client);
             System.out.println("client add: ok");
 
@@ -99,6 +104,10 @@ public class ClientController {
     }
 
     public boolean isValidID(String id) {
-        return id.matches("[A-HJ-NP-S]?[0-9]{7}[A-Z]") || id.matches("\\d{8}[A-Z]");;
+        return id.matches("[A-HJ-NP-S]?[0-9]{7}[A-Z]") || id.matches("\\d{8}[A-Z]");
     }
+    private boolean isNIF(String id){
+        return id.matches("[A-HJ-NP-S]?[0-9]{7}[A-Z]");
+    }
+
 }
