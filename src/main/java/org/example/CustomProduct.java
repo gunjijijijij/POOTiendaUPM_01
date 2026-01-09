@@ -5,6 +5,7 @@ import java.util.List;
 
 public class CustomProduct extends Product {
     private final int maxCustomizations;
+    private List<String> customTexts;
 
     public CustomProduct(int id, String name, Category category, float price, int maxCustomizations) {
         super(id, name, category, price);
@@ -14,28 +15,47 @@ public class CustomProduct extends Product {
         }
     }
 
+    public CustomProduct(CustomProduct customProduct, List<String> customTexts) {
+        this(customProduct.getId(), customProduct.getName(), customProduct.getCategory(), customProduct.getPrice(), customProduct.getMaxCustomizations());
+        this.customTexts = customTexts;
+    }
+
     public int getMaxCustomizations() {
         return maxCustomizations;
     }
 
     @Override
     public String toString() {
-        return "{class:ProductPersonalized, id:" + id
-                + ", name:'" + name
-                + "', category:" + category
-                + ", price:" + getPrice()
-                + ", maxPersonal:" + this.maxCustomizations + "}";
+        StringBuilder sb = new StringBuilder();
+        sb.append("{class:ProductPersonalized, id:").append(id)
+                .append(", name:'").append(name)
+                .append("', category:").append(category)
+                .append(", price:").append(this.getPrice())
+                .append(", maxPersonal:").append(maxCustomizations);
+        if (customTexts != null) {
+            sb.append(", customizations:").append(customTexts);
+        }
+        sb.append("}");
+
+        return sb.toString();
     }
 
     @Override
-    public List<TicketLine> createTicketLine(int quantity, List<String> customTexts) {
+    public List<Product> addToTicket(int quantity, List<String> customTexts) {
         if (customTexts != null && customTexts.size() > this.maxCustomizations) {
             throw new IllegalArgumentException("can't add more than " + this.maxCustomizations + " personalizations");
         }
-        List<TicketLine> result = new ArrayList<>();
+        List<Product> result = new ArrayList<>();
         for (int i = 0; i < quantity; i++) {
-            result.add(new TicketLineCustomProduct(this, customTexts));
+            result.add(new CustomProduct(this, customTexts));
         }
         return result;
+    }
+
+    @Override
+    public float getPrice() {
+        if (customTexts != null)
+            return super.getPrice() * (1 + (0.10f * customTexts.size()));
+        return super.getPrice();
     }
 }

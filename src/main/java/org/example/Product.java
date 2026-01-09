@@ -16,6 +16,10 @@ public class Product {
         this.price = price;
     }
 
+    public Product(Product product) {
+        this(product.getId(), product.getName(), product.getCategory(), product.getPrice());
+    }
+
     // Getters y setters con validación
 
     public Integer getId() {
@@ -55,14 +59,18 @@ public class Product {
         this.price = price;
     }
 
+    public double getDiscount() {
+        return this.getCategory().calculateDiscount(getPrice());
+    }
 
-    public List<TicketLine> createTicketLine(int quantity, List<String> customTexts) {
+
+    public List<Product> addToTicket(int quantity, List<String> customTexts) {
         if (customTexts != null) {
-            throw new IllegalArgumentException("The custom text list can't be null.");
+            throw new IllegalArgumentException("this product doesn't support customizations");
         }
-        List<TicketLine> result = new ArrayList<>();
+        List<Product> result = new ArrayList<>();
         for (int i = 0; i < quantity; i++) {
-            result.add(new TicketLine(this));
+            result.add(new Product(this));
         }
         return result;
     }
@@ -72,6 +80,7 @@ public class Product {
         return "{class:Product, id:" + id
                 + ", name:'" + name
                 + "', category:" + category
-                + ", price:" + price + "}";
+                + ", price:" + price
+                + "}";
     }
 }
