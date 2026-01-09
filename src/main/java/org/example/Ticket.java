@@ -8,6 +8,8 @@ import java.util.List;
 
 public class Ticket {
     private String id;
+    private String type;
+
     private static final int MAX_SIZE = 100;
     private final List<Product> lines = new ArrayList<>();
 
@@ -19,12 +21,9 @@ public class Ticket {
 
     private Status status = Status.EMPTY;
 
-    public Ticket() {
-        this.id = TicketIdGenerator.generateOpenTicketId();
-    }
-
-    public Ticket(String id) {
+    public Ticket(String id, String ticketType) {
         this.id = id;
+        this.type = ticketType;
     }
 
     public String getId() {

@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.*;
 
+import org.example.util.TicketIdGenerator;
 import org.example.util.Utils;
 
 import java.util.ArrayList;
@@ -30,23 +31,30 @@ public class TicketController {
         String ticketId;
         String cashId;
         String userId;
+        String ticketType = "-p";
 
-        if (args.length == 4) {
+        if (args[2].startsWith("UW")) {
+            ticketId = TicketIdGenerator.generateOpenTicketId();
             cashId = args[2];
             userId = args[3];
-            ticket = new Ticket();
+            if (args.length > 4)
+                ticketType = args[4];
+
+            ticket = new Ticket(ticketId, ticketType);
 
 
         } else {
             ticketId = args[2];
             cashId = args[3];
             userId = args[4];
+            if (args.length > 5)
+                ticketType = args[5];
 
             if (TicketController.findTicketById(ticketId) != null) {
                 System.out.println("ticket new: error (ticket id already exists)");
                 return;
             } else {
-                ticket = new Ticket(ticketId);
+                ticket = new Ticket(ticketId, ticketType);
             }
         }
 
@@ -73,19 +81,24 @@ public class TicketController {
     }
 
     public void handleTicketAdd(String[] args) {
+        String ticketId;
+        String cashId;
+        String prodId;
+        String quantityStr;
+
         if (Utils.requireMinArgs(args, 6,
                 "Usage: ticket add <ticketId> <cashId> <prodId> <quantity> [--pTXT --pTXT]"))
             return;
 
-        String ticketId = args[2];
+        ticketId = args[2];
         if (findTicketById(ticketId) == null){
             System.out.println("ticket add: error (ticket does not exist)");
             return;
         }
 
-        String cashId = args[3];
-        String prodId = args[4];
-        String quantityStr = args[5];
+        cashId = args[3];
+        prodId = args[4];
+        quantityStr = args[5];
 
         Cashier cashier = CashierController.findCashById(cashId);
         if (cashier == null) {
