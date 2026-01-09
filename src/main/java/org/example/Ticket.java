@@ -30,6 +30,8 @@ public class Ticket {
         return id;
     }
 
+    public String getType() { return type;}
+
     public Status getStatus() {
         return status;
     }
