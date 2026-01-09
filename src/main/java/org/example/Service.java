@@ -25,4 +25,8 @@ public class Service {
     public String toString() {
         return "expirationDate=" + expirationDate + "}";
     }
+
+    public String getId() {
+        return id;
+    }
 }

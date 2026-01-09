@@ -37,6 +37,13 @@ public class Ticket {
         return status;
     }
 
+    public List<Product> getLines() {
+        return lines;
+    }
+    public List<Service> getServices() {
+        return services;
+    }
+
     // Añade una cantidad x de un producto al ticket mientras no estuviera lleno
     public void addProductTicket(Product product, int quantity, List<String> customTexts) {
         if (status == Status.CLOSE) {
