@@ -12,6 +12,7 @@ public class Ticket {
 
     private static final int MAX_SIZE = 100;
     private final List<Product> lines = new ArrayList<>();
+    private final List<Service> services = new ArrayList<>();
 
     public enum Status {
         OPEN,
