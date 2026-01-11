@@ -5,7 +5,7 @@ import org.example.Ticket;
 
 public class CompanyServicePrinter implements ITicketPrinter { //TICKET SOLO DE SERVICIOS SIN DESCUENTOS NI NADA
     @Override
-    public void print(Ticket ticket) {
+    public void print(Ticket<?> ticket) {
         System.out.println("Ticket Empresa (Solo Servicios)");
 
         if (ticket.getServices().isEmpty()) {
@@ -19,5 +19,9 @@ public class CompanyServicePrinter implements ITicketPrinter { //TICKET SOLO DE 
 
         System.out.println("  Estado: Pendiente de facturación mensual.");
         System.out.println("  Total: 0.0 (A pagar a final de mes)");
+    }
+    @Override
+    public boolean canClose(Ticket<?> ticket) {
+        return !ticket.getServices().isEmpty();
     }
 }

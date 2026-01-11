@@ -6,7 +6,7 @@ import org.example.Ticket;
 
 public class CompanyCombinedPrinter implements ITicketPrinter { //PRODUCTOS Y SERVICIOS COMBINADOS
     @Override
-    public void print(Ticket ticket) {
+    public void print(Ticket<?> ticket) {
         System.out.println("--- TICKET EMPRESA (COMBINADO) ---");
 
         int numServices = ticket.getServices().size();
@@ -26,5 +26,13 @@ public class CompanyCombinedPrinter implements ITicketPrinter { //PRODUCTOS Y SE
         }
 
         System.out.printf("Total a pagar (Productos): %.2f\n", total);
+    }
+    @Override
+    public boolean canClose(Ticket<?> ticket) {//Solo se cierra si hay al menos 1 producto y 1 servicio
+        if (ticket.getLines().isEmpty() & ticket.getServices().isEmpty()) {
+            System.out.println("Error: Combined tickets need at least 1 Product AND 1 Service to close.");
+            return false;
+        }
+        return true;
     }
 }

@@ -22,4 +22,9 @@ public class StandardPrinter implements ITicketPrinter { //ESTRATEGIA DE IMPRIMI
         }
         System.out.printf("Total: %.2f\n", total - totalDiscount);
     }
+    @Override
+    public boolean canClose(Ticket<?> ticket) {
+        // Un ticket estándar siempre se puede cerrar si no está vacío (la validación básica está en Ticket)
+        return true;
+    }
 }

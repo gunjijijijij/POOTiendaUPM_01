@@ -10,10 +10,10 @@ import java.util.Comparator;
 
 
 public class TicketController {
-    public static ArrayList<Ticket> tickets = new ArrayList<>();
+    public static ArrayList<Ticket<?>> tickets = new ArrayList<>();
 
-    public static Ticket findTicketById(String id) {
-        for (Ticket ticket : tickets) {
+    public static Ticket<?> findTicketById(String id) {
+        for (Ticket<?> ticket : tickets) {
             if (ticket.getId().equals(id)) {
                 return ticket;
             }
@@ -21,13 +21,15 @@ public class TicketController {
         return null;
     }
 
+    //Todo falta cambiarlo para que tenga en cuenta el tipo de ticket
+
     public void handleTicketNew(String[] args) {
         if (args.length < 4) {
             System.out.println("Usage: ticket new [<id>] <cashId> <userId>");
             return;
         }
 
-        Ticket ticket;
+        Ticket<?> ticket;
         String ticketId;
         String cashId;
         String userId;
@@ -40,7 +42,7 @@ public class TicketController {
             if (args.length > 4)
                 ticketType = args[4];
 
-            ticket = new Ticket(ticketId, ticketType);
+            ticket = new Ticket<>(ticketId, ticketType);
 
 
         } else {
@@ -54,7 +56,7 @@ public class TicketController {
                 System.out.println("ticket new: error (ticket id already exists)");
                 return;
             } else {
-                ticket = new Ticket(ticketId, ticketType);
+                ticket = new Ticket<>(ticketId, ticketType);
             }
         }
 
@@ -70,7 +72,6 @@ public class TicketController {
             return;
         }
 
-
         cashier.getTickets().add(ticket);
         client.getTickets().add(ticket);
         tickets.add(ticket);
@@ -79,6 +80,8 @@ public class TicketController {
         ticket.print();
         System.out.println("ticket new: ok");
     }
+
+    //Todo falta cambiarlo para que tenga en cuenta el tipo de ticket
 
     public void handleTicketAdd(String[] args) {
         String ticketId;
@@ -142,13 +145,14 @@ public class TicketController {
         }
     }
 
+    //Todo falta cambiarlo para que tenga en cuenta el tipo de ticket
 
     public void handleTicketRemove(String[] args) {
         if (Utils.requireMinArgs(args, 5, "Usage: ticket remove <ticketId> <cashId> <prodId>"))
             return;
 
         String ticketId = args[2];
-        Ticket ticket = findTicketById(ticketId);
+        Ticket<?> ticket = findTicketById(ticketId);
         if (ticket == null) {
             System.out.println("ticket remove: error (ticket does not exist)");
             return;
@@ -183,6 +187,8 @@ public class TicketController {
         }
     }
 
+    //Todo falta cambiarlo para que tenga en cuenta el tipo de ticket
+
     public void handleTicketPrint(String[] args) {
 
         if (Utils.requireMinArgs(args, 4, "Usage: ticket print <ticketId> <cashId>"))
@@ -213,6 +219,8 @@ public class TicketController {
         ticket.print();
     }
 
+
+
     public void handleTicketList() {
 
         ArrayList<Cashier> cashiers = CashierController.getCashiers();
@@ -232,7 +240,7 @@ public class TicketController {
             if (!tickets.isEmpty()) {
                 anyTicket = true;
                 System.out.println("Ticket List:");
-                for (Ticket t : tickets) {
+                for (Ticket<?> t : tickets) {
                     System.out.println("  " + t);
                 }
             }

@@ -1,14 +1,17 @@
 package org.example;
 
+import org.example.strategy.ITicketPrinter;
+import org.example.strategy.StandardPrinter;
 import org.example.util.TicketIdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Ticket {
+public class Ticket<T> {
     private String id;
     private String type;
+    private ITicketPrinter printingStrategy;
 
     private static final int MAX_SIZE = 100;
     private final List<Product> lines = new ArrayList<>();
@@ -22,9 +25,12 @@ public class Ticket {
 
     private Status status = Status.EMPTY;
 
-    public Ticket(String id, String ticketType) {
+    public Ticket(String id, String ticketType, ITicketPrinter strategy) {
         this.id = id;
         this.type = ticketType;
+    }
+    public Ticket(String id, String ticketType) {
+        this(id, ticketType, new StandardPrinter());
     }
 
     public String getId() {
@@ -44,10 +50,18 @@ public class Ticket {
         return services;
     }
 
+    public void setPrintingStrategy(ITicketPrinter strategy) {
+        this.printingStrategy = strategy;
+    }
+
     // Añade una cantidad x de un producto al ticket mientras no estuviera lleno
     public void addProductTicket(Product product, int quantity, List<String> customTexts) {
         if (status == Status.CLOSE) {
             throw new IllegalStateException("ticket is closed");
+        }
+
+        if (type.equalsIgnoreCase("service")) {
+            throw new IllegalArgumentException("Service Tickets cannot accept Products.");
         }
 
         if (product == null) {
@@ -60,6 +74,18 @@ public class Ticket {
         }
         lines.addAll(ticketLines);
 
+        status = Status.OPEN;
+    }
+
+    public void addService(Service service) {
+        if (status == Status.CLOSE) {
+            throw new IllegalStateException("ticket is closed");
+        }
+
+        if (type.equalsIgnoreCase("service")) {
+            throw new IllegalArgumentException("Error: Standard tickets (Individual) cannot accept Services.");
+        }
+        services.add(service);
         status = Status.OPEN;
     }
 
@@ -125,9 +151,13 @@ public class Ticket {
     public void closeTicket() {
         id = TicketIdGenerator.generateCloseTicketId(id);
         status = Status.CLOSE;
+        if (printingStrategy != null && !printingStrategy.canClose(this)) {
+            throw new IllegalStateException("Ticket cannot be closed: requirements not met for this type.");
+        }
     }
 
     // Imprime el contenido del ticket
+    //Todo falta cambiarlo para que imprima dependiendo de la estrategia de impresion
     public void print() {
         lines.sort((l1, l2) -> l1.getName().compareToIgnoreCase(l2.getName())); //ordena lines alfabeticamente
 
