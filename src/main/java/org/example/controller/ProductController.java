@@ -36,7 +36,7 @@ public class ProductController {
     }
 
     // Elimina un producto existente del catálogo
-    public static void prodRemove(int id) {
+    public void prodRemove(int id) {
         boolean removed = products.removeIf(p -> p.getId() == id);
 
         if (!removed) {
@@ -45,7 +45,7 @@ public class ProductController {
     }
 
     // Cambia el nombre, la categoría o el precio de un producto
-    public static void prodUpdate(int id, String updateType, String newValue) {
+    public void prodUpdate(int id, String updateType, String newValue) {
         Product product = findProductById(id);
 
         try {
@@ -72,7 +72,7 @@ public class ProductController {
     }
 
     // Encuentra un producto por su id
-    public static Product findProductById(int id) {
+    public Product findProductById(int id) {
         for (Product product : products) {
             if (product.getId() == id) {
                 return product;
@@ -109,7 +109,7 @@ public class ProductController {
     // maneja los errores correspondientes y utiliza ProductController
     // para añadir el nuevo producto al catálogo.
 
-    private static void addProduct(int id, String name, Category category, float price, Integer maxPers) {
+    private void addProduct(int id, String name, Category category, float price, Integer maxPers) {
         Validators.requirePositiveInt(id, "The ID must be a positive integer");
         Validators.requireValidProductName(name);
         Validators.requireValidCategory(category);
@@ -127,7 +127,7 @@ public class ProductController {
 
     }
 
-    private static Product createProduct(int id, String name, Category category, float price, Integer maxPers) {
+    private Product createProduct(int id, String name, Category category, float price, Integer maxPers) {
         if (maxPers != null) {
             return new CustomProduct(id, name, category, price, maxPers);
         }

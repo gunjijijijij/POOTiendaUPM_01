@@ -24,7 +24,7 @@ public class ClientController {
         return clients;
     }
 
-    public static Client findClientById(String id) {
+    public Client findClientById(String id) {
         for (Client client : clients) {
             if (client.getId().equals(id)) {
                 return client;
@@ -60,7 +60,7 @@ public class ClientController {
             return;
         }
 
-        Cashier cashier = CashierController.findCashById(cashId);
+        Cashier cashier = CashierController.getInstance().findCashById(cashId);
         if (cashier == null) {
             System.out.println("client add: error (cashier not found)");
             return;

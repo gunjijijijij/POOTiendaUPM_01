@@ -71,13 +71,13 @@ public class TicketController {
             }
         }
 
-        Cashier cashier = CashierController.findCashById(cashId);
+        Cashier cashier = CashierController.getInstance().findCashById(cashId);
         if (cashier == null) {
             System.out.println("ticket new: error (cashier not found)");
             return;
         }
 
-        Client client = ClientController.findClientById(userId);
+        Client client = ClientController.getInstance().findClientById(userId);
         if (client == null) {
             System.out.println("ticket new: error (client not found)");
             return;
@@ -114,7 +114,7 @@ public class TicketController {
         prodId = args[4];
         quantityStr = args[5];
 
-        Cashier cashier = CashierController.findCashById(cashId);
+        Cashier cashier = CashierController.getInstance().findCashById(cashId);
         if (cashier == null) {
             System.out.println("ticket add: error (cashier with ID " + cashId + " not found)");
             return;
@@ -124,7 +124,7 @@ public class TicketController {
                 "The product ID must be a positive integer.");
         if (productId == null) return;
 
-        Product product = ProductController.findProductById(productId);
+        Product product = ProductController.getInstance().findProductById(productId);
         if (product == null) {
             System.out.println("ticket add: error (product with ID " + productId + " not found)");
             return;
@@ -171,7 +171,7 @@ public class TicketController {
         String cashId = args[3];
         String prodId = args[4];
 
-        Cashier cashier = CashierController.findCashById(cashId);
+        Cashier cashier = CashierController.getInstance().findCashById(cashId);
         if (cashier == null) {
             System.out.println("ticket add: error (cashier with ID " + cashId + " not found)");
             return;
@@ -207,7 +207,7 @@ public class TicketController {
         String ticketId = args[2];
         String cashId = args[3];
 
-        Cashier cashier = CashierController.findCashById(cashId);
+        Cashier cashier = CashierController.getInstance().findCashById(cashId);
         if (cashier == null) {
             System.out.println("ticket add: error (cashier with ID " + cashId + " not found)");
             return;
@@ -232,7 +232,7 @@ public class TicketController {
 
 
     public void handleTicketList() {
-        ArrayList<Cashier> cashiers = CashierController.getCashiers();
+        ArrayList<Cashier> cashiers = CashierController.getInstance().getCashiers();
         if (cashiers.isEmpty()) {
             System.out.println("ticket list: (no cashiers available)");
             return;

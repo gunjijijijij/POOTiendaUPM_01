@@ -20,12 +20,12 @@ public class CashierController {
         return instance;
     }
 
-    public static ArrayList<Cashier> getCashiers() {
+    public ArrayList<Cashier> getCashiers() {
         return cashiers;
     }
 
 
-    public static Cashier findCashById(String id) {
+    public Cashier findCashById(String id) {
         for (Cashier cash : cashiers) {
             if (cash.getId().equals(id)) {
                 return cash;
