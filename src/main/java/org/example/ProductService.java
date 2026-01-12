@@ -29,7 +29,7 @@ public class ProductService extends CatalogItem {
 
     @Override
     public String toString() {
-        return "{class:ProductService, id:" + id +
+        return "{class:ProductService, id:" + getDisplayId() +
                 ", category:" + category +
                 ", expiration:" + expirationDate + "}";
     }

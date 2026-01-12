@@ -53,7 +53,7 @@ public abstract class PeopleProduct extends Product {
 
     protected String buildToString(String className) {
         StringBuilder sb = new StringBuilder();
-        sb.append("{class:").append(className).append(", id:").append(id)
+        sb.append("{class:").append(className).append(", id:").append(getId())
                 .append(", name:'").append(name)
                 .append("', price:").append(price * numPeopleAttending)
                 .append(", date of Event:").append(expirationDate)

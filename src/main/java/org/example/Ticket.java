@@ -4,6 +4,7 @@ import org.example.strategy.ITicketPrinter;
 import org.example.strategy.StandardPrinter;
 import org.example.util.TicketIdGenerator;
 
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,12 +154,20 @@ public class Ticket<T> {
         }
     }
 
+    private List<Product> getProducts() {
+        return lines.stream()
+                .filter(item -> item instanceof Product)
+                .map(item -> (Product) item)
+                .collect(Collectors.toList());
+    }
+
     // Imprime el contenido del ticket
     //Todo falta cambiarlo para que imprima dependiendo de la estrategia de impresion
     public void print() {
-        lines.sort((l1, l2) -> l1.getName().compareToIgnoreCase(l2.getName())); //ordena lines alfabeticamente
+        List<Product> products = getProducts();
+        products.sort((l1, l2) -> l1.getName().compareToIgnoreCase(l2.getName())); //ordena lines alfabeticamente
 
-        for (Product product : lines) {
+        for (Product product : products) {
             Category category = product.getCategory();
             int catCount = category != null ? countCategory(category) : 0;
             double discount = product.getDiscount();

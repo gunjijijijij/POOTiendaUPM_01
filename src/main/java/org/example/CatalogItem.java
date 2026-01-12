@@ -11,6 +11,9 @@ public abstract class CatalogItem {
     }
 
     public String getId() { return id; }
+    public int getIdAsInt() {
+        return Integer.parseInt(String.valueOf(id));
+    }
     public Category getCategory() { return category; }
 
     public abstract boolean isService();

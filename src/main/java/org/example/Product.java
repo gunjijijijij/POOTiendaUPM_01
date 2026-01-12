@@ -19,9 +19,7 @@ public class Product extends CatalogItem{
         this(product.getIdAsInt(), product.getName(), product.getCategory(), product.getPrice());
     }
 
-    public int getIdAsInt() {
-        return Integer.parseInt(String.valueOf(id));
-    }
+
 
     public String getName() {
         return name;
@@ -79,9 +77,9 @@ public class Product extends CatalogItem{
 
     @Override
     public String toString() {
-        return "{class:Product, id:" + getDisplayId()
+        return "{class:Product, id:" + getIdAsInt()
                 + ", name:'" + name
-                + "', category:" + category
+                + "', category:" + getCategory()
                 + ", price:" + price
                 + "}";
     }

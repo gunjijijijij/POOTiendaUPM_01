@@ -27,9 +27,9 @@ public class CustomProduct extends Product {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("{class:ProductPersonalized, id:").append(id)
+        sb.append("{class:ProductPersonalized, id:").append(getId())
                 .append(", name:'").append(name)
-                .append("', category:").append(category)
+                .append("', category:").append(getCategory())
                 .append(", price:").append(this.getPrice())
                 .append(", maxPersonal:").append(maxCustomizations);
         if (customTexts != null) {
