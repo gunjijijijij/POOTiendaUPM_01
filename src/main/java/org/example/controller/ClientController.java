@@ -43,7 +43,7 @@ public class ClientController {
         }
 
         String id = args[3];
-        if (id.isEmpty() || !isValidID(id)) {
+        if (id.isEmpty() || !Utils.isValidID(id)) {
             System.out.println("The identifier is empty or invalid.");
             return;
         }
@@ -68,7 +68,7 @@ public class ClientController {
 
         try {
             Client client;
-            if(isNIF(id)) {
+            if(Utils.isNIF(id)) {
                 client = new CompanyClient(id, name, email, cashier);
             }else{
                 client = new IndividualClient(id,name,email,cashier);
@@ -112,12 +112,4 @@ public class ClientController {
         }
         System.out.println("client list: ok");
     }
-
-    public boolean isValidID(String id) {
-        return id.matches("[A-HJ-NP-S]?[0-9]{7}[A-Z]") || id.matches("\\d{8}[A-Z]");
-    }
-    private boolean isNIF(String id){
-        return id.matches("[A-HJ-NP-S]?[0-9]{7}[A-Z]");
-    }
-
 }

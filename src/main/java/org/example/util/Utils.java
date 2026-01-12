@@ -137,5 +137,11 @@ public class Utils {
         return expirationDateTime.isAfter(minDateTime); //el dia expiration a las 23:59 sea al menos 12 horas despues de NOW
     }
 
+    public static boolean isValidID(String id) {
+        return id.matches("[A-HJ-NP-S]?[0-9]{7}[A-Z]") || id.matches("\\d{8}[A-Z]");
+    }
+    public static boolean isNIF(String id){
+        return id.matches("[A-HJ-NP-S]?[0-9]{7}[A-Z]");
+    }
 
 }
