@@ -16,7 +16,7 @@ public class Product extends CatalogItem{
     }
 
     public Product(Product product) {
-        this(product.getId(), product.getName(), product.getCategory(), product.getPrice());
+        this(product.getIdAsInt(), product.getName(), product.getCategory(), product.getPrice());
     }
 
     public int getIdAsInt() {

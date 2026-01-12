@@ -27,7 +27,7 @@ public abstract class PeopleProduct extends Product {
     }
     
     public PeopleProduct(PeopleProduct peopleProduct, int numPeopleAttending) {
-        this(peopleProduct.getId(), peopleProduct.getName(), peopleProduct.getPricePerPerson(), peopleProduct.getExpirationDate(), peopleProduct.getMaxPeople());
+        this(peopleProduct.getIdAsInt(), peopleProduct.getName(), peopleProduct.getPricePerPerson(), peopleProduct.getExpirationDate(), peopleProduct.getMaxPeople());
         this.numPeopleAttending = numPeopleAttending;
     }
 
