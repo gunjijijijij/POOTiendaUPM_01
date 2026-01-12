@@ -11,7 +11,17 @@ import java.util.List;
 
 public class ProductController {
     private static final int MAX_PRODUCTS = 200;
+    private static ProductController instancia;
     private static List<Product> products = new ArrayList<>();
+
+    private ProductController(){}
+
+    public static ProductController getInstance(){
+        if (instancia == null){
+            instancia = new ProductController();
+        }
+        return instancia;
+    }
 
     // Imprime los productos existentes en el catálogo
     public void prodList() {

@@ -9,10 +9,21 @@ import java.util.List;
 
 public class CashierController {
     private static final ArrayList<Cashier> cashiers = new ArrayList<>();
+    private static CashierController instance;
+
+    private CashierController(){}
+
+    public static CashierController getInstance(){
+        if (instance == null){
+            instance = new CashierController();
+        }
+        return instance;
+    }
 
     public static ArrayList<Cashier> getCashiers() {
         return cashiers;
     }
+
 
     public static Cashier findCashById(String id) {
         for (Cashier cash : cashiers) {

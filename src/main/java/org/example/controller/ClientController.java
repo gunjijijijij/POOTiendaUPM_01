@@ -9,6 +9,16 @@ import java.util.ArrayList;
 
 public class ClientController {
     private static final ArrayList<Client> clients = new ArrayList<>();
+    private static ClientController instancia;
+
+    private ClientController(){}
+
+    public static ClientController getInstance() {
+        if (instancia == null) {
+            instancia = new ClientController();
+        }
+        return instancia;
+    }
 
     public ArrayList<Client> getClients() {
         return clients;

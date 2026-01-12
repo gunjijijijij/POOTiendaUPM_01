@@ -12,10 +12,10 @@ import org.example.controller.CashierController;
 
 public class CLI {
 
-    private final ProductController productController = new ProductController();
-    private final CashierController cashierController = new CashierController();
-    private final ClientController clientController = new ClientController();
-    private final TicketController ticketController = new TicketController();
+    private final ProductController productController = ProductController.getInstance();
+    private final CashierController cashierController = CashierController.getInstance();
+    private final ClientController clientController = ClientController.getInstance();
+    private final TicketController ticketController = TicketController.getInstance();
 
     public void start(String inputFile) {
         init();

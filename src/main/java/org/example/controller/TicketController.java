@@ -12,7 +12,18 @@ import java.util.Comparator;
 public class TicketController {
     public static ArrayList<Ticket<?>> tickets = new ArrayList<>();
 
-    public static Ticket<?> findTicketById(String id) {
+    private static TicketController instance;
+
+    private TicketController(){}
+
+    public static TicketController getInstance(){
+        if (instance == null){
+            instance = new TicketController();
+        }
+        return instance;
+    }
+
+    public Ticket<?> findTicketById(String id) {
         for (Ticket<?> ticket : tickets) {
             if (ticket.getId().equals(id)) {
                 return ticket;
@@ -52,7 +63,7 @@ public class TicketController {
             if (args.length > 5)
                 ticketType = args[5];
 
-            if (TicketController.findTicketById(ticketId) != null) {
+            if (findTicketById(ticketId) != null) {
                 System.out.println("ticket new: error (ticket id already exists)");
                 return;
             } else {
@@ -128,7 +139,7 @@ public class TicketController {
             return;
         }
 
-        Ticket ticket = TicketController.findTicketById(ticketId);
+        Ticket ticket = findTicketById(ticketId);
         if (ticket == null) {
             System.out.println("ticket add: error (ticket does not exist)");
             return;
@@ -190,7 +201,6 @@ public class TicketController {
     //Todo falta cambiarlo para que tenga en cuenta el tipo de ticket
 
     public void handleTicketPrint(String[] args) {
-
         if (Utils.requireMinArgs(args, 4, "Usage: ticket print <ticketId> <cashId>"))
             return;
 
@@ -208,7 +218,7 @@ public class TicketController {
             return;
         }
 
-        Ticket ticket = TicketController.findTicketById(ticketId);
+        Ticket ticket = findTicketById(ticketId);
         if (ticket == null) {
             System.out.println("ticket print: error (ticket does not exist)");
             return;
@@ -222,7 +232,6 @@ public class TicketController {
 
 
     public void handleTicketList() {
-
         ArrayList<Cashier> cashiers = CashierController.getCashiers();
         if (cashiers.isEmpty()) {
             System.out.println("ticket list: (no cashiers available)");
@@ -252,6 +261,5 @@ public class TicketController {
         }
 
         System.out.println("ticket list: ok");
-
     }
 }
