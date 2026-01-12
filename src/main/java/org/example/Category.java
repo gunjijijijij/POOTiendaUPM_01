@@ -6,7 +6,11 @@ public enum Category {
     STATIONERY(0.05),
     CLOTHES(0.07),
     BOOK(0.1),
-    ELECTRONICS(0.03);
+    ELECTRONICS(0.03),
+    INSURANCE(0),
+    SPECTACLE(0),
+    TRANSPORT(0);
+
 
     private final double discountRate;
 

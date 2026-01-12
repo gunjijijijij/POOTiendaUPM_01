@@ -15,7 +15,7 @@ public class Ticket<T> {
 
     private static final int MAX_SIZE = 100;
     private final List<Product> lines = new ArrayList<>();
-    private final List<Service> services = new ArrayList<>();
+    private final List<ProductService> services = new ArrayList<>();
 
     public enum Status {
         OPEN,
@@ -46,7 +46,7 @@ public class Ticket<T> {
     public List<Product> getLines() {
         return lines;
     }
-    public List<Service> getServices() {
+    public List<ProductService> getServices() {
         return services;
     }
 
@@ -77,7 +77,7 @@ public class Ticket<T> {
         status = Status.OPEN;
     }
 
-    public void addService(Service service) {
+    public void addService(ProductService service) {
         if (status == Status.CLOSE) {
             throw new IllegalStateException("ticket is closed");
         }

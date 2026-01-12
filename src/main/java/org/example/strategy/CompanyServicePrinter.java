@@ -1,6 +1,6 @@
 package org.example.strategy;
 
-import org.example.Service;
+import org.example.ProductService;
 import org.example.Ticket;
 
 public class CompanyServicePrinter implements ITicketPrinter { //TICKET SOLO DE SERVICIOS SIN DESCUENTOS NI NADA
@@ -13,7 +13,7 @@ public class CompanyServicePrinter implements ITicketPrinter { //TICKET SOLO DE 
             return;
         }
 
-        for (Service service : ticket.getServices()) {
+        for (ProductService service : ticket.getServices()) {
             System.out.println("  Service: " + service.getId() + " -> Expira: " + service.getExpirationDate());
         }
 

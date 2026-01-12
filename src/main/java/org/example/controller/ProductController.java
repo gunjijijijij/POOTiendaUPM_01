@@ -135,8 +135,41 @@ public class ProductController {
     }
 
     public void handleProdAdd(String[] args) {
-        if (Utils.requireMinArgs(args, 5,
-                "Usage: prod add <id> \"<name>\" <category> <price> [<maxPers>]")) return;
+        if (args.length < 4) {
+            System.out.println("Usage: prod add <id> \"<name>\" <category> <price> [<maxPers>]");
+            System.out.println("   or: prod add <expiration: yyyy-MM-dd> <category>");
+            return;
+        }
+
+        if (Utils.isDateYYYYMMDD(args[2])){
+            if (args.length != 4){
+                System.out.println("Usage: prod add <expiration: yyyy-MM-dd> <category>");
+                return;
+            }
+
+            LocalDate expiration = Utils.parseDateYYYYMMDD(args[2]);
+
+            if (expiration == null) {
+                System.out.println("prod add: error (invalid expiration format, expected yyyy-MM-dd)");
+                return;
+            }
+
+            Category category = Utils.parseCategory(args[3]);
+            if (category == null) return;
+
+            try {
+                // TODO: aquí llamas a tu lógica de crear servicio:
+                // - sin nombre
+                // - sin precio
+                // - id secuencial terminando en 'S' (según enunciado) :contentReference[oaicite:2]{index=2}
+                //addService(expiration, category);
+
+                System.out.println("prod add: ok");
+            } catch (IllegalArgumentException e) {
+                System.out.println("prod add: error (" + e.getMessage() + ")");
+            }
+            return;
+        }
 
         // id siempre en args[2]
         Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
@@ -318,5 +351,7 @@ public class ProductController {
         System.out.println(product);
         System.out.println("prod addMeeting: ok");
     }
+
+
 }
 

@@ -1,6 +1,8 @@
 package org.example.util;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -144,4 +146,15 @@ public class Utils {
         return id.matches("[A-HJ-NP-S]?[0-9]{7}[A-Z]");
     }
 
+    public static boolean isDateYYYYMMDD(String s) {
+        return s != null && s.matches("\\d{4}-\\d{2}-\\d{2}");
+    }
+
+    public static LocalDate parseDateYYYYMMDD(String s) {
+        try {
+            return LocalDate.parse(s, DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (DateTimeParseException e) {
+            return null;
+        }
+    }
 }
