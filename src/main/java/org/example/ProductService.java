@@ -6,9 +6,10 @@ import java.time.LocalDate;
 
 public class ProductService extends CatalogItem {
     private final LocalDate expirationDate;
+    private static int serviceCounter = 1;
 
-    public ProductService(Integer id, Category category, LocalDate expirationDate) {
-        super(id, category);
+    public ProductService(LocalDate expirationDate, Category category) {
+        super(generateServiceId(), category);
         if (expirationDate == null) throw new IllegalArgumentException("expiration can't be null");
         this.expirationDate = expirationDate;
     }
@@ -20,6 +21,10 @@ public class ProductService extends CatalogItem {
     @Override
     public String getDisplayId() {
         return getId() + "S"; // "1S"
+    }
+
+    private static String generateServiceId() {
+        return serviceCounter++ + "S";
     }
 
     @Override

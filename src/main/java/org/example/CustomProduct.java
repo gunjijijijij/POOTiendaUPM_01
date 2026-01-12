@@ -16,7 +16,7 @@ public class CustomProduct extends Product {
     }
 
     public CustomProduct(CustomProduct customProduct, List<String> customTexts) {
-        this(customProduct.getId(), customProduct.getName(), customProduct.getCategory(), customProduct.getPrice(), customProduct.getMaxCustomizations());
+        this(customProduct.getIdAsInt(), customProduct.getName(), customProduct.getCategory(), customProduct.getPrice(), customProduct.getMaxCustomizations());
         this.customTexts = customTexts;
     }
 

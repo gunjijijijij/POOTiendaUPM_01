@@ -9,8 +9,8 @@ public class Product extends CatalogItem{
     protected Category category;
     protected float price;
 
-    public Product(Integer id, String name, Category category, float price) {
-        super(id, category);
+    public Product(int id, String name, Category category, float price) {
+        super(String.valueOf(id), category);
         this.name = name;
         this.price = price;
     }
@@ -19,6 +19,9 @@ public class Product extends CatalogItem{
         this(product.getId(), product.getName(), product.getCategory(), product.getPrice());
     }
 
+    public int getIdAsInt() {
+        return Integer.parseInt(String.valueOf(id));
+    }
 
     public String getName() {
         return name;

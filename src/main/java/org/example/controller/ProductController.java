@@ -12,7 +12,7 @@ import java.util.List;
 public class ProductController {
     private static final int MAX_PRODUCTS = 200;
     private static ProductController instancia;
-    private static List<Product> products = new ArrayList<>();
+    private static final List<CatalogItem> products = new ArrayList<>();
 
     private ProductController(){}
 
@@ -29,7 +29,7 @@ public class ProductController {
         if (products.isEmpty()) {
             System.out.println("There aren't any products in the catalog.");
         } else {
-            for (Product product : products) {
+            for (CatalogItem product : products) {
                 System.out.println("  " + product.toString());
             }
         }
@@ -37,7 +37,9 @@ public class ProductController {
 
     // Elimina un producto existente del catálogo
     public void prodRemove(int id) {
-        boolean removed = products.removeIf(p -> p.getId() == id);
+        String idStr = String.valueOf(id);
+
+        boolean removed = products.removeIf(p -> p.getId().equals(idStr));
 
         if (!removed) {
             throw new IllegalArgumentException("The product with id " + id + " was not found");
@@ -73,13 +75,16 @@ public class ProductController {
 
     // Encuentra un producto por su id
     public Product findProductById(int id) {
-        for (Product product : products) {
-            if (product.getId() == id) {
-                return product;
+        String idStr = String.valueOf(id);  // Convertir int a String
+
+        for (CatalogItem item : products) {
+            if (item.getId().equals(idStr) && item instanceof Product) {
+                return (Product) item;
             }
         }
         return null;
     }
+
 
     // Procesa el comando "prod remove": verifica los argumentos,
     // maneja los errores correspondientes y utiliza ProductController
@@ -109,6 +114,21 @@ public class ProductController {
     // maneja los errores correspondientes y utiliza ProductController
     // para añadir el nuevo producto al catálogo.
 
+    public void addService(LocalDate expirationDate, Category category) {
+        // Validaciones
+
+        if (expirationDate == null) {
+            throw new IllegalArgumentException("Expiration date cannot be null");
+        }
+
+        if (category == null) {
+            throw new IllegalArgumentException("Category cannot be null");
+        }
+
+        // Crear y agregar
+        ProductService service = new ProductService(expirationDate, category);
+        products.add(service);
+    }
     private void addProduct(int id, String name, Category category, float price, Integer maxPers) {
         Validators.requirePositiveInt(id, "The ID must be a positive integer");
         Validators.requireValidProductName(name);
@@ -142,6 +162,7 @@ public class ProductController {
         }
 
         if (Utils.isDateYYYYMMDD(args[2])){
+            System.out.println("Es dia");
             if (args.length != 4){
                 System.out.println("Usage: prod add <expiration: yyyy-MM-dd> <category>");
                 return;
@@ -158,12 +179,7 @@ public class ProductController {
             if (category == null) return;
 
             try {
-                // TODO: aquí llamas a tu lógica de crear servicio:
-                // - sin nombre
-                // - sin precio
-                // - id secuencial terminando en 'S' (según enunciado) :contentReference[oaicite:2]{index=2}
-                //addService(expiration, category);
-
+                addService(expiration, category);
                 System.out.println("prod add: ok");
             } catch (IllegalArgumentException e) {
                 System.out.println("prod add: error (" + e.getMessage() + ")");
