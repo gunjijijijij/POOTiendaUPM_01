@@ -2,39 +2,30 @@ package org.example;
 
 import org.example.util.TicketIdGenerator;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-public class ProductService {
-    String id;
-    Date expirationDate;
-    Category category;
+public class ProductService extends CatalogItem {
+    private final LocalDate expirationDate;
 
-    public ProductService(Date expirationDate, Category category){
-        this.id = TicketIdGenerator.generateServiceTicketId();
-        this.expirationDate = expirationDate;
-        this.category = category;
-    }
-
-    public Date getExpirationDate(){
-        return expirationDate;
-    }
-
-    public void setExpirationDate(Date expirationDate){
+    public ProductService(Integer id, Category category, LocalDate expirationDate) {
+        super(id, category);
+        if (expirationDate == null) throw new IllegalArgumentException("expiration can't be null");
         this.expirationDate = expirationDate;
     }
 
-    public Category getCategory(){
-        return category;
-    }
+    public LocalDate getExpirationDate() { return expirationDate; }
 
-    public String getId() {
-        return id;
+    @Override public boolean isService() { return true; }
+
+    @Override
+    public String getDisplayId() {
+        return getId() + "S"; // "1S"
     }
 
     @Override
     public String toString() {
-        return "{class:ProductService, id:" + getId() +
-                ", category:" + getCategory() +
+        return "{class:ProductService, id:" + id +
+                ", category:" + category +
                 ", expiration:" + expirationDate + "}";
     }
 }

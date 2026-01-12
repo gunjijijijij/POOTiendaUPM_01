@@ -3,16 +3,15 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Product {
+public class Product extends CatalogItem{
     protected int id;
     protected String name;
     protected Category category;
     protected float price;
 
     public Product(Integer id, String name, Category category, float price) {
-        this.id = id;
+        super(id, category);
         this.name = name;
-        this.category = category;
         this.price = price;
     }
 
@@ -20,11 +19,6 @@ public class Product {
         this(product.getId(), product.getName(), product.getCategory(), product.getPrice());
     }
 
-    // Getters y setters con validación
-
-    public Integer getId() {
-        return id;
-    }
 
     public String getName() {
         return name;
@@ -35,10 +29,6 @@ public class Product {
             throw new IllegalArgumentException("The name cannot be empty and must contain less than 100 characters.");
         }
         this.name = name;
-    }
-
-    public Category getCategory() {
-        return category;
     }
 
     public void setCategory(Category category) {
@@ -63,7 +53,6 @@ public class Product {
         return this.getCategory().calculateDiscount(getPrice());
     }
 
-
     public List<Product> addToTicket(int quantity, List<String> customTexts) {
         if (customTexts != null) {
             throw new IllegalArgumentException("this product doesn't support customizations");
@@ -76,8 +65,18 @@ public class Product {
     }
 
     @Override
+    public String getDisplayId() {
+        return String.valueOf(getId()); // "12"
+    }
+
+    @Override
+    public boolean isService(){
+        return false;
+    }
+
+    @Override
     public String toString() {
-        return "{class:Product, id:" + id
+        return "{class:Product, id:" + getDisplayId()
                 + ", name:'" + name
                 + "', category:" + category
                 + ", price:" + price

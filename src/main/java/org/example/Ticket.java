@@ -90,24 +90,21 @@ public class Ticket<T> {
     }
 
     // Elimina todas las apariciones de un producto existente en el ticket
-    public boolean ticketRemove(int productId) {
-        boolean found = false;
+    public boolean ticketRemove(String productId) {
         if (status == Status.CLOSE) {
             System.out.println("ticket remove: error (ticket is closed)");
             return false;
         }
 
+        boolean removed = false;
         for (int i = lines.size() - 1; i >= 0; i--) {
-            if (lines.get(i).getId() == productId) {
+            if (productId.equals(lines.get(i).getId())) {
                 lines.remove(i);
-                found = true;
+                removed = true;
             }
         }
 
-        if (!found) {
-            throw new IllegalArgumentException("no product found with that ID");
-        }
-        return true;
+        return removed;
     }
 
     // Cuenta cuantos productos hay de una categoría en el ticket

@@ -187,7 +187,7 @@ public class TicketController {
             return;
         }
 
-        boolean removed = ticket.ticketRemove(productId);
+        boolean removed = ticket.ticketRemove(prodId);
 
         if (removed) {
             System.out.println("Ticket : " + ticket.getId());
@@ -228,8 +228,6 @@ public class TicketController {
         System.out.println("Ticket : " + ticket.getId());
         ticket.print();
     }
-
-
 
     public void handleTicketList() {
         ArrayList<Cashier> cashiers = CashierController.getInstance().getCashiers();
