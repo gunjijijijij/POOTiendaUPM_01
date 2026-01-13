@@ -1,6 +1,7 @@
 package org.example.strategy;
 
 import org.example.Category;
+import org.example.CommonTicket;
 import org.example.Product;
 import org.example.Ticket;
 import java.util.List;
@@ -8,8 +9,9 @@ import java.util.List;
 public class StandardPrinter implements ITicketPrinter { //ESTRATEGIA DE IMPRIMIR TICKET NORMAL (MISMA DE LA ENTREGA ANTERIOR)
     @Override
     public void print(Ticket ticket) {
+        CommonTicket commonTicket = (CommonTicket) ticket;
         System.out.println("--- TICKET ESTÁNDAR ---");
-        List<Product> lines = ticket.getLines();
+        List<Product> lines = commonTicket.getProducts();
         double total = 0;
         double totalDiscount = 0;
 

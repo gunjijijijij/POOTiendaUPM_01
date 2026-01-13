@@ -2,18 +2,20 @@ package org.example.strategy;
 
 import org.example.ProductService;
 import org.example.Ticket;
+import org.example.CompanyTicket;
 
 public class CompanyServicePrinter implements ITicketPrinter { //TICKET SOLO DE SERVICIOS SIN DESCUENTOS NI NADA
     @Override
     public void print(Ticket<?> ticket) {
+        CompanyTicket companyTicket = (CompanyTicket) ticket;
         System.out.println("Ticket Empresa (Solo Servicios)");
 
-        if (ticket.getServices().isEmpty()) {
+        if (companyTicket.getServices().isEmpty()) {
             System.out.println("  (Sin servicios añadidos)");
             return;
         }
 
-        for (ProductService service : ticket.getServices()) {
+        for (ProductService service : companyTicket.getServices()) {
             System.out.println("  Service: " + service.getId() + " -> Expira: " + service.getExpirationDate());
         }
 
@@ -22,6 +24,7 @@ public class CompanyServicePrinter implements ITicketPrinter { //TICKET SOLO DE 
     }
     @Override
     public boolean canClose(Ticket<?> ticket) {
-        return !ticket.getServices().isEmpty();
+        CompanyTicket companyTicket = (CompanyTicket) ticket;
+        return !companyTicket.getServices().isEmpty();
     }
 }
