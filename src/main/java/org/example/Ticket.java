@@ -4,15 +4,16 @@ import org.example.strategy.ITicketPrinter;
 import org.example.strategy.StandardPrinter;
 import org.example.util.TicketIdGenerator;
 
-import java.util.stream.Collectors;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class Ticket<Item> {
+public abstract class Ticket<T extends CatalogItem> {
     protected String id;
     protected String type;
     protected ITicketPrinter printingStrategy;
+    protected final List<T> items = new ArrayList<>();
 
     protected static final int MAX_SIZE = 100;
 
@@ -59,12 +60,21 @@ public abstract class Ticket<Item> {
             Product product, int quantity, List<String> customTexts
     );
 
-    public abstract void addService(ProductService service);
+    public abstract void addService(Service service);
 
 
     // Elimina todas las apariciones de un producto existente en el ticket
-    public  void ticketRemove(String productId) {
-
+    public boolean ticketRemove(String productId) {
+        if (status == Status.CLOSE) {
+            System.out.println("ticket remove: error (ticket is closed)");
+            return false;
+        }
+        boolean removed = false;
+        for (int i = items.size() - 1; i >= 0; i--) {
+            if (productId.equals(items.get(i).getId())) {
+                items.remove(i); removed = true;
+            }
+        } return removed;
     }
 
 
@@ -80,9 +90,6 @@ public abstract class Ticket<Item> {
     public void print() {
         printingStrategy.print(this);
     }
-
-    // Imprime el contenido del ticket
-    //Todo falta cambiarlo para que imprima dependiendo de la estrategia de impresion
 
 
     @Override

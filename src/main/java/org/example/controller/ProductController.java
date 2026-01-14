@@ -126,7 +126,7 @@ public class ProductController {
         }
 
         // Crear y agregar
-        ProductService service = new ProductService(expirationDate, category);
+        Service service = new Service(expirationDate, category);
         products.add(service);
     }
     private void addProduct(int id, String name, Category category, float price, Integer maxPers) {

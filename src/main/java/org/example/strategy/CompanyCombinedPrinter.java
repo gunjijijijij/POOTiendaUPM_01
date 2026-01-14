@@ -2,7 +2,7 @@ package org.example.strategy;
 
 import org.example.CompanyTicket;
 import org.example.Product;
-import org.example.ProductService;
+import org.example.Service;
 import org.example.Ticket;
 
 public class CompanyCombinedPrinter implements ITicketPrinter { //PRODUCTOS Y SERVICIOS COMBINADOS
@@ -23,7 +23,7 @@ public class CompanyCombinedPrinter implements ITicketPrinter { //PRODUCTOS Y SE
             total += finalPrice;
         }
 
-        for (ProductService s : companyTicket.getServices()) {
+        for (Service s : companyTicket.getServices()) {
             System.out.println("Servicio (Ref " + s.getId() + "): Facturación post-mes. Vence: " + s.getExpirationDate());
         }
 

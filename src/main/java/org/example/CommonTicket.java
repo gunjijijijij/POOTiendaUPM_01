@@ -1,9 +1,7 @@
 package org.example;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CommonTicket extends Ticket<Product>{
-    private final List<Product> products = new ArrayList<>();
     public CommonTicket(String id) {
         super(id);
 
@@ -18,20 +16,20 @@ public class CommonTicket extends Ticket<Product>{
             throw new IllegalArgumentException("product doesn't exist");
         }
 
-        List<Product> ticketLines = product.addToTicket(quantity, customTexts);
-        if (products.size() + ticketLines.size() > MAX_SIZE) {
+        List<Product> ticketContent = product.addToTicket(quantity, customTexts);
+        if (items.size() + ticketContent.size() > MAX_SIZE) {
             throw new IllegalArgumentException("ticket full");
         }
 
-        products.addAll(ticketLines);
+        items.addAll(ticketContent);
         status = Status.OPEN;
     }
     public List<Product> getProducts() {
-        return products;
+        return items;
     }
 
     @Override
-    public void addService(ProductService service) {
+    public void addService(Service service) {
         throw new IllegalArgumentException(
                 "Common tickets cannot accept services"
         );
@@ -39,7 +37,7 @@ public class CommonTicket extends Ticket<Product>{
 
     @Override
     public void closeTicket() {
-        if (products.isEmpty()) {
+        if (items.isEmpty()) {
             throw new IllegalStateException("Cannot close empty ticket");
         }
         super.closeTicket();

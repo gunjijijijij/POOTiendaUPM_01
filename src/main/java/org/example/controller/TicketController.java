@@ -44,7 +44,7 @@ public class TicketController {
         String ticketId;
         String cashId;
         String userId;
-        String ticketType = "-p";
+        String ticketType= "-p";
 
         if (args[2].startsWith("UW")) {
             ticketId = TicketIdGenerator.generateOpenTicketId();
@@ -53,7 +53,12 @@ public class TicketController {
             if (args.length > 4)
                 ticketType = args[4];
 
-            ticket = new Ticket<>(ticketId, ticketType);
+            if(ticketType.equals("-c") || ticketType.equals("-s")){
+                ticket = new CompanyTicket(ticketId);
+
+            }else{
+                ticket = new CommonTicket(ticketId);
+            }
 
 
         } else {
@@ -67,7 +72,12 @@ public class TicketController {
                 System.out.println("ticket new: error (ticket id already exists)");
                 return;
             } else {
-                ticket = new Ticket<>(ticketId, ticketType);
+                if(ticketType.equals("-c") || ticketType.equals("-s")){
+                    ticket = new CompanyTicket(ticketId);
+
+                }else{
+                    ticket = new CommonTicket(ticketId);
+                }
             }
         }
 

@@ -1,6 +1,5 @@
 package org.example.strategy;
 
-import org.example.Category;
 import org.example.CommonTicket;
 import org.example.Product;
 import org.example.Ticket;
