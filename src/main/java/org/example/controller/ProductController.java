@@ -22,6 +22,9 @@ public class ProductController {
         }
         return instancia;
     }
+    public List<CatalogItem> getProducts() {
+        return products;
+    }
 
     // Imprime los productos existentes en el catálogo
     public void prodList() {
@@ -85,7 +88,6 @@ public class ProductController {
         return null;
     }
 
-
     // Procesa el comando "prod remove": verifica los argumentos,
     // maneja los errores correspondientes y utiliza ProductController
     // para eliminar el nuevo producto al catálogo.
@@ -144,7 +146,6 @@ public class ProductController {
         }else{
             System.out.println("No more products can be added, the maximum is " + MAX_PRODUCTS);
         }
-
     }
 
     private Product createProduct(int id, String name, Category category, float price, Integer maxPers) {
@@ -368,6 +369,10 @@ public class ProductController {
         System.out.println("prod addMeeting: ok");
     }
 
-
+    // Reemplaza la lista actual de productos con los datos cargados desde la persistencia
+    public void setProducts(List<CatalogItem> loadedProducts) {
+        products.clear();
+        products.addAll(loadedProducts);
+    }
 }
 

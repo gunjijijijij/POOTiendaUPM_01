@@ -25,6 +25,10 @@ public class Service extends CatalogItem {
         return serviceCounter++ + "S";
     }
 
+    public static void setServiceCounter(int n) {
+        serviceCounter = n;
+    }
+
     @Override
     public String toString() {
         return "{class:ProductService, id:" + getDisplayId() +
