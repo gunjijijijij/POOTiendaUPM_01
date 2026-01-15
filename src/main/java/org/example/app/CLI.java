@@ -19,7 +19,7 @@ public class CLI {
 
     public void start(String inputFile) {
         init();
-
+        org.example.controller.PersistenceController.loadData();
         Scanner sc;
 
         try {
@@ -83,6 +83,7 @@ public class CLI {
         }
 
         sc.close();
+        org.example.controller.PersistenceController.saveData();
         end();
     }
 
