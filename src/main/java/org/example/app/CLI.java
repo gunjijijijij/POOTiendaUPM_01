@@ -38,44 +38,47 @@ public class CLI {
         while (!finish && sc.hasNextLine()) {
             String line = sc.nextLine().trim();
             if (line.isEmpty()) continue;
+            try { // try catch genérico para errores
+                String[] commandUni = Utils.parseLine(line).toArray(new String[0]);
+                String cmd = commandUni[0].toLowerCase();
 
-            String[] commandUni = Utils.parseLine(line).toArray(new String[0]);
-            String cmd = commandUni[0].toLowerCase();
+                System.out.println("tUPM> " + line);
 
-            System.out.println("tUPM> " + line);
+                switch (cmd) {
+                    case "help":
+                        help();
+                        break;
 
-            switch (cmd) {
-                case "help":
-                    help();
-                    break;
+                    case "echo":
+                        echo(commandUni);
+                        break;
 
-                case "echo":
-                    echo(commandUni);
-                    break;
+                    case "prod":
+                        handleProdCommand(commandUni);
+                        break;
 
-                case "prod":
-                    handleProdCommand(commandUni);
-                    break;
+                    case "ticket":
+                        handleTicketCommand(commandUni);
+                        break;
 
-                case "ticket":
-                    handleTicketCommand(commandUni);
-                    break;
+                    case "cash":
+                        handleCash(commandUni);
+                        break;
 
-                case "cash":
-                    handleCash(commandUni);
-                    break;
+                    case "client":
+                        handleClient(commandUni);
+                        break;
 
-                case "client":
-                    handleClient(commandUni);
-                    break;
+                    case "exit":
+                        finish = true;
+                        break;
 
-                case "exit":
-                    finish = true;
-                    break;
-
-                default:
-                    System.out.println("Invalid command");
-                    break;
+                    default:
+                        System.out.println("Invalid command");
+                        break;
+                }
+            }catch(Exception e){
+                System.out.println("Error executing command: " + e.getMessage());
             }
             if (!finish) {
                 System.out.println();
