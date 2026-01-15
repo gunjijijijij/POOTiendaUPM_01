@@ -107,7 +107,7 @@ public class CLI {
         System.out.println("  cash remove <id>");
         System.out.println("  cash list");
         System.out.println("  cash tickets <id>");
-        System.out.println("  ticket new [<id>] <cashId> <userId>");
+        System.out.println("  ticket new [<id>] <cashId> <userId> [-c|-s|-p]");
         System.out.println("  ticket add <ticketId><cashId> <prodId> <amount> [--p<txt> --p<txt>]");
         System.out.println("  ticket remove <ticketId><cashId> <prodId>");
         System.out.println("  ticket print <ticketId> <cashId>");

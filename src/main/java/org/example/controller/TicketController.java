@@ -2,6 +2,8 @@ package org.example.controller;
 
 import org.example.*;
 
+import org.example.strategy.CompanyCombinedPrinter;
+import org.example.strategy.CompanyServicePrinter;
 import org.example.util.TicketIdGenerator;
 import org.example.util.Utils;
 
@@ -32,11 +34,9 @@ public class TicketController {
         return null;
     }
 
-    //Todo falta cambiarlo para que tenga en cuenta el tipo de ticket
-
     public void handleTicketNew(String[] args) {
         if (args.length < 4) {
-            System.out.println("Usage: ticket new [<id>] <cashId> <userId>");
+            System.out.println("Usage: ticket new [<id>] <cashId> <userId> [-c|-s|-p]");
             return;
         }
 
@@ -52,44 +52,55 @@ public class TicketController {
             userId = args[3];
             if (args.length > 4)
                 ticketType = args[4];
-
-            if(ticketType.equals("-c") || ticketType.equals("-s")){
-                ticket = new CompanyTicket(ticketId);
-
-            }else{
-                ticket = new CommonTicket(ticketId);
-            }
-
-
         } else {
-            ticketId = args[2];
+            ticketId = args[2]; // ID Manual
             cashId = args[3];
             userId = args[4];
-            if (args.length > 5)
-                ticketType = args[5];
-
-            if (findTicketById(ticketId) != null) {
-                System.out.println("ticket new: error (ticket id already exists)");
-                return;
-            } else {
-                if(ticketType.equals("-c") || ticketType.equals("-s")){
-                    ticket = new CompanyTicket(ticketId);
-
-                }else{
-                    ticket = new CommonTicket(ticketId);
-                }
-            }
+            if (args.length > 5) ticketType = args[5];
         }
 
+        if (findTicketById(ticketId) != null) {
+            System.out.println("ticket new: error (ticket id already exists)");
+            return;
+        }
         Cashier cashier = CashierController.getInstance().findCashById(cashId);
         if (cashier == null) {
             System.out.println("ticket new: error (cashier not found)");
             return;
         }
-
         Client client = ClientController.getInstance().findClientById(userId);
         if (client == null) {
             System.out.println("ticket new: error (client not found)");
+            return;
+        }
+        try {
+            switch (ticketType) {
+                case "-c":
+                    if (!(client instanceof org.example.util.CompanyClient)) {
+                        System.out.println("Error: Combined tickets are only for Company Clients.");
+                        return;
+                    }
+                    ticket = new CompanyTicket(ticketId);
+                    ticket.setPrintingStrategy(new CompanyCombinedPrinter());
+                    break;
+                case "-s":
+                    if (!(client instanceof org.example.util.CompanyClient)) {
+                        System.out.println("Error: Service tickets are only for Company Clients.");
+                        return;
+                    }
+                    ticket = new CompanyTicket(ticketId);
+                    ticket.setPrintingStrategy(new CompanyServicePrinter());
+                    break;
+                default:
+                    if (client instanceof org.example.util.CompanyClient) {
+                        ticket = new CompanyTicket(ticketId);
+                    } else {
+                        ticket = new CommonTicket(ticketId);
+                    }
+                    break;
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("ticket new: error (" + e.getMessage() + ")");
             return;
         }
 
