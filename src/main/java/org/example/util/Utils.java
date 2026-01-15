@@ -140,10 +140,22 @@ public class Utils {
     }
 
     public static boolean isValidID(String id) {
-        return id.matches("[A-HJ-NP-S]?[0-9]{7}[A-Z]") || id.matches("\\d{8}[A-Z]");
+        return isDNI(id)||isNIF(id);
     }
-    public static boolean isNIF(String id){
-        return id.matches("[A-HJ-NP-S]?[0-9]{7}[A-Z]");
+    public static boolean isNIF(String nif){
+        if (nif.length()!=9){
+            return false;
+        }
+        String secuenciaLetrasNIF = "TRWAGMYFPDXBNJZSQVHLCKE";
+        nif = nif.toUpperCase();
+        String numeroNIF = nif.substring(0, nif.length()-1);
+        numeroNIF = numeroNIF.replace("X", "0").replace("Y", "1").replace("Z", "2");
+        char letraNIF = nif.charAt(8);
+        int i = Integer.parseInt(numeroNIF) % 23;
+        return letraNIF == secuenciaLetrasNIF.charAt(i);
+    }
+    public static boolean isDNI(String id) {
+        return id.matches("\\d{8}[A-Z]");
     }
 
     public static boolean isDateYYYYMMDD(String s) {
