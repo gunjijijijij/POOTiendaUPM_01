@@ -24,14 +24,37 @@ public class CompanyTicket extends Ticket<CatalogItem> {
     }
     @Override
     public void addProductTicket(Product product, int quantity, List<String> customTexts) {
-
+        if (status == Status.CLOSE) {
+            throw new IllegalStateException("ticket is closed");
+        }
+        if (product == null) {
+            throw new IllegalArgumentException("product doesn't exist");
+        }
+        List<Product> productsToAdd = product.addToTicket(quantity, customTexts);
+        if (items.size() + productsToAdd.size() > MAX_SIZE) {
+            throw new IllegalArgumentException("ticket full");
+        }
+        items.addAll(productsToAdd);
+        status = Status.OPEN;
     }
     public List<Product> getProducts() {
-        return products;
+        List<Product> result = new ArrayList<>();
+        for (CatalogItem item : items) {
+            if (item instanceof Product && !item.isService()) {
+                result.add((Product) item);
+            }
+        }
+        return result;
     }
 
     public List<Service> getServices() {
-        return services;
+        List<Service> result = new ArrayList<>();
+        for (CatalogItem item : items) {
+            if (item instanceof Service || item.isService()) {
+                result.add((Service) item);
+            }
+        }
+        return result;
     }
 
 

@@ -113,7 +113,7 @@ public class TicketController {
         System.out.println("ticket new: ok");
     }
 
-    //Todo falta cambiarlo para que tenga en cuenta el tipo de ticket
+    //Todo falta cambiarlo para que tenga en cuenta el tipo de item
 
     public void handleTicketAdd(String[] args) {
         String ticketId;
