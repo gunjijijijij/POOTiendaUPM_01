@@ -118,7 +118,7 @@ public class TicketController {
     public void handleTicketAdd(String[] args) {
         String ticketId;
         String cashId;
-        String prodId;
+        String itemId;
         String quantityStr;
 
         if (Utils.requireMinArgs(args, 6,
@@ -132,7 +132,7 @@ public class TicketController {
         }
 
         cashId = args[3];
-        prodId = args[4];
+        itemId = args[4];
         quantityStr = args[5];
 
         Cashier cashier = CashierController.getInstance().findCashById(cashId);
@@ -141,7 +141,7 @@ public class TicketController {
             return;
         }
 
-        Integer productId = Utils.parsePositiveInt(prodId,
+        Integer productId = Utils.parsePositiveInt(itemId,
                 "The product ID must be a positive integer.");
         if (productId == null) return;
 
@@ -177,8 +177,6 @@ public class TicketController {
         }
     }
 
-    //Todo falta cambiarlo para que tenga en cuenta el tipo de ticket
-
     public void handleTicketRemove(String[] args) {
         if (Utils.requireMinArgs(args, 5, "Usage: ticket remove <ticketId> <cashId> <prodId>"))
             return;
@@ -190,7 +188,7 @@ public class TicketController {
             return;
         }
         String cashId = args[3];
-        String prodId = args[4];
+        String itemId = args[4];
 
         Cashier cashier = CashierController.getInstance().findCashById(cashId);
         if (cashier == null) {
@@ -198,17 +196,13 @@ public class TicketController {
             return;
         }
 
-        Integer productId = Utils.parsePositiveInt(prodId,
-                "The product ID must be a positive integer.");
-        if (productId == null) return;
-
         // Check that cashier owns this ticket
         if (!cashier.isTicketOfCash(ticketId)) {
             System.out.println("Error: This cashier cannot access the ticket");
             return;
         }
 
-        boolean removed = ticket.ticketRemove(prodId);
+        boolean removed = ticket.ticketRemove(itemId);
 
         if (removed) {
             System.out.println("Ticket : " + ticket.getId());
