@@ -1,6 +1,8 @@
 package org.example;
 
-public abstract class User {
+import java.io.Serializable;
+
+public abstract class User implements Serializable {
     protected String id;
     protected String name;
     protected String email;

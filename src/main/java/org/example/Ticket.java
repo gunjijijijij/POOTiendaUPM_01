@@ -5,11 +5,12 @@ import org.example.strategy.StandardPrinter;
 import org.example.util.TicketIdGenerator;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class Ticket<T extends CatalogItem> {
+public abstract class Ticket<T extends CatalogItem> implements Serializable {
     protected String id;
     protected String type;
     protected ITicketPrinter printingStrategy;
