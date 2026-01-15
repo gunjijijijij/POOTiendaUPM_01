@@ -97,4 +97,13 @@ public abstract class Ticket<T extends CatalogItem> implements Serializable {
     public String toString() {
         return id + " - " + status.toString();
     }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
 }
+

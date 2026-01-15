@@ -15,10 +15,10 @@ public class CompanyTicket extends Ticket<CatalogItem> {
         if (status == Status.CLOSE) {
             throw new IllegalStateException("ticket is closed");
         }
-
-        if (type.equalsIgnoreCase("service")) {
+        if (type!=null && type.equalsIgnoreCase("STANDARD")) {
             throw new IllegalArgumentException("Error: Standard tickets (Individual) cannot accept Services.");
         }
+        // SOLO SI es servicio o combinado puede añadir servicios
         items.add(service);
         status = Status.OPEN;
     }
@@ -26,6 +26,10 @@ public class CompanyTicket extends Ticket<CatalogItem> {
     public void addProductTicket(Product product, int quantity, List<String> customTexts) {
         if (status == Status.CLOSE) {
             throw new IllegalStateException("ticket is closed");
+        }
+        //AQUI SE VALIDA QUE SI ES SOLO SERVICIO NO SE AÑADAN PRODUCTOS
+        if (type != null && type.equalsIgnoreCase("SERVICE")) {
+            throw new IllegalArgumentException("Error: Service tickets cannot accept Products.");
         }
         if (product == null) {
             throw new IllegalArgumentException("product doesn't exist");

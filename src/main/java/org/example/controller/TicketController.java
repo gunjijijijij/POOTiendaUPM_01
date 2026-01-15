@@ -81,6 +81,7 @@ public class TicketController {
                         return;
                     }
                     ticket = new CompanyTicket(ticketId);
+                    ticket.setType("COMBINED");
                     ticket.setPrintingStrategy(new CompanyCombinedPrinter());
                     break;
                 case "-s":
@@ -89,13 +90,16 @@ public class TicketController {
                         return;
                     }
                     ticket = new CompanyTicket(ticketId);
+                    ticket.setType("SERVICE");
                     ticket.setPrintingStrategy(new CompanyServicePrinter());
                     break;
                 default:
                     if (client instanceof org.example.util.CompanyClient) {
                         ticket = new CompanyTicket(ticketId);
+                        ticket.setType("STANDARD");
                     } else {
                         ticket = new CommonTicket(ticketId);
+                        ticket.setType("STANDARD");
                     }
                     break;
             }
