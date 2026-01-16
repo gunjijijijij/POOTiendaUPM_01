@@ -3,9 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyTicket extends Ticket<CatalogItem> {
-    private static final double SERVICE_DISCOUNT = 0.15;
-    private List<Product> products;
-    private List<Service> services;
 
     public CompanyTicket(String id) {
         super(id);
@@ -14,9 +11,6 @@ public class CompanyTicket extends Ticket<CatalogItem> {
     public void addService(Service service) {
         if (status == Status.CLOSE) {
             throw new IllegalStateException("ticket is closed");
-        }
-        if (type!=null && type.equalsIgnoreCase("STANDARD")) {
-            throw new IllegalArgumentException("Error: Standard tickets (Individual) cannot accept Services.");
         }
         // SOLO SI es servicio o combinado puede añadir servicios
         items.add(service);
@@ -68,6 +62,42 @@ public class CompanyTicket extends Ticket<CatalogItem> {
 
 
     @Override
+    public double getTotalPrice() {
+
+        if (getProducts().isEmpty()) {
+            return 0; // solo servicios
+        }
+
+        double total = 0;
+        for (Product product : getProducts()) {
+            total += product.getPrice();
+        }
+        return total;
+    }
+
+    @Override
+    public double getTotalDiscount() {
+
+        if (getProducts().isEmpty()) {
+            return 0;
+        }
+
+        double productsTotal = 0;
+        for (Product product : getProducts()) {
+            productsTotal += product.getPrice();
+        }
+
+        double discountRate = 0;
+
+        for (Service service : getServices()) {
+            discountRate += service.getCategory().getDiscountRate();
+        }
+
+        return productsTotal * discountRate;
+    }
+
+
+    @Override
     public void closeTicket() {
         boolean hasProducts = !getProducts().isEmpty(); //getproducts en vez de getitems
         boolean hasServices = !getServices().isEmpty();//getservices
@@ -84,8 +114,5 @@ public class CompanyTicket extends Ticket<CatalogItem> {
 
         super.closeTicket();
     }
-    public double getServiceDiscountMultiplier() {
-        int serviceCount = getServices().size(); //getservuces
-        return 1 - (SERVICE_DISCOUNT * serviceCount);
-    }
+
 }

@@ -63,6 +63,12 @@ public abstract class Ticket<T extends CatalogItem> implements Serializable {
 
     public abstract void addService(Service service);
 
+    public abstract double getTotalPrice();
+    public abstract double getTotalDiscount();
+
+    public double getFinalPrice() {
+        return getTotalPrice() - getTotalDiscount();
+    }
 
     // Elimina todas las apariciones de un producto existente en el ticket
     public boolean ticketRemove(String productId) {

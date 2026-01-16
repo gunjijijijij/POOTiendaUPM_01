@@ -35,6 +35,40 @@ public class CommonTicket extends Ticket<Product>{
         );
     }
 
+    private int countCategory(Category category) {
+        int count = 0;
+        for (Product product : items) {
+            if (product.getCategory() == category) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public double getTotalPrice() {
+        double total = 0;
+        for (Product product : items) {
+            total += product.getPrice();
+        }
+        return total;
+    }
+
+    @Override
+    public double getTotalDiscount() {
+        double totalDiscount = 0;
+        for (Product product : items) {
+            Category category = product.getCategory();
+            int catCount = category != null ? countCategory(category) : 0;
+            if (catCount > 1) {
+                totalDiscount += product.getDiscount();
+            }
+        }
+        return totalDiscount;
+    }
+
+
+
     @Override
     public void closeTicket() {
         if (items.isEmpty()) {

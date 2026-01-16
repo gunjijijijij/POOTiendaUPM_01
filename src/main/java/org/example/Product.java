@@ -9,6 +9,7 @@ public class Product extends CatalogItem{
     protected Category category;
     protected float price;
 
+
     public Product(int id, String name, Category category, float price) {
         super(String.valueOf(id), category);
         this.name = name;
@@ -38,10 +39,7 @@ public class Product extends CatalogItem{
         }
         this.category = category;
     }
-
-    public float getPrice() {
-        return price;
-    }
+    public float getPrice() { return price; }
 
     public void setPrice(float price) {
         if (price <= 0) {
@@ -49,6 +47,7 @@ public class Product extends CatalogItem{
         }
         this.price = price;
     }
+
 
     public double getDiscount() {
         return this.getCategory().calculateDiscount(getPrice());
