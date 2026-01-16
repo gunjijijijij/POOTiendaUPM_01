@@ -93,6 +93,16 @@ public abstract class Ticket<T extends CatalogItem> implements Serializable {
         }
     }
 
+    protected int countCategory(Category category) {
+        int count = 0;
+        for (CatalogItem item : items) {
+            if (item.getCategory() == category) {
+                count++;
+            }
+        }
+        return count;
+    }
+
 
     public void print() {
         printingStrategy.print(this);

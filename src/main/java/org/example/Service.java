@@ -27,6 +27,7 @@ public class Service extends CatalogItem {
         return serviceCounter++ + "S";
     }
 
+
     public static void setServiceCounter(int n) {
         serviceCounter = n;
     }

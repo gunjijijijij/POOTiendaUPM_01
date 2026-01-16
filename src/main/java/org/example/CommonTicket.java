@@ -35,15 +35,6 @@ public class CommonTicket extends Ticket<Product>{
         );
     }
 
-    private int countCategory(Category category) {
-        int count = 0;
-        for (Product product : items) {
-            if (product.getCategory() == category) {
-                count++;
-            }
-        }
-        return count;
-    }
 
     @Override
     public double getTotalPrice() {

@@ -81,19 +81,22 @@ public class CompanyTicket extends Ticket<CatalogItem> {
         if (getProducts().isEmpty()) {
             return 0;
         }
+        double productDiscount = 0;
+        double serviceDiscount = 0;
+        double cantServices = getServices().size();
 
-        double productsTotal = 0;
         for (Product product : getProducts()) {
-            productsTotal += product.getPrice();
+            Category category = product.getCategory();
+            int catCount = category != null ? countCategory(category) : 0;
+            if (catCount > 1) {
+                productDiscount += product.getDiscount();
+            }
         }
-
-        double discountRate = 0;
-
         for (Service service : getServices()) {
-            discountRate += service.getCategory().getDiscountRate();
+            serviceDiscount += service.getCategory().getDiscountRate();
         }
 
-        return productsTotal * discountRate;
+        return (cantServices * serviceDiscount) + productDiscount;
     }
 
 

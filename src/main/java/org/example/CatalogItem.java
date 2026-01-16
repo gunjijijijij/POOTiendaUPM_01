@@ -18,6 +18,7 @@ public abstract class CatalogItem implements Serializable{
     }
     public Category getCategory() { return category; }
 
+
     public abstract boolean isService();
 
     public abstract String getDisplayId();
