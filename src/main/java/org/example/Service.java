@@ -21,6 +21,8 @@ public class Service extends CatalogItem {
         return getId() + "S"; // "1S"
     }
 
+    public Category getCategory() { return category; }
+
     private static String generateServiceId() {
         return serviceCounter++ + "S";
     }

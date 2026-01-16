@@ -7,9 +7,9 @@ public enum Category {
     CLOTHES(0.07),
     BOOK(0.1),
     ELECTRONICS(0.03),
-    INSURANCE(0),
-    SPECTACLE(0),
-    TRANSPORT(0);
+    INSURANCE(0.15),
+    SPECTACLE(0.15),
+    TRANSPORT(0.15);
 
 
     private final double discountRate;
