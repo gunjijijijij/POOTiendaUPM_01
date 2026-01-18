@@ -68,11 +68,15 @@ public class ClientController {
 
         try {
             Client client;
-            if(Utils.isNIF(id)) {
+
+            if (Utils.isDNI(id)) {
+                client = new IndividualClient(id, name, email, cashier);
+            } else if (Utils.isNIF(id)) {
                 client = new CompanyClient(id, name, email, cashier);
-            }else{
-                client = new IndividualClient(id,name,email,cashier);
+            } else {
+                throw new IllegalArgumentException("invalid DNI/NIF");
             }
+
             clients.add(client);
             System.out.println(client);
             System.out.println("client add: ok");

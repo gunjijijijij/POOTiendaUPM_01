@@ -6,7 +6,6 @@ import java.util.List;
 public class StandardPrinter implements ITicketPrinter { //ESTRATEGIA DE IMPRIMIR TICKET NORMAL (MISMA DE LA ENTREGA ANTERIOR)
     @Override
     public void print(Ticket ticket) {
-        System.out.println("--- TICKET ESTÁNDAR ---");
         List<Product> lines;
         if (ticket instanceof CommonTicket) {             //verificamos el tipo de ticket
             lines = ((CommonTicket) ticket).getProducts();
@@ -16,6 +15,7 @@ public class StandardPrinter implements ITicketPrinter { //ESTRATEGIA DE IMPRIMI
             System.out.println("Error: Tipo de ticket irreconocible para impresión estándar.");
             return;
         }
+
         double total = 0;
         double totalDiscount = 0;
 
@@ -23,11 +23,14 @@ public class StandardPrinter implements ITicketPrinter { //ESTRATEGIA DE IMPRIMI
             Category currentCategory = p.getCategory();
             long count = lines.stream().filter(x -> x.getCategory() == currentCategory).count();
             double discount = (count > 1) ? p.getDiscount() : 0;
-            System.out.printf("%-20s %.2f (Dto: %.2f)\n", p.getName(), p.getPrice(), discount);
+            System.out.println(p.toString());
             total += p.getPrice();
             totalDiscount += discount;
         }
-        System.out.printf("Total: %.2f\n", total - totalDiscount);
+        System.out.printf("Total price: %.2f\n", total);
+        System.out.printf("Total Discount: %.2f\n", totalDiscount);
+        System.out.printf("Final price: %.2f\n", total - totalDiscount);
+
     }
     @Override
     public boolean canClose(Ticket<?> ticket) {

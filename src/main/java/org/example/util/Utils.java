@@ -154,8 +154,17 @@ public class Utils {
         int i = Integer.parseInt(numeroNIF) % 23;
         return letraNIF == secuenciaLetrasNIF.charAt(i);
     }
-    public static boolean isDNI(String id) {
-        return id.matches("\\d{8}[A-Z]");
+
+    public static boolean isDNI(String dni) {
+        if (!dni.matches("\\d{8}[A-Z]")) {
+            return false;
+        }
+
+        String letter = "TRWAGMYFPDXBNJZSQVHLCKE";
+        int number = Integer.parseInt(dni.substring(0, 8));
+        char resultLetter = letter.charAt(number % 23);
+
+        return dni.charAt(8) == resultLetter;
     }
 
     public static boolean isDateYYYYMMDD(String s) {

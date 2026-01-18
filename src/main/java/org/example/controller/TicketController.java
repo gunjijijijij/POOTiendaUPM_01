@@ -59,7 +59,7 @@ public class TicketController {
         }
 
         if (findTicketById(ticketId) != null) {
-            System.out.println("ticket new: error (ticket id already exists)");
+            System.out.println("<ticket new: error (>ticket id already exists)");
             return;
         }
         Cashier cashier = CashierController.getInstance().findCashById(cashId);
