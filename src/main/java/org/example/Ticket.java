@@ -12,7 +12,6 @@ import java.util.List;
 
 public abstract class Ticket<T extends CatalogItem> implements Serializable {
     protected String id;
-    protected String type;
     protected ITicketPrinter printingStrategy;
     protected final List<T> items = new ArrayList<>();
 
@@ -105,12 +104,8 @@ public abstract class Ticket<T extends CatalogItem> implements Serializable {
         return id + " - " + status.toString();
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getType() {
-        return type;
-    }
+    public List<T> getItems() {
+        return items;
+    };
 }
 

@@ -1,6 +1,7 @@
 package org.example;
 import org.example.controller.ProductController;
 import org.example.controller.TicketController;
+import org.example.strategy.CompanyCombinedPrinter;
 import org.example.strategy.CompanyServicePrinter;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 public class CompanyTicket extends Ticket<CatalogItem> {
 
     public CompanyTicket(String id) {
-        super(id, new CompanyServicePrinter());
+        super(id, new CompanyCombinedPrinter());
     }
 
     @Override
