@@ -37,6 +37,10 @@ public class CustomProduct extends Product {
         }
         sb.append("}");
 
+        if (getDiscount() > 0) {
+            sb.append(" **discount -")
+                    .append(String.format("%.2f", getDiscount()));
+        }
         return sb.toString();
     }
 
