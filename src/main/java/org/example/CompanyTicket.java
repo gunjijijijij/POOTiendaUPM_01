@@ -17,7 +17,13 @@ public class CompanyTicket extends Ticket<CatalogItem> {
 
     @Override
     public void addItem(String itemId, int quantity, List<String> customTexts) {
+        if (status == Status.CLOSE) {
+            throw new IllegalStateException("ticket is closed");
+        }
         if (itemId.endsWith("S")) {
+            if (items.size() >= MAX_SIZE) {
+                throw new IllegalArgumentException("ticket full");
+            }
             Service service = TicketController.getInstance().findServiceById(itemId);
             if (service == null) {
                 System.out.println("ticket add: error (service " + itemId + " not found)");

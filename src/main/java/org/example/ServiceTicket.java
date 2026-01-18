@@ -17,6 +17,9 @@ public class ServiceTicket extends Ticket<Service>{
         if (!itemId.endsWith("S")) {
             throw new IllegalArgumentException("Invalid item id: " + itemId);
         }
+        if (items.size() >= MAX_SIZE) {
+            throw new IllegalArgumentException("ticket full");
+        }
         Service service = TicketController.getInstance().findServiceById(itemId);
         if (service == null) {
             System.out.println("ticket add: error (service " + itemId + " not found)");
