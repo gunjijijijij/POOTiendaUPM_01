@@ -18,8 +18,6 @@ public abstract class Ticket<T extends CatalogItem> implements Serializable {
 
     protected static final int MAX_SIZE = 100;
 
-
-
     public enum Status {
         OPEN,
         EMPTY,
@@ -41,7 +39,6 @@ public abstract class Ticket<T extends CatalogItem> implements Serializable {
         this.id = ticket.id;
         this.status = ticket.status;
         this.printingStrategy = ticket.printingStrategy;
-
     }
 
     public String getId() {
@@ -53,15 +50,9 @@ public abstract class Ticket<T extends CatalogItem> implements Serializable {
         return status;
     }
 
-    public void setPrintingStrategy(ITicketPrinter strategy) {
-        this.printingStrategy = strategy;
-    }
-
-    public abstract void addProductTicket(
-            Product product, int quantity, List<String> customTexts
+    public abstract void addItem(
+        String itemId, int quantity, List<String> customTexts
     );
-
-    public abstract void addService(Service service);
 
     public abstract double getTotalPrice();
     public abstract double getTotalDiscount();

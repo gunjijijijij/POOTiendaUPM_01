@@ -7,7 +7,7 @@ public class CustomProduct extends Product {
     private final int maxCustomizations;
     private List<String> customTexts;
 
-    public CustomProduct(int id, String name, Category category, float price, int maxCustomizations) {
+    public CustomProduct(String id, String name, Category category, float price, int maxCustomizations) {
         super(id, name, category, price);
         this.maxCustomizations = maxCustomizations;
         if (maxCustomizations < 0) {
@@ -16,7 +16,7 @@ public class CustomProduct extends Product {
     }
 
     public CustomProduct(CustomProduct customProduct, List<String> customTexts) {
-        this(customProduct.getIdAsInt(), customProduct.getName(), customProduct.getCategory(), customProduct.getPrice(), customProduct.getMaxCustomizations());
+        this(customProduct.getId(), customProduct.getName(), customProduct.getCategory(), customProduct.getPrice(), customProduct.getMaxCustomizations());
         this.customTexts = customTexts;
     }
 

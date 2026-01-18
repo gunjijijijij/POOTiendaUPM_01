@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FoodProduct extends PeopleProduct {
-    public FoodProduct(int id, String name, float pricePerPerson, LocalDate expirationDate, int maxPeople) {
+    public FoodProduct(String id, String name, float pricePerPerson, LocalDate expirationDate, int maxPeople) {
         super(id, name, pricePerPerson, expirationDate, maxPeople);
     }
 

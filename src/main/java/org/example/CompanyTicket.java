@@ -1,13 +1,43 @@
 package org.example;
+import org.example.controller.ProductController;
+import org.example.controller.TicketController;
+import org.example.strategy.CompanyServicePrinter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyTicket extends Ticket<CatalogItem> {
 
     public CompanyTicket(String id) {
-        super(id);
+        super(id, new CompanyServicePrinter());
     }
+
     @Override
+    public void addItem(String itemId, int quantity, List<String> customTexts) {
+        if (itemId.endsWith("S")) {
+            Service service = TicketController.getInstance().findServiceById(itemId);
+            if (service == null) {
+                System.out.println("ticket add: error (service " + itemId + " not found)");
+                return;
+            }
+            this.items.add(service);
+        } else {
+            Product product = ProductController.getInstance().findProductById(itemId);
+
+            if (product == null) {
+                throw new IllegalArgumentException("product doesn't exist");
+            }
+
+            List<Product> ticketContent = product.addToTicket(quantity, customTexts);
+            if (items.size() + ticketContent.size() > MAX_SIZE) {
+                throw new IllegalArgumentException("ticket full");
+            }
+
+            items.addAll(ticketContent);
+        }
+        status = Status.OPEN;
+    }
+
     public void addService(Service service) {
         if (status == Status.CLOSE) {
             throw new IllegalStateException("ticket is closed");
@@ -16,25 +46,18 @@ public class CompanyTicket extends Ticket<CatalogItem> {
         items.add(service);
         status = Status.OPEN;
     }
-    @Override
-    public void addProductTicket(Product product, int quantity, List<String> customTexts) {
+
+    public void addProductTicket(List<Product> productsToAdd) {
         if (status == Status.CLOSE) {
             throw new IllegalStateException("ticket is closed");
         }
-        //AQUI SE VALIDA QUE SI ES SOLO SERVICIO NO SE AÑADAN PRODUCTOS
-        if (type != null && type.equalsIgnoreCase("SERVICE")) {
-            throw new IllegalArgumentException("Error: Service tickets cannot accept Products.");
-        }
-        if (product == null) {
-            throw new IllegalArgumentException("product doesn't exist");
-        }
-        List<Product> productsToAdd = product.addToTicket(quantity, customTexts);
         if (items.size() + productsToAdd.size() > MAX_SIZE) {
             throw new IllegalArgumentException("ticket full");
         }
         items.addAll(productsToAdd);
         status = Status.OPEN;
     }
+
     public List<Product> getProducts() {
         List<Product> result = new ArrayList<>();
         for (CatalogItem item : items) {

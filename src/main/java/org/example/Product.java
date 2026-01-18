@@ -4,23 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Product extends CatalogItem{
-    protected int id;
     protected String name;
     protected Category category;
     protected float price;
 
 
-    public Product(int id, String name, Category category, float price) {
-        super(String.valueOf(id), category);
+    public Product(String id, String name, Category category, float price) {
+        super(id, category);
         this.name = name;
         this.price = price;
     }
 
     public Product(Product product) {
-        this(product.getIdAsInt(), product.getName(), product.getCategory(), product.getPrice());
+        this(product.getId(), product.getName(), product.getCategory(), product.getPrice());
     }
-
-
 
     public String getName() {
         return name;

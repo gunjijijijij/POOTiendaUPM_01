@@ -7,7 +7,7 @@ import java.util.List;
 
 public class MeetingProduct extends PeopleProduct {
 
-    public MeetingProduct(int id, String name, float pricePerPerson, LocalDate expirationDate, int maxPeople) {
+    public MeetingProduct(String id, String name, float pricePerPerson, LocalDate expirationDate, int maxPeople) {
         super(id, name, pricePerPerson, expirationDate, maxPeople);
     }
 

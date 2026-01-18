@@ -11,7 +11,7 @@ public abstract class PeopleProduct extends Product {
     private final int maxPeople;
     private int numPeopleAttending = 0;
 
-    public PeopleProduct(int id, String name, float pricePerPerson, LocalDate expirationDate, int maxPeople) {
+    public PeopleProduct(String id, String name, float pricePerPerson, LocalDate expirationDate, int maxPeople) {
         super(id, name, null, pricePerPerson);
 
         if (maxPeople > 100 || maxPeople <= 0) {
@@ -27,7 +27,7 @@ public abstract class PeopleProduct extends Product {
     }
     
     public PeopleProduct(PeopleProduct peopleProduct, int numPeopleAttending) {
-        this(peopleProduct.getIdAsInt(), peopleProduct.getName(), peopleProduct.getPricePerPerson(), peopleProduct.getExpirationDate(), peopleProduct.getMaxPeople());
+        this(peopleProduct.getId(), peopleProduct.getName(), peopleProduct.getPricePerPerson(), peopleProduct.getExpirationDate(), peopleProduct.getMaxPeople());
         this.numPeopleAttending = numPeopleAttending;
     }
 

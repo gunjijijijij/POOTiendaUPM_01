@@ -2,8 +2,8 @@ package org.example.controller;
 
 import org.example.Cashier;
 import org.example.*;
-import org.example.util.CompanyClient;
-import org.example.util.IndividualClient;
+import org.example.CompanyClient;
+import org.example.IndividualClient;
 import org.example.util.Utils;
 import java.util.ArrayList;
 

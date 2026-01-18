@@ -1,16 +1,23 @@
 package org.example;
+import org.example.controller.ProductController;
+import org.example.controller.TicketController;
+
 import java.util.List;
 
 public class CommonTicket extends Ticket<Product>{
     public CommonTicket(String id) {
         super(id);
-
     }
+
     @Override
-    public void addProductTicket(Product product, int quantity, List<String> customTexts) {
+    public void addItem(String itemId, int quantity, List<String> customTexts) {
         if (status == Status.CLOSE) {
             throw new IllegalStateException("ticket is closed");
         }
+        if (itemId.endsWith("S")) {
+            throw new IllegalArgumentException("Invalid item id: " + itemId);
+        }
+        Product product = ProductController.getInstance().findProductById(itemId);
 
         if (product == null) {
             throw new IllegalArgumentException("product doesn't exist");
@@ -24,17 +31,10 @@ public class CommonTicket extends Ticket<Product>{
         items.addAll(ticketContent);
         status = Status.OPEN;
     }
+
     public List<Product> getProducts() {
         return items;
     }
-
-    @Override
-    public void addService(Service service) {
-        throw new IllegalArgumentException(
-                "Common tickets cannot accept services"
-        );
-    }
-
 
     @Override
     public double getTotalPrice() {

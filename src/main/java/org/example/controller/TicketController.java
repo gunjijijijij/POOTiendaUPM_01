@@ -2,8 +2,6 @@ package org.example.controller;
 
 import org.example.*;
 
-import org.example.strategy.CompanyCombinedPrinter;
-import org.example.strategy.CompanyServicePrinter;
 import org.example.util.TicketIdGenerator;
 import org.example.util.Utils;
 
@@ -75,42 +73,13 @@ public class TicketController {
             return;
         }
         try {
-            switch (ticketType) {
-                case "-c":
-                    if (!(client instanceof org.example.util.CompanyClient)) {
-                        System.out.println("Error: Combined tickets are only for Company Clients.");
-                        return;
-                    }
-                    ticket = new CompanyTicket(ticketId);
-                    ticket.setType("COMBINED");
-                    ticket.setPrintingStrategy(new CompanyCombinedPrinter());
-                    break;
-                case "-s":
-                    if (!(client instanceof org.example.util.CompanyClient)) {
-                        System.out.println("Error: Service tickets are only for Company Clients.");
-                        return;
-                    }
-                    ticket = new CompanyTicket(ticketId);
-                    ticket.setType("SERVICE");
-                    ticket.setPrintingStrategy(new CompanyServicePrinter());
-                    break;
-                default:
-                    if (client instanceof org.example.util.CompanyClient) {
-                        ticket = new CompanyTicket(ticketId);
-                        ticket.setType("STANDARD");
-                    } else {
-                        ticket = new CommonTicket(ticketId);
-                        ticket.setType("STANDARD");
-                    }
-                    break;
-            }
+            ticket = client.createTicketForType(ticketId, ticketType);
         } catch (IllegalArgumentException e) {
             System.out.println("ticket new: error (" + e.getMessage() + ")");
             return;
         }
 
         cashier.getTickets().add(ticket);
-        client.getTickets().add(ticket);
         tickets.add(ticket);
 
         System.out.println("Ticket : " + ticket.getId());
@@ -129,7 +98,7 @@ public class TicketController {
             return;
 
         ticketId = args[2];
-        Ticket ticket = findTicketById(ticketId);
+        Ticket<?> ticket = findTicketById(ticketId);
         if (ticket == null){
             System.out.println("ticket add: error (ticket does not exist)");
             return;
@@ -149,52 +118,29 @@ public class TicketController {
         }
 
         itemId = args[4];
+        Integer quantity = 1;
+        List<String> customTexts = null;
 
-        if (itemId.endsWith("S")) {
-            // ES UN SERVICIO
-            Service service = findServiceById(itemId);
-            if (service == null) {
-                System.out.println("ticket add: error (service " + itemId + " not found)");
-                return;
-            }
-            try {
-                // Los servicios se añaden sin cantidad (son únicos por ID)
-                ticket.addService(service);
-                System.out.println("Ticket : " + ticket.getId());
-                ticket.print();
-                System.out.println("ticket add: ok");
-            } catch (Exception e) {
-                System.out.println("ticket add: error (" + e.getMessage() + ")");
-            }
-
-        } else {
+        if (!itemId.endsWith("S")) {
             // ES UN PRODUCTO (Requiere cantidad)
             if (args.length < 6) {
                 System.out.println("Usage: ticket add <ticketId> <cashId> <prodId> <quantity>");
                 return;
             }
 
-            Integer productId = Utils.parsePositiveInt(itemId, "Product ID must be integer");
-            if (productId == null) return;
-
-            Product product = ProductController.getInstance().findProductById(productId);
-            if (product == null) {
-                System.out.println("ticket add: error (product " + productId + " not found)");
-                return;
-            }
-
-            Integer quantity = Utils.parsePositiveInt(args[5], "Quantity must be positive");
+            quantity = Utils.parsePositiveInt(args[5], "Quantity must be positive");
             if (quantity == null) return;
 
-            try {
-                ArrayList<String> customTexts = Utils.parseCustomTexts(args);
-                ticket.addProductTicket(product, quantity, customTexts);
-                System.out.println("Ticket : " + ticket.getId());
-                ticket.print();
-                System.out.println("ticket add: ok");
-            } catch (Exception e) {
-                System.out.println("ticket add: error (" + e.getMessage() + ")");
-            }
+            customTexts = Utils.parseCustomTexts(args);
+        }
+
+        try {
+            ticket.addItem(itemId, quantity, customTexts);
+            System.out.println("Ticket : " + ticket.getId());
+            ticket.print();
+            System.out.println("ticket add: ok");
+        } catch (Exception e) {
+            System.out.println("ticket add: error (" + e.getMessage() + ")");
         }
     }
 
@@ -295,7 +241,7 @@ public class TicketController {
         System.out.println("ticket list: ok");
     }
 
-    private Service findServiceById(String id) {
+    public Service findServiceById(String id) {
         List<CatalogItem> allItems = ProductController.getInstance().getProducts();
         for (CatalogItem item : allItems) {
             if (item instanceof Service && item.getId().equals(id)) {

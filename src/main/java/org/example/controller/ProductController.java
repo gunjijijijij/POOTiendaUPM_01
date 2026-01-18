@@ -39,10 +39,8 @@ public class ProductController {
     }
 
     // Elimina un producto existente del catálogo
-    public void prodRemove(int id) {
-        String idStr = String.valueOf(id);
-
-        boolean removed = products.removeIf(p -> p.getId().equals(idStr));
+    public void prodRemove(String id) {
+        boolean removed = products.removeIf(p -> p.getId().equals(id));
 
         if (!removed) {
             throw new IllegalArgumentException("The product with id " + id + " was not found");
@@ -50,7 +48,7 @@ public class ProductController {
     }
 
     // Cambia el nombre, la categoría o el precio de un producto
-    public void prodUpdate(int id, String updateType, String newValue) {
+    public void prodUpdate(String id, String updateType, String newValue) {
         Product product = findProductById(id);
 
         try {
@@ -77,11 +75,10 @@ public class ProductController {
     }
 
     // Encuentra un producto por su id
-    public Product findProductById(int id) {
-        String idStr = String.valueOf(id);  // Convertir int a String
+    public Product findProductById(String id) {
 
         for (CatalogItem item : products) {
-            if (item.getId().equals(idStr) && item instanceof Product) {
+            if (item.getId().equals(id) && item instanceof Product) {
                 return (Product) item;
             }
         }
@@ -94,18 +91,15 @@ public class ProductController {
     public void handleProdRemove(String[] args) {
         if (Utils.requireMinArgs(args, 3, "Usage: prod remove <id>")) return;
 
-        Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
-        if (id == null) return;
-
-        Product removed = findProductById(id);
+        Product removed = findProductById(args[2]);
         if (removed == null) {
             System.out.println("prod remove: error (no product with that ID)");
             return;
         }
 
         try {
-            prodRemove(id);
-            System.out.println(removed.toString());
+            prodRemove(args[2]);
+            System.out.println(removed);
             System.out.println("prod remove: ok");
         } catch (IllegalArgumentException e) {
             System.out.println("prod remove: error (" + e.getMessage() + ")");
@@ -131,8 +125,7 @@ public class ProductController {
         Service service = new Service(expirationDate, category);
         products.add(service);
     }
-    private void addProduct(int id, String name, Category category, float price, Integer maxPers) {
-        Validators.requirePositiveInt(id, "The ID must be a positive integer");
+    private void addProduct(String id, String name, Category category, float price, Integer maxPers) {
         Validators.requireValidProductName(name);
         Validators.requireValidCategory(category);
         Validators.requireValidPrice(price);
@@ -148,7 +141,7 @@ public class ProductController {
         }
     }
 
-    private Product createProduct(int id, String name, Category category, float price, Integer maxPers) {
+    private Product createProduct(String id, String name, Category category, float price, Integer maxPers) {
         if (maxPers != null) {
             return new CustomProduct(id, name, category, price, maxPers);
         }
@@ -188,10 +181,7 @@ public class ProductController {
             return;
         }
 
-        // id siempre en args[2]
-        Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
-        if (id == null) return;
-        if (findProductById(id) != null){
+        if (findProductById(args[2]) != null){
             System.out.println("prod add: error (A product with that id already exists)");
             return;
         };
@@ -221,7 +211,7 @@ public class ProductController {
         }
 
         try {
-            addProduct(id, name, category, price, maxPers);
+            addProduct(args[2], name, category, price, maxPers);
         } catch (IllegalArgumentException e) {
             System.out.println("prod add: error (" + e.getMessage() + ")");
         }
@@ -233,10 +223,7 @@ public class ProductController {
     public void handleProdUpdate(String[] args) {
         if (Utils.requireMinArgs(args, 4, "Usage: prod update <id> NAME|CATEGORY|PRICE <value>")) return;
 
-        Integer id = Utils.parsePositiveInt(args[2], "The ID must be a positive integer.");
-        if (id == null) return;
-
-        Product updated = findProductById(id);
+        Product updated = findProductById(args[2]);
         if (updated == null) {
             System.out.println("prod update: error (no product with that ID)");
             return;
@@ -251,21 +238,21 @@ public class ProductController {
                     System.out.println("The name is empty");
                     return;
                 }
-                prodUpdate(id, field, newName);
+                prodUpdate(args[2], field, newName);
                 break;
 
             case "CATEGORY":
                 if (Utils.requireMinArgs(args, 5, "Usage: prod update <id> CATEGORY <newCategory>")) return;
                 Category newCat = Utils.parseCategory(args[4]);
                 if (newCat == null) return;
-                prodUpdate(id, field, newCat.name());
+                prodUpdate(args[2], field, newCat.name());
                 break;
 
             case "PRICE":
                 if (Utils.requireMinArgs(args, 5, "Usage: prod update <id> PRICE <newPrice>")) return;
                 Float newPrice = Utils.parseNonNegativeFloat(args[4]);
                 if (newPrice == null) return;
-                prodUpdate(id, field, Float.toString(newPrice));
+                prodUpdate(args[2], field, Float.toString(newPrice));
                 break;
 
             default:
@@ -311,10 +298,10 @@ public class ProductController {
 
     private void addFoodProduct(Integer id, String name, float price, LocalDate expiration, int maxPeople) {
         int finalid = (id != null) ? id : ProductIdGenerator.generateId(); //si no existe id, lo genera
-        if (findProductById(finalid) != null) {
+        if (findProductById(String.valueOf(finalid)) != null) {
             throw new IllegalArgumentException("Product ID " + finalid + " already exists");
         }
-        FoodProduct product = new FoodProduct(finalid, name, price, expiration, maxPeople);
+        FoodProduct product = new FoodProduct(String.valueOf(finalid), name, price, expiration, maxPeople);
         products.add(product);
         System.out.println(product);
         System.out.println("prod addFood: ok");
@@ -360,10 +347,10 @@ public class ProductController {
 
     private void addMeetingProduct(Integer id, String name, float price, LocalDate expiration, int maxPeople) {
         int finalid = (id != null) ? id : ProductIdGenerator.generateId(); //si no existe id, lo genera
-        if (findProductById(finalid) != null) {
+        if (findProductById(String.valueOf(finalid)) != null) {
             throw new IllegalArgumentException("Product ID " + finalid + " already exists");
         }
-        MeetingProduct product = new MeetingProduct(finalid, name, price, expiration, maxPeople);
+        MeetingProduct product = new MeetingProduct(String.valueOf(finalid), name, price, expiration, maxPeople);
         products.add(product);
         System.out.println(product);
         System.out.println("prod addMeeting: ok");
