@@ -2,13 +2,12 @@ package org.example;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PeopleProduct extends Product {
 
-    private final LocalDate expirationDate;
-    private final int maxPeople;
+    private LocalDate expirationDate;
+    private int maxPeople;
     private int numPeopleAttending = 0;
 
     public PeopleProduct(String id, String name, float pricePerPerson, LocalDate expirationDate, int maxPeople) {
@@ -30,6 +29,8 @@ public abstract class PeopleProduct extends Product {
         this(peopleProduct.getId(), peopleProduct.getName(), peopleProduct.getPricePerPerson(), peopleProduct.getExpirationDate(), peopleProduct.getMaxPeople());
         this.numPeopleAttending = numPeopleAttending;
     }
+
+    public PeopleProduct() {}
 
     // Comprueba que falten al menos 12 horas para la fecha de caducidad
     public boolean isValidCreation(LocalDate expiration) {

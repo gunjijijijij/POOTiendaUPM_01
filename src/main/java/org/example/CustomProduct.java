@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomProduct extends Product {
-    private final int maxCustomizations;
+    private int maxCustomizations;
     private List<String> customTexts;
 
     public CustomProduct(String id, String name, Category category, float price, int maxCustomizations) {
@@ -13,6 +13,10 @@ public class CustomProduct extends Product {
         if (maxCustomizations < 0) {
             throw new IllegalArgumentException("Max customizations cannot be negative.");
         }
+    }
+
+    public CustomProduct(){
+        super();
     }
 
     public CustomProduct(CustomProduct customProduct, List<String> customTexts) {

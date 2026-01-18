@@ -10,6 +10,8 @@ public abstract class Client extends User {
         this.registeredBy = registeredBy;
     }
 
+    public Client() {}
+
     @Override
     public String toString() {
         return "Client{identifier='" + getId() + "', name='" + name + "', email='" + email + "', cash=" + (registeredBy != null ? registeredBy.getId() : "null") + "}";

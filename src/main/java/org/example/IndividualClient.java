@@ -6,6 +6,11 @@ public class IndividualClient extends Client{
     public IndividualClient(String id, String name, String email, Cashier registeredBy) {
         super(id, name, email, registeredBy);
     }
+
+    public IndividualClient() {
+        super();
+    }
+
     public String toString() {
         return "IndividualClient{identifier='" + getId() + "', name='" + getName() + "', email='" + getEmail() + "'}";
     }

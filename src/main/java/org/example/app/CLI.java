@@ -9,6 +9,7 @@ import org.example.controller.ProductController;
 import org.example.controller.TicketController;
 import org.example.util.Utils;
 import org.example.controller.CashierController;
+import org.example.controller.PersistenceController;
 
 public class CLI {
 
@@ -19,7 +20,8 @@ public class CLI {
 
     public void start(String inputFile) {
         init();
-        org.example.controller.PersistenceController.loadData();
+        PersistenceController.register();
+        PersistenceController.loadData();
         Scanner sc;
 
         try {

@@ -7,6 +7,11 @@ public class CompanyClient extends Client{
     public CompanyClient(String id, String name, String email, Cashier registeredBy) {
         super(id, name, email, registeredBy);
     }
+
+    public CompanyClient() {
+        super();
+    }
+
     @Override
     public String toString() {
         return "CompanyClient{identifier='" + getId() + "', name='" + getName() + "'}";
@@ -24,5 +29,4 @@ public class CompanyClient extends Client{
                 return new CompanyTicket(ticketId);
         }
     }
-
 }

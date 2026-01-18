@@ -9,6 +9,10 @@ public class CommonTicket extends Ticket<Product>{
         super(id);
     }
 
+    public CommonTicket() {
+        super();
+    }
+
     @Override
     public void addItem(String itemId, int quantity, List<String> customTexts) {
         if (status == Status.CLOSE) {

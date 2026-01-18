@@ -1,8 +1,6 @@
 package org.example;
 
-import java.io.Serializable;
-
-public abstract class User implements Serializable {
+public abstract class User {
     protected String id;
     protected String name;
     protected String email;
@@ -12,6 +10,8 @@ public abstract class User implements Serializable {
         this.name = name;
         this.email = email;
     }
+
+    public User() {}
 
     public String getId() {
         return id;

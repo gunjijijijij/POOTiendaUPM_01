@@ -7,6 +7,9 @@ import java.util.Random;
 import java.util.List;
 
 public class Cashier extends User {
+    Cashier(){
+        super();
+    }
     private static final String PREFIX = "UW";
     private static final Random random = new Random();
 

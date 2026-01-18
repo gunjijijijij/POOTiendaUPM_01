@@ -19,6 +19,10 @@ public class Product extends CatalogItem{
         this(product.getId(), product.getName(), product.getCategory(), product.getPrice());
     }
 
+    public Product() {
+        super();
+    }
+
     public String getName() {
         return name;
     }

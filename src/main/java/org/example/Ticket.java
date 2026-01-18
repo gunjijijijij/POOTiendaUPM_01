@@ -5,17 +5,18 @@ import org.example.strategy.StandardPrinter;
 import org.example.util.TicketIdGenerator;
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class Ticket<T extends CatalogItem> implements Serializable {
+public abstract class Ticket<T extends CatalogItem> {
     protected String id;
     protected ITicketPrinter printingStrategy;
     protected final List<T> items = new ArrayList<>();
 
     protected static final int MAX_SIZE = 100;
+
+    public Ticket() {}
 
     public enum Status {
         OPEN,

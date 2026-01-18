@@ -3,13 +3,17 @@ package org.example;
 import java.time.LocalDate;
 
 public class Service extends CatalogItem {
-    private final LocalDate expirationDate;
+    private LocalDate expirationDate;
     private static int serviceCounter = 1;
 
     public Service(LocalDate expirationDate, Category category) {
         super(generateServiceId(), category);
         if (expirationDate == null) throw new IllegalArgumentException("expiration can't be null");
         this.expirationDate = expirationDate;
+    }
+
+    public Service() {
+        super();
     }
 
     public LocalDate getExpirationDate() { return expirationDate; }

@@ -1,15 +1,15 @@
 package org.example;
 
-import java.io.Serializable;
-
-public abstract class CatalogItem implements Serializable{
-    protected final String id;
-    protected final Category category;
+public abstract class CatalogItem {
+    protected String id;
+    protected Category category;
 
     protected CatalogItem(String id, Category category) {
         this.id = id;
         this.category = category;
     }
+
+    public CatalogItem() {}
 
     public String getId() { return id; }
     public int getIdAsInt() {

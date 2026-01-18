@@ -15,6 +15,10 @@ public class MeetingProduct extends PeopleProduct {
         super(meetingProduct, quantity);
     }
 
+    public MeetingProduct() {
+        super();
+    }
+
     @Override
     public String toString() {
         return buildToString("Meeting");

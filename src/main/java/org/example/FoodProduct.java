@@ -13,6 +13,10 @@ public class FoodProduct extends PeopleProduct {
         super(foodProduct, quantity);
     }
 
+    public FoodProduct() {
+        super();
+    }
+
     @Override
     public String toString() {
         return buildToString("Food");

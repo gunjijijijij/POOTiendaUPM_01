@@ -10,6 +10,8 @@ public class ServiceTicket extends Ticket<Service>{
         super(id, new CompanyServicePrinter());
     }
 
+    public ServiceTicket() {}
+
     @Override
     public void addItem(String itemId, int quantity, List<String> customTexts) {
         if (!itemId.endsWith("S")) {

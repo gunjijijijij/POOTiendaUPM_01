@@ -13,6 +13,8 @@ public class CompanyTicket extends Ticket<CatalogItem> {
         super(id, new CompanyCombinedPrinter());
     }
 
+    public CompanyTicket(){}
+
     @Override
     public void addItem(String itemId, int quantity, List<String> customTexts) {
         if (itemId.endsWith("S")) {
