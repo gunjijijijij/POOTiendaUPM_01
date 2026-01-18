@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.Cashier;
+import org.example.util.CashierIdGenerator;
 import org.example.util.Utils;
 import org.example.Ticket;
 
@@ -70,7 +71,7 @@ public class CashierController {
             System.out.println("cash remove: error (id not found)");
             return;
         }
-
+        CashierIdGenerator.removeId(id);
         cashiers.remove(found);
         System.out.println("cash remove: ok");
     }
