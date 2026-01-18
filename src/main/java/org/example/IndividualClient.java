@@ -7,7 +7,7 @@ public class IndividualClient extends Client{
         super(id, name, email, registeredBy);
     }
     public String toString() {
-        return "IndividualClient{DNI/NIE='" + getId() + "', name='" + getName() + "', email='" + getEmail() + "'}";
+        return "IndividualClient{identifier='" + getId() + "', name='" + getName() + "', email='" + getEmail() + "'}";
     }
 
     public Ticket<?> createTicketForType(String ticketId, String ticketType) {

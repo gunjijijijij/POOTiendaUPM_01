@@ -9,7 +9,7 @@ public class CompanyClient extends Client{
     }
     @Override
     public String toString() {
-        return "CompanyClient{NIF='" + getId() + "', name='" + getName() + "'}";
+        return "CompanyClient{identifier='" + getId() + "', name='" + getName() + "'}";
     }
 
     @Override
