@@ -23,7 +23,11 @@ public class StandardPrinter implements ITicketPrinter { //ESTRATEGIA DE IMPRIMI
             Category currentCategory = p.getCategory();
             long count = lines.stream().filter(x -> x.getCategory() == currentCategory).count();
             double discount = (count > 1) ? p.getDiscount() : 0;
-            System.out.printf("%s **discount -%.2f\n", p.toString(), discount);
+            if (discount > 0)
+                System.out.printf("%s **discount -%.2f\n", p, discount);
+            else
+                System.out.printf("%s\n", p);
+
             total += p.getPrice();
             totalDiscount += discount;
         }
