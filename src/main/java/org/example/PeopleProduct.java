@@ -55,7 +55,7 @@ public abstract class PeopleProduct extends Product {
         StringBuilder sb = new StringBuilder();
         sb.append("{class:").append(className).append(", id:").append(getId())
                 .append(", name:'").append(name)
-                .append("', price:").append(price * numPeopleAttending)
+                .append("', price:").append(price)
                 .append(", date of Event:").append(expirationDate)
                 .append(", max people allowed:").append(maxPeople);
         if (numPeopleAttending != 0) {

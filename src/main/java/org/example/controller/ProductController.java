@@ -286,7 +286,7 @@ public class ProductController {
         Integer maxPeople = Utils.parsePositiveInt(args[args.length - 1], "Max people must be a positive integer.");
         if (maxPeople == null) return;
         if (maxPeople < 1 || maxPeople > 100) {
-            System.out.println("Max people must be between 1 and 100");
+            System.out.println("Error processing ->prod addFood ->Error adding product");
             return;
         }
         if (!Utils.isValidFoodCreation(expiration)) {
