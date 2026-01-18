@@ -11,16 +11,16 @@ import java.util.List;
 
 public class ProductController {
     private static final int MAX_PRODUCTS = 200;
-    private static ProductController instancia;
+    private static ProductController instance;
     private static final List<CatalogItem> products = new ArrayList<>();
 
     private ProductController(){}
 
     public static ProductController getInstance(){
-        if (instancia == null){
-            instancia = new ProductController();
+        if (instance == null){
+            instance = new ProductController();
         }
-        return instancia;
+        return instance;
     }
     public List<CatalogItem> getProducts() {
         return products;
