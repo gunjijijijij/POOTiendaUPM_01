@@ -123,6 +123,7 @@ public class ProductController {
 
         // Crear y agregar
         Service service = new Service(expirationDate, category);
+        System.out.println(service);
         products.add(service);
     }
     private void addProduct(String id, String name, Category category, float price, Integer maxPers) {
@@ -156,7 +157,6 @@ public class ProductController {
         }
 
         if (Utils.isDateYYYYMMDD(args[2])){
-            System.out.println("Es dia");
             if (args.length != 4){
                 System.out.println("Usage: prod add <expiration: yyyy-MM-dd> <category>");
                 return;

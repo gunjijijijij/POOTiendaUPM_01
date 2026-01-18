@@ -34,7 +34,7 @@ public class ClientController {
     }
 
     public void handleClientAdd(String[] args) {
-        if (Utils.requireMinArgs(args, 5, "Usage: client add \"<name>\" <DNI> <email> <cashId>")) return;
+        if (Utils.requireMinArgs(args, 6, "Usage: client add \"<name>\" <DNI> <email> <cashId>")) return;
 
         String name = args[2].trim();
         if (name.isEmpty()) {
@@ -43,11 +43,10 @@ public class ClientController {
         }
 
         String id = args[3];
-        if (id.isEmpty() || !Utils.isValidID(id)) {
+        if (id.isEmpty() || !(Utils.isDNI(id) || Utils.isNIF(id))) {
             System.out.println("The identifier is empty or invalid.");
             return;
         }
-
         String email = args[4];
         if (email.isEmpty()) {
             System.out.println("The email is empty.");

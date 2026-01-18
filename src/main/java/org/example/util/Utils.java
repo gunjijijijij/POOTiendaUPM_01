@@ -142,18 +142,12 @@ public class Utils {
     public static boolean isValidID(String id) {
         return isDNI(id)||isNIF(id);
     }
-    public static boolean isNIF(String nif){
-        if (nif.length()!=9){
-            return false;
-        }
-        String secuenciaLetrasNIF = "TRWAGMYFPDXBNJZSQVHLCKE";
-        nif = nif.toUpperCase();
-        String numeroNIF = nif.substring(0, nif.length()-1);
-        numeroNIF = numeroNIF.replace("X", "0").replace("Y", "1").replace("Z", "2");
-        char letraNIF = nif.charAt(8);
-        int i = Integer.parseInt(numeroNIF) % 23;
-        return letraNIF == secuenciaLetrasNIF.charAt(i);
+    public static boolean isNIF(String cif) {
+        if (cif == null) return false;
+        cif = cif.toUpperCase();
+        return cif.matches("^[ABCDEFGHJNPQRSUVW][0-9]{7}[0-9A-J]$");
     }
+
 
     public static boolean isDNI(String dni) {
         if (!dni.matches("\\d{8}[A-Z]")) {

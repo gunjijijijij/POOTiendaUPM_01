@@ -79,6 +79,8 @@ public class CLI {
                 }
             }catch(Exception e){
                 System.out.println("Error executing command: " + e.getMessage());
+                e.printStackTrace();
+
             }
             if (!finish) {
                 System.out.println();
