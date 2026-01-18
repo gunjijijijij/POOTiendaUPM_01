@@ -7,7 +7,6 @@ public abstract class CatalogItem implements Serializable{
     protected final Category category;
 
     protected CatalogItem(String id, Category category) {
-        if (category == null) throw new IllegalArgumentException("category can't be null");
         this.id = id;
         this.category = category;
     }

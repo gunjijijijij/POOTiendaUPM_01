@@ -18,7 +18,7 @@ public class Service extends CatalogItem {
 
     @Override
     public String getDisplayId() {
-        return getId() + "S"; // "1S"
+        return getId(); // "1S"
     }
 
     public Category getCategory() { return category; }
